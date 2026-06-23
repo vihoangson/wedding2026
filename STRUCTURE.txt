@@ -1,0 +1,218 @@
+weddingpage/
+│
+├── 📄 index_vue.html                    # HTML entry point for Vue app
+├── 📄 vite.config.js                    # Vite bundler configuration
+├── 📄 package.json                      # Dependencies & scripts
+├── 📄 .env.example                      # Environment variables template
+├── 📄 .gitignore                        # Git ignore rules
+│
+├── 📂 src/
+│   │
+│   ├── 📄 main.js                       # App entry point
+│   ├── 📄 App.vue                       # Root Vue component
+│   │
+│   ├── 📂 router/
+│   │   └── 📄 index.js                  # Vue Router configuration
+│   │                                    # Routes: / -> HomePage
+│   │
+│   ├── 📂 stores/
+│   │   └── 📄 weddingStore.js          # Pinia store
+│   │                                    # State: couple, date, venue, rsvp
+│   │
+│   ├── 📂 views/
+│   │   └── 📄 HomePage.vue             # Main page view
+│   │                                    # Combines all sections
+│   │
+│   ├── 📂 components/
+│   │   │
+│   │   ├── 📂 layout/
+│   │   │   ├── 📄 Navbar.vue           # Navigation bar
+│   │   │   └── 📄 Footer.vue           # Footer
+│   │   │
+│   │   ├── 📂 sections/
+│   │   │   ├── 📄 HeroSection.vue      # Landing hero banner
+│   │   │   ├── 📄 StorySection.vue     # Love story
+│   │   │   ├── 📄 ProfilesSection.vue  # Couple profiles
+│   │   │   ├── 📄 DetailsSection.vue   # Wedding details
+│   │   │   ├── 📄 GallerySection.vue   # Photo gallery with lightbox
+│   │   │   ├── 📄 TimelineSection.vue  # Relationship timeline
+│   │   │   └── 📄 RSVPSection.vue      # RSVP form
+│   │   │
+│   │   └── 📂 common/
+│   │       ├── 📄 ProfileCard.vue      # Reusable profile card
+│   │       └── 📄 DetailCard.vue       # Reusable detail card
+│   │
+│   └── 📂 assets/                       # Static files (images, styles)
+│
+├── 📂 dist/                             # Build output (after npm run build)
+│
+└── 📂 node_modules/                     # Dependencies (auto-generated)
+
+
+═══════════════════════════════════════════════════════════════════════
+
+📋 QUICK REFERENCE
+
+src/main.js
+└─ Creates Vue app
+   └─ Mounts to #app in index_vue.html
+   └─ Uses router and pinia
+
+src/App.vue (Root Component)
+├─ Navbar (layout)
+├─ <router-view>  (pages/views)
+└─ Footer (layout)
+
+src/views/HomePage.vue (Main Page)
+├─ HeroSection
+├─ StorySection
+├─ ProfilesSection
+├─ DetailsSection
+├─ GallerySection
+├─ TimelineSection
+└─ RSVPSection
+
+═══════════════════════════════════════════════════════════════════════
+
+🎯 COMPONENT HIERARCHY
+
+App
+├── Navbar
+├── HomePage (via Router)
+│   ├── HeroSection
+│   ├── StorySection
+│   ├── ProfilesSection (contains ProfileCard x2)
+│   ├── DetailsSection (contains DetailCard x3)
+│   ├── GallerySection
+│   ├── TimelineSection
+│   └── RSVPSection
+└── Footer
+
+═══════════════════════════════════════════════════════════════════════
+
+🔄 COMPONENT REUSABILITY
+
+ProfileCard.vue - Used in ProfilesSection
+├── Props: profile (object)
+└── Displays: Image, Name, Bio, Social Links
+
+DetailCard.vue - Used in DetailsSection
+├── Props: detail (object)
+└── Displays: Icon, Title, Time, Location, Description
+
+═══════════════════════════════════════════════════════════════════════
+
+📊 STATE MANAGEMENT (Pinia Store)
+
+weddingStore.js
+├── State:
+│   ├── couple (bride/groom names)
+│   ├── weddingDate
+│   ├── venue (ceremony & reception)
+│   └── rsvpList
+└── Actions:
+    ├── addRSVP(data)
+    └── getRSVPCount()
+
+Usage:
+  import { useWeddingStore } from '@/stores/weddingStore'
+  const store = useWeddingStore()
+
+═══════════════════════════════════════════════════════════════════════
+
+🛣️ ROUTING (Vue Router)
+
+Current Routes:
+  / -> HomePage.vue
+
+Can add more:
+  /gallery -> GalleryPage.vue
+  /timeline -> TimelinePage.vue
+  /admin -> AdminPage.vue
+
+Configure in: src/router/index.js
+
+═══════════════════════════════════════════════════════════════════════
+
+📝 NPM SCRIPTS
+
+npm run dev       -> Start dev server (port 5173)
+npm run build     -> Build for production
+npm run preview   -> Preview built project
+npm install       -> Install dependencies
+
+═══════════════════════════════════════════════════════════════════════
+
+🎨 STYLING APPROACH
+
+1. Bootstrap 5 (Grid, Components)
+2. Scoped CSS in each .vue file
+3. CSS Variables for colors
+4. Responsive Media Queries
+5. CSS Animations & Transitions
+
+Color Scheme:
+  Primary: #ff69b4 (Hot Pink)
+  Secondary: #fff5f9 (Light Pink)
+  Accent: #ff1493 (Deep Pink)
+
+═══════════════════════════════════════════════════════════════════════
+
+🚀 DEPLOYMENT FLOW
+
+1. npm install          -> Install dependencies
+2. npm run dev          -> Test locally
+3. npm run build        -> Create optimized build
+4. Upload dist/         -> Deploy to hosting
+   ├── Apache/XAMPP     -> htdocs/vhosts/weddingpage/
+   ├── Netlify          -> Auto deploy from git
+   ├── Vercel           -> Auto deploy from git
+   └── GitHub Pages     -> Auto deploy from gh-pages branch
+
+═══════════════════════════════════════════════════════════════════════
+
+💡 DEVELOPMENT WORKFLOW
+
+1. Start dev server:       npm run dev
+2. Browser opens:          http://localhost:5173
+3. Edit component files in src/
+4. Changes hot-reload automatically
+5. Open DevTools (F12) to debug
+6. When ready: npm run build
+
+═══════════════════════════════════════════════════════════════════════
+
+📖 FILE EDITING GUIDE
+
+To customize:
+├── Change couple names
+│   └── Edit: src/components/sections/HeroSection.vue
+├── Change wedding date
+│   └── Edit: src/components/sections/HeroSection.vue
+├── Change images
+│   └── Edit: src/components/sections/*.vue (img src="...")
+├── Change colors
+│   └── Edit: Any .vue file (search #ff69b4, #ff1493, #fff5f9)
+├── Add new route
+│   └── Edit: src/router/index.js
+├── Add global state
+│   └── Edit: src/stores/weddingStore.js
+└── Change config
+    └── Edit: vite.config.js
+
+═══════════════════════════════════════════════════════════════════════
+
+✅ CHECKLIST AFTER SETUP
+
+□ npm install completed
+□ npm run dev works (http://localhost:5173)
+□ Page displays correctly
+□ All sections appear
+□ No console errors (F12)
+□ Responsive on mobile
+□ RSVP form works
+□ Gallery lightbox works
+□ Ready to customize!
+
+═══════════════════════════════════════════════════════════════════════
+
