@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lễ Cưới - Nguyễn Thủy & Trần Minh</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="enhancements.css">
+</head>
+<body>
+
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="#home">
+                <i class="fas fa-heart text-danger"></i> Đám cưới
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="#home">Trang chủ</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#story">Câu chuyện</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#details">Chi tiết</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#gallery">Ảnh</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#rsvp">RSVP</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero-section">
+        <div class="hero-content">
+            <div class="container text-center text-white">
+                <h1 class="display-1 fw-bold mb-3 couple-names">Thủy <span class="heart">&</span> Minh</h1>
+                <p class="lead mb-4 subtitle">Chúng tôi rất vui được mời bạn dự lễ cưới của chúng tôi</p>
+                <div class="wedding-date">
+                    <p class="fs-5">
+                        <i class="far fa-calendar-alt me-2"></i>
+                        Ngày 15 tháng 8 năm 2026
+                    </p>
+                    <p class="fs-5">
+                        <i class="fas fa-map-marker-alt me-2"></i>
+                        Nhà hàng Tiệc Cưới Hoa Anh Đào, Thành phố
+                    </p>
+                </div>
+                <a href="#story" class="btn btn-light btn-lg mt-4">
+                    Khám phá câu chuyện của chúng tôi <i class="fas fa-arrow-down ms-2"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Story Section -->
+    <section id="story" class="py-5 story-section">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6 mb-4 mb-lg-0">
+                    <img src="https://images.unsplash.com/photo-1519741497674-611481863552?w=500&h=600&fit=crop"
+                         alt="Cặp đôi" class="img-fluid rounded-3 shadow-lg">
+                </div>
+                <div class="col-lg-6">
+                    <h2 class="section-title mb-4">Câu chuyện của chúng tôi</h2>
+                    <p class="lead mb-3">
+                        Gặp nhau lần đầu tiên tại một buổi họp mặt bạn bè vào mùa hè 2021,
+                        chúng tôi không ngờ rằng đó sẽ là điểm khởi đầu của một tình yêu đẹp.
+                    </p>
+                    <p class="mb-3">
+                        Thủy bị ấn tượng bởi nụ cười ấm áp của Minh, còn Minh lại yêu thích tính tính tế và lòng tốt của Thủy.
+                        Từ những cuộc hẹn hò đơn giản cho đến những chuyến du lịch xa xôi, chúng tôi đã chia sẻ những khoảnh khắc
+                        quý giá nhất của cuộc sống.
+                    </p>
+                    <p class="mb-3">
+                        Vào ngày 14 tháng 2 năm 2024, Minh đã quỳ xuống và cầu hôn Thủy dưới ánh trăng ở bãi biển,
+                        và Thủy đã nói "Có" với nước mắt hạnh phúc.
+                    </p>
+                    <p class="text-muted fst-italic">
+                        "Trong cuộc sống này, tôi chỉ cần một người - chính là bạn." - Minh
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Couple Profiles Section -->
+    <section class="py-5" style="background: #fff5f9;">
+        <div class="container">
+            <h2 class="text-center section-title mb-5">Những người chính</h2>
+            <div class="row g-4">
+                <div class="col-md-6">
+                    <div class="card h-100 shadow-sm border-0 profile-card">
+                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop"
+                             alt="Cô dâu" class="card-img-top">
+                        <div class="card-body text-center">
+                            <h3 class="card-title fw-bold mb-2">Nguyễn Thủy</h3>
+                            <p class="card-text text-muted mb-3">
+                                Cô dâu tươi vui, yêu thích du lịch và nấu ăn. Thủy là một người bạn tuyệt vời
+                                luôn sẵn sàng giúp đỡ mọi người.
+                            </p>
+                            <div class="social-links">
+                                <a href="#" class="me-2"><i class="fab fa-facebook text-primary"></i></a>
+                                <a href="#" class="me-2"><i class="fab fa-instagram text-danger"></i></a>
+                                <a href="#"><i class="fab fa-twitter text-info"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card h-100 shadow-sm border-0 profile-card">
+                        <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&h=400&fit=crop"
+                             alt="Chú rể" class="card-img-top">
+                        <div class="card-body text-center">
+                            <h3 class="card-title fw-bold mb-2">Trần Minh</h3>
+                            <p class="card-text text-muted mb-3">
+                                Chú rể tính tình thẳng thắn, đam mê công nghệ và thể thao. Minh là một người đàn ông
+                                tốt bụng và trách nhiệm.
+                            </p>
+                            <div class="social-links">
+                                <a href="#" class="me-2"><i class="fab fa-facebook text-primary"></i></a>
+                                <a href="#" class="me-2"><i class="fab fa-instagram text-danger"></i></a>
+                                <a href="#"><i class="fab fa-twitter text-info"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Wedding Details Section -->
+    <section id="details" class="py-5">
+        <div class="container">
+            <h2 class="text-center section-title mb-5">Chi tiết đám cưới</h2>
+            <div class="row g-4">
+                <!-- Ceremony -->
+                <div class="col-md-4">
+                    <div class="detail-card text-center">
+                        <div class="detail-icon mb-3">
+                            <i class="fas fa-church fa-3x text-danger"></i>
+                        </div>
+                        <h3 class="mb-3">Lễ Cưới</h3>
+                        <p class="mb-2"><strong>Thời gian:</strong> 10:00 - 11:30 sáng</p>
+                        <p class="mb-3"><strong>Địa điểm:</strong> Nhà thờ Thánh Mary, Quận Hà Đông</p>
+                        <p class="text-muted">Lễ cưới sẽ bắt đầu đúng 10:00, xin vui lòng đến sớm.</p>
+                    </div>
+                </div>
+                <!-- Reception -->
+                <div class="col-md-4">
+                    <div class="detail-card text-center">
+                        <div class="detail-icon mb-3">
+                            <i class="fas fa-utensils fa-3x text-danger"></i>
+                        </div>
+                        <h3 class="mb-3">Tiệc Cưới</h3>
+                        <p class="mb-2"><strong>Thời gian:</strong> 17:00 - 23:00 chiều</p>
+                        <p class="mb-3"><strong>Địa điểm:</strong> Nhà hàng Tiệc Cưới Hoa Anh Đào</p>
+                        <p class="text-muted">Menu đã được chuẩn bị đặc biệt. Rượu, nước uống và bia phục vụ tự do.</p>
+                    </div>
+                </div>
+                <!-- Dress Code -->
+                <div class="col-md-4">
+                    <div class="detail-card text-center">
+                        <div class="detail-icon mb-3">
+                            <i class="fas fa-tuxedo fa-3x text-danger"></i>
+                        </div>
+                        <h3 class="mb-3">Quy Định Trang Phục</h3>
+                        <p class="mb-2"><strong>Trang phục:</strong> Trang phục lịch sự</p>
+                        <p class="mb-3"><strong>Màu sắc:</strong> Tránh màu đỏ hoặc trắng</p>
+                        <p class="text-muted">Chúng tôi muốn bạn cảm thấy thoải mái và tự tin trong bộ quần áo yêu thích của mình.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Venue Map -->
+            <div class="row mt-5">
+                <div class="col-12">
+                    <h3 class="mb-4">Bản đồ địa điểm</h3>
+                    <div class="map-container">
+                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3725.1234567890123!2d105.82!3d20.99!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3135ab0000000001%3A0x0000000000000001!2sHa%20Dong%20District%2C%20Hanoi!5e0!3m2!1svi!2svn!4v1234567890123"
+                                width="100%" height="400" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"
+                                class="rounded-3"></iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Gallery Section -->
+    <section id="gallery" class="py-5" style="background: #fff5f9;">
+        <div class="container">
+            <h2 class="text-center section-title mb-5">Khoảnh khắc của chúng tôi</h2>
+            <div class="row g-3">
+                <div class="col-md-4">
+                    <div class="gallery-item">
+                        <img src="https://images.unsplash.com/photo-1519741497674-611481863552?w=400&h=300&fit=crop"
+                             alt="Ảnh 1" class="img-fluid rounded-3">
+                        <div class="gallery-overlay">
+                            <i class="fas fa-heart fa-2x text-white"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="gallery-item">
+                        <img src="https://images.unsplash.com/photo-1530268729831-4b51b81e68d6?w=400&h=300&fit=crop"
+                             alt="Ảnh 2" class="img-fluid rounded-3">
+                        <div class="gallery-overlay">
+                            <i class="fas fa-heart fa-2x text-white"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="gallery-item">
+                        <img src="https://images.unsplash.com/photo-1519741497674-611481863552?w=400&h=300&fit=crop"
+                             alt="Ảnh 3" class="img-fluid rounded-3">
+                        <div class="gallery-overlay">
+                            <i class="fas fa-heart fa-2x text-white"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="gallery-item">
+                        <img src="https://images.unsplash.com/photo-1550873183-6c90f12cb8f9?w=400&h=300&fit=crop"
+                             alt="Ảnh 4" class="img-fluid rounded-3">
+                        <div class="gallery-overlay">
+                            <i class="fas fa-heart fa-2x text-white"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="gallery-item">
+                        <img src="https://images.unsplash.com/photo-1519741497674-611481863552?w=400&h=300&fit=crop"
+                             alt="Ảnh 5" class="img-fluid rounded-3">
+                        <div class="gallery-overlay">
+                            <i class="fas fa-heart fa-2x text-white"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="gallery-item">
+                        <img src="https://images.unsplash.com/photo-1527529482837-4698179dc6ce?w=400&h=300&fit=crop"
+                             alt="Ảnh 6" class="img-fluid rounded-3">
+                        <div class="gallery-overlay">
+                            <i class="fas fa-heart fa-2x text-white"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Timeline Section -->
+    <section class="py-5">
+        <div class="container">
+            <h2 class="text-center section-title mb-5">Timeline - Hành trình của chúng tôi</h2>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-marker">
+                        <i class="fas fa-heart text-danger"></i>
+                    </div>
+                    <div class="timeline-content">
+                        <h4>Tháng 6 năm 2021</h4>
+                        <p>Gặp nhau lần đầu tiên tại một buổi họp mặt bạn bè</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-marker">
+                        <i class="fas fa-calendar text-danger"></i>
+                    </div>
+                    <div class="timeline-content">
+                        <h4>Tháng 9 năm 2021</h4>
+                        <p>Chuyến du lịch đầu tiên đến Đà Lạt</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-marker">
+                        <i class="fas fa-ring text-danger"></i>
+                    </div>
+                    <div class="timeline-content">
+                        <h4>Tháng 2 năm 2024</h4>
+                        <p>Minh cầu hôn Thủy trên bãi biển</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-marker">
+                        <i class="fas fa-church text-danger"></i>
+                    </div>
+                    <div class="timeline-content">
+                        <h4>Tháng 8 năm 2026</h4>
+                        <p>Lễ cưới chính thức</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- RSVP Section -->
+    <section id="rsvp" class="py-5" style="background: #fff5f9;">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <h2 class="text-center section-title mb-5">Xác nhận tham dự</h2>
+                    <div class="rsvp-card p-5 rounded-3 shadow">
+                        <form id="rsvpForm">
+                            <div class="mb-3">
+                                <label for="name" class="form-label fw-bold">Họ và tên <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control form-control-lg" id="name" name="name" required
+                                       placeholder="Nhập tên của bạn">
+                            </div>
+                            <div class="mb-3">
+                                <label for="email" class="form-label fw-bold">Email <span class="text-danger">*</span></label>
+                                <input type="email" class="form-control form-control-lg" id="email" name="email" required
+                                       placeholder="Nhập email của bạn">
+                            </div>
+                            <div class="mb-3">
+                                <label for="phone" class="form-label fw-bold">Số điện thoại <span class="text-danger">*</span></label>
+                                <input type="tel" class="form-control form-control-lg" id="phone" name="phone" required
+                                       placeholder="Nhập số điện thoại">
+                            </div>
+                            <div class="mb-3">
+                                <label for="guests" class="form-label fw-bold">Số người tham dự <span class="text-danger">*</span></label>
+                                <select class="form-select form-select-lg" id="guests" name="guests" required>
+                                    <option value="">-- Chọn số người --</option>
+                                    <option value="1">1 người</option>
+                                    <option value="2">2 người</option>
+                                    <option value="3">3 người</option>
+                                    <option value="4">4 người</option>
+                                    <option value="5">5 người trở lên</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="dietary" class="form-label fw-bold">Yêu cầu về ăn uống (nếu có)</label>
+                                <textarea class="form-control form-control-lg" id="dietary" name="dietary" rows="3"
+                                         placeholder="Vd: Ăn chay, không ăn các loại hải sản, v.v..."></textarea>
+                            </div>
+                            <div class="mb-3">
+                                <label for="message" class="form-label fw-bold">Lời chúc (tuỳ chọn)</label>
+                                <textarea class="form-control form-control-lg" id="message" name="message" rows="3"
+                                         placeholder="Gửi lời chúc tốt đẹp cho cặp đôi..."></textarea>
+                            </div>
+                            <div class="d-grid gap-2">
+                                <button type="submit" class="btn btn-danger btn-lg">
+                                    <i class="fas fa-check me-2"></i> Xác nhận tham dự
+                                </button>
+                            </div>
+                        </form>
+                        <div id="successMessage" class="alert alert-success d-none mt-3" role="alert">
+                            <i class="fas fa-check-circle me-2"></i> Cảm ơn bạn! Chúng tôi đã nhận được xác nhận của bạn.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white py-4">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
+                    <p class="mb-0">&copy; 2026 Lễ cưới của Thủy & Minh. Tất cả quyền được bảo vệ.</p>
+                </div>
+                <div class="col-md-6 text-center text-md-end">
+                    <p class="mb-0">
+                        <i class="fas fa-heart text-danger me-2"></i>
+                        Cảm ơn bạn đã là một phần của hành trình của chúng tôi!
+                    </p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JS -->
+    <script src="script.js"></script>
+</body>
+</html>

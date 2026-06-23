@@ -1,0 +1,250 @@
+/* ==================== PINK THEME ENHANCEMENTS ==================== */
+
+/* Animated Heart Animation */
+@keyframes heartBeat {
+    0%, 100% {
+        transform: scale(1);
+    }
+    25% {
+        transform: scale(1.1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+    75% {
+        transform: scale(1.15);
+    }
+}
+
+/* Floating Animation */
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0px);
+    }
+    50% {
+        transform: translateY(-20px);
+    }
+}
+
+/* Glow Animation */
+@keyframes glow {
+    0%, 100% {
+        box-shadow: 0 0 5px rgba(255, 105, 180, 0.5);
+    }
+    50% {
+        box-shadow: 0 0 20px rgba(255, 105, 180, 0.8);
+    }
+}
+
+/* Pulse Animation */
+@keyframes pulse {
+    0% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.7;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+/* Shimmer Animation */
+@keyframes shimmer {
+    0% {
+        background-position: -1000px 0;
+    }
+    100% {
+        background-position: 1000px 0;
+    }
+}
+
+/* Pink gradient animated background */
+@keyframes gradientShift {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+/* Icon animations */
+.detail-icon {
+    animation: float 3s ease-in-out infinite;
+}
+
+.detail-card:hover .detail-icon {
+    animation: heartBeat 0.6s ease-in-out;
+}
+
+/* Make section titles more elegant */
+.section-title {
+    animation: fadeInDown 0.8s ease-out;
+}
+
+/* Profile card image hover effect */
+.profile-card img {
+    transition: filter 0.3s ease, transform 0.3s ease;
+}
+
+.profile-card:hover img {
+    filter: brightness(1.1) saturate(1.1);
+    transform: scale(1.05);
+}
+
+/* Elegant border effects */
+.detail-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, #ff69b4, transparent);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.detail-card:hover::before {
+    opacity: 1;
+}
+
+/* Button gradient effect */
+.btn-danger {
+    background: linear-gradient(135deg, #ff69b4, #ff1493);
+    border: none;
+}
+
+.btn-danger:hover {
+    background: linear-gradient(135deg, #ff1493, #ff69b4);
+}
+
+/* Smooth form input focus */
+.form-control:focus {
+    border-color: #ff69b4;
+    box-shadow: 0 0 0 0.2rem rgba(255, 105, 180, 0.25);
+}
+
+.form-select:focus {
+    border-color: #ff69b4;
+    box-shadow: 0 0 0 0.2rem rgba(255, 105, 180, 0.25);
+}
+
+/* Elegant card shadows */
+.profile-card,
+.detail-card {
+    position: relative;
+    box-shadow: 0 8px 25px rgba(255, 105, 180, 0.15);
+}
+
+/* Timeline line gradient */
+.timeline::before {
+    background: linear-gradient(180deg, #ff69b4, #ff1493, #ff69b4);
+}
+
+/* Hero section overlay enhancement */
+.hero-section::before {
+    background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ff69b4' fill-opacity='0.08'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+}
+
+/* Social media links hover effect */
+.social-links a {
+    animation: pulse 2s ease-in-out infinite;
+}
+
+.social-links a:hover {
+    animation: heartBeat 0.6s ease-in-out;
+}
+
+/* Gallery overlay with pink gradient */
+.gallery-overlay {
+    background: linear-gradient(135deg, rgba(255, 105, 180, 0.85), rgba(255, 20, 147, 0.85));
+}
+
+/* Elegant RSVP form styling */
+.rsvp-card {
+    position: relative;
+    overflow: hidden;
+}
+
+.rsvp-card::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(45deg, transparent, rgba(255, 105, 180, 0.1), transparent);
+    animation: shimmer 3s infinite;
+}
+
+/* Make form labels elegant */
+.form-label {
+    color: #333;
+    font-weight: 600;
+    margin-bottom: 12px;
+    background: linear-gradient(135deg, #ff69b4, #ff1493);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* Success message styling */
+.alert-success {
+    background: linear-gradient(135deg, #fff5f9, #ffe0ec);
+    border: 2px solid #ff69b4;
+    color: #333;
+}
+
+/* Navbar hover effect */
+.navbar-brand {
+    animation: float 4s ease-in-out infinite;
+}
+
+/* Couple names glow effect on hover */
+.couple-names:hover {
+    text-shadow: 0 0 30px rgba(255, 105, 180, 0.8), 2px 2px 4px rgba(255, 105, 180, 0.5);
+}
+
+/* Heart icon animation */
+.fa-heart {
+    animation: heartBeat 1.5s ease-in-out infinite;
+}
+
+/* Elegant scrolling number effect */
+@keyframes countUp {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Print styles for sharing */
+@media print {
+    body {
+        background: white;
+    }
+
+    .navbar,
+    footer {
+        display: none;
+    }
+}
+
+/* Accessibility improvements */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
