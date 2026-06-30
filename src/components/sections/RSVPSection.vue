@@ -70,15 +70,18 @@
                   placeholder="Gửi lời chúc tốt đẹp cho cặp đôi..."></textarea>
               </div>
               <div class="d-grid gap-2">
-                <button type="submit" class="btn btn-danger btn-lg">
-                  <i class="fas fa-check me-2"></i> Xác nhận tham dự
+                <button type="submit" class="btn btn-danger btn-lg" :disabled="isLoading">
+                  <i v-if="!isLoading" class="fas fa-check me-2"></i>
+                  <i v-else class="fas fa-spinner fa-spin me-2"></i>
+                  {{ isLoading ? 'Đang xử lý...' : 'Xác nhận tham dự' }}
                 </button>
               </div>
             </form>
 
             <!-- Success Message -->
             <div v-if="submitted" class="alert alert-success" role="alert">
-              <i class="fas fa-check-circle me-2"></i> Cảm ơn bạn! Chúng tôi đã nhận được xác nhận của bạn.
+              <i class="fas fa-check-circle me-2"></i>
+              Cảm ơn {{ formData.name }}! Chúng tôi đã nhận được xác nhận của bạn.
             </div>
           </div>
         </div>
@@ -89,6 +92,10 @@
 
 <script setup>
 import { ref } from 'vue'
+import { useEventBus } from '@/utils/useEventBus'
+import { WeddingEvents } from '@/utils/eventTypes'
+
+const { emit } = useEventBus()
 
 const formData = ref({
   name: '',
@@ -100,33 +107,71 @@ const formData = ref({
 })
 
 const submitted = ref(false)
+const isLoading = ref(false)
 
-const submitRSVP = () => {
-  console.log('RSVP submitted:', formData.value)
+const submitRSVP = async () => {
+  isLoading.value = true
 
-  // Store in localStorage for demo purposes
-  const rsvpData = {
-    ...formData.value,
-    timestamp: new Date().toLocaleString('vi-VN')
-  }
+  try {
+    // Emit loading event
+    emit(WeddingEvents.RSVP_LOADING, { loading: true })
 
-  localStorage.setItem('wedding_rsvp_' + formData.value.email, JSON.stringify(rsvpData))
-
-  // Show success message
-  submitted.value = true
-
-  // Reset form after 3 seconds
-  setTimeout(() => {
-    formData.value = {
-      name: '',
-      email: '',
-      phone: '',
-      guests: '',
-      dietary: '',
-      message: ''
+    const rsvpData = {
+      ...formData.value,
+      timestamp: new Date().toLocaleString('vi-VN')
     }
-    submitted.value = false
-  }, 3000)
+
+    // Store in localStorage
+    localStorage.setItem('wedding_rsvp_' + formData.value.email, JSON.stringify(rsvpData))
+
+    // Emit success event
+    emit(WeddingEvents.RSVP_SUCCESS, {
+      message: 'RSVP received successfully!',
+      rsvpData: rsvpData
+    })
+
+    // Show success notification via event bus
+    emit(WeddingEvents.NOTIFICATION_SHOW, {
+      message: `✓ Cảm ơn ${formData.value.name}! Xác nhận của bạn đã được ghi nhận.`,
+      type: 'success',
+      duration: 4000
+    })
+
+    // Show success message
+    submitted.value = true
+
+    // Reset form after 3 seconds
+    setTimeout(() => {
+      formData.value = {
+        name: '',
+        email: '',
+        phone: '',
+        guests: '',
+        dietary: '',
+        message: ''
+      }
+      submitted.value = false
+      isLoading.value = false
+    }, 3000)
+
+  } catch (error) {
+    console.error('RSVP Error:', error)
+
+    // Emit error event
+    emit(WeddingEvents.RSVP_ERROR, {
+      error: error.message || 'An error occurred',
+      rsvpData: formData.value
+    })
+
+    // Show error notification
+    emit(WeddingEvents.NOTIFICATION_SHOW, {
+      message: '✗ Có lỗi xảy ra. Vui lòng thử lại.',
+      type: 'error',
+      duration: 4000
+    })
+
+    isLoading.value = false
+  }
 }
 </script>
 
@@ -211,6 +256,11 @@ const submitRSVP = () => {
   background: linear-gradient(135deg, #ff1493, #ff69b4);
   transform: translateY(-3px);
   box-shadow: 0 10px 25px rgba(255, 105, 180, 0.4);
+}
+
+.btn-danger:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
 }
 
 .alert-success {

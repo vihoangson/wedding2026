@@ -4,8 +4,8 @@ import { ref } from 'vue'
 export const useWeddingStore = defineStore('wedding', () => {
   // State
   const couple = ref({
-    brideName: 'Nguyễn Thủy',
-    groomName: 'Trần Minh'
+    brideName: 'Yến Nhi',
+    groomName: 'Hoàng Sơn'
   })
 
   const weddingDate = ref(new Date(2026, 7, 15))

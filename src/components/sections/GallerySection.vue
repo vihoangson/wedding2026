@@ -30,12 +30,12 @@
 import { ref } from 'vue'
 
 const gallery = ref([
-  { src: 'https://images.unsplash.com/photo-1519741497674-611481863552?w=400&h=300&fit=crop', alt: 'Ảnh 1' },
-  { src: 'https://images.unsplash.com/photo-1530268729831-4b51b81e68d6?w=400&h=300&fit=crop', alt: 'Ảnh 2' },
-  { src: 'https://images.unsplash.com/photo-1519741497674-611481863552?w=400&h=300&fit=crop', alt: 'Ảnh 3' },
-  { src: 'https://images.unsplash.com/photo-1550873183-6c90f12cb8f9?w=400&h=300&fit=crop', alt: 'Ảnh 4' },
-  { src: 'https://images.unsplash.com/photo-1519741497674-611481863552?w=400&h=300&fit=crop', alt: 'Ảnh 5' },
-  { src: 'https://images.unsplash.com/photo-1527529482837-4698179dc6ce?w=400&h=300&fit=crop', alt: 'Ảnh 6' }
+  { src: 'https://images.unsplash.com/photo-1520854221256-17451cc331bf?w=400&h=300&fit=crop', alt: 'Ảnh 1' },
+  { src: 'https://images.unsplash.com/photo-1520854221256-17451cc331bf?w=400&h=300&fit=crop', alt: 'Ảnh 2' },
+  { src: 'https://images.unsplash.com/photo-1520854221256-17451cc331bf?w=400&h=300&fit=crop', alt: 'Ảnh 3' },
+  { src: 'https://images.unsplash.com/photo-1520854221256-17451cc331bf?w=400&h=300&fit=crop', alt: 'Ảnh 4' },
+  { src: 'https://images.unsplash.com/photo-1520854221256-17451cc331bf?w=400&h=300&fit=crop', alt: 'Ảnh 5' },
+  { src: 'https://images.unsplash.com/photo-1520854221256-17451cc331bf?w=400&h=300&fit=crop', alt: 'Ảnh 6' }
 ])
 
 const lightboxImage = ref(null)

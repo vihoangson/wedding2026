@@ -25,7 +25,7 @@ import { ref } from 'vue'
 
 const story = ref([
   'Gặp nhau lần đầu tiên tại một buổi họp mặt bạn bè vào mùa hè 2021, chúng tôi không ngờ rằng đó sẽ là điểm khởi đầu của một tình yêu đẹp.',
-  'Thủy bị ấn tượng bởi nụ cười ấm áp của Minh, còn Minh lại yêu thích tính tính tế và lòng tốt của Thủy. Từ những cuộc hẹn hò đơn giản cho đến những chuyến du lịch xa xôi, chúng tôi đã chia sẻ những khoảnh khắc quý giá nhất của cuộc sống.',
+  'ádasdas ádasdas Thủy bị ấn tượng bởi nụ cười ấm áp của Minh, còn Minh lại yêu thích tính tính tế và lòng tốt của Thủy. Từ những cuộc hẹn hò đơn giản cho đến những chuyến du lịch xa xôi, chúng tôi đã chia sẻ những khoảnh khắc quý giá nhất của cuộc sống.',
   'Vào ngày 14 tháng 2 năm 2024, Minh đã quỳ xuống và cầu hôn Thủy dưới ánh trăng ở bãi biển, và Thủy đã nói "Có" với nước mắt hạnh phúc.'
 ])
 </script>

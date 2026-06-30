@@ -2,7 +2,7 @@
   <section id="home" class="hero-section">
     <div class="hero-content">
       <div class="container text-center text-white">
-        <h1 class="display-1 fw-bold mb-3 couple-names">Thủy <span class="heart">&</span> Minh</h1>
+        <h1 class="display-1 fw-bold mb-3 couple-names">Sơn <span class="heart">&</span> Nhi</h1>
         <p class="lead mb-4 subtitle">Chúng tôi rất vui được mời bạn dự lễ cưới của chúng tôi</p>
         <div class="wedding-date">
           <p class="fs-5">
