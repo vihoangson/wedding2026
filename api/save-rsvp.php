@@ -87,7 +87,45 @@ $saveData = [
 
 // Lưu vào file
 if (file_put_contents($dataFile, json_encode($saveData, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE), LOCK_EX)) {
-    // Lưu thành công - Không trả về dữ liệu nhạy cảm
+    // Lưu thành công - Đồng thời lưu comment vào comment.json
+    $commentFile = __DIR__ . '/../comments.json';
+    
+    // Tạo object comment mới
+    $newComment = [
+        'id' => uniqid('comment_', true),
+        'rsvp_id' => $newRSVP['id'],
+        'sender_name' => htmlspecialchars($fullname),
+        'sent_at' => date('Y-m-d H:i:s'),
+        'status' => 'inactive',
+        'message' => !empty($message) ? htmlspecialchars($message) : '',
+        'ip_address' => $_SERVER['REMOTE_ADDR'] ?? '',
+        'user_agent' => isset($_SERVER['HTTP_USER_AGENT']) ? substr($_SERVER['HTTP_USER_AGENT'], 0, 255) : ''
+    ];
+    
+    // Đọc file comments.json hiện tại
+    $commentsData = [];
+    if (file_exists($commentFile)) {
+        $jsonContent = file_get_contents($commentFile);
+        $data = json_decode($jsonContent, true);
+        if ($data && isset($data['comments_list'])) {
+            $commentsData = $data['comments_list'];
+        }
+    }
+    
+    // Thêm comment mới vào danh sách
+    $commentsData[] = $newComment;
+    
+    // Chuẩn bị dữ liệu để lưu
+    $saveComments = [
+        'total_comments' => count($commentsData),
+        'last_updated' => date('Y-m-d H:i:s'),
+        'comments_list' => $commentsData
+    ];
+    
+    // Lưu comments vào file
+    file_put_contents($commentFile, json_encode($saveComments, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE), LOCK_EX);
+    
+    // Trả về response thành công
     $responseData = [
         'id' => $newRSVP['id'],
         'fullname' => $newRSVP['fullname'],
