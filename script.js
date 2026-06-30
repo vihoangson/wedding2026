@@ -1,5 +1,68 @@
 'use strict';
 
+// ===== LIGHTBOX GALLERY =====
+const lightbox = document.getElementById('lightbox');
+const lightboxImage = document.getElementById('lightboxImage');
+const lightboxClose = document.getElementById('lightboxClose');
+const lightboxPrev = document.getElementById('lightboxPrev');
+const lightboxNext = document.getElementById('lightboxNext');
+let currentImageIndex = 0;
+let images = [];
+
+// Khởi tạo gallery
+function initGallery() {
+    images = Array.from(document.querySelectorAll('.g-item'));
+
+    images.forEach((item, index) => {
+        item.addEventListener('click', () => {
+            currentImageIndex = index;
+            openLightbox();
+        });
+    });
+}
+
+function openLightbox() {
+    const imgUrl = images[currentImageIndex].dataset.img;
+    lightboxImage.src = imgUrl;
+    lightbox.classList.add('active');
+    document.body.style.overflow = 'hidden';
+}
+
+function closeLightbox() {
+    lightbox.classList.remove('active');
+    document.body.style.overflow = 'auto';
+}
+
+function showPrevImage() {
+    currentImageIndex = (currentImageIndex - 1 + images.length) % images.length;
+    lightboxImage.src = images[currentImageIndex].dataset.img;
+}
+
+function showNextImage() {
+    currentImageIndex = (currentImageIndex + 1) % images.length;
+    lightboxImage.src = images[currentImageIndex].dataset.img;
+}
+
+// Event listeners
+lightboxClose.addEventListener('click', closeLightbox);
+lightboxPrev.addEventListener('click', showPrevImage);
+lightboxNext.addEventListener('click', showNextImage);
+
+// Close lightbox when clicking overlay
+lightbox.querySelector('.lightbox-overlay').addEventListener('click', closeLightbox);
+
+// Keyboard navigation
+document.addEventListener('keydown', (e) => {
+    if (!lightbox.classList.contains('active')) return;
+
+    if (e.key === 'Escape') closeLightbox();
+    if (e.key === 'ArrowLeft') showPrevImage();
+    if (e.key === 'ArrowRight') showNextImage();
+});
+
+// Initialize gallery on page load
+document.addEventListener('DOMContentLoaded', initGallery);
+
 // Hàm copy tài khoản vào clipboard
 function copyToClipboard(text) {
     navigator.clipboard.writeText(text).then(() => {
