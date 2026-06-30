@@ -34,9 +34,9 @@ $google_maps_url     = "https://www.google.com/maps/embed/v1/place"
                      . "&zoom=16";
 
 // ===== THÔNG TIN TÀI KHOẢN =====
-$momo_account = "0987654321";      // Số tài khoản Momo
-$bank_account = "0123456789";      // Số tài khoản ngân hàng
-$bank_account_owner = "Hoàng Sơn"; // Chủ tài khoản ngân hàng
+$momo_account = "0798851144";      // Số tài khoản Momo
+$bank_account = "215592519";      // Số tài khoản ngân hàng
+$bank_account_owner = "Vi Hoàng Sơn"; // Chủ tài khoản ngân hàng
 
 // ===== THÔNG TIN KHÁC =====
 $rsvp_deadline = "2027-01-01";     // Hạn xác nhận tham dự
