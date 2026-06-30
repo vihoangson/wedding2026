@@ -122,7 +122,7 @@ $formattedDate = DateTime::createFromFormat('Y-m-d', $wedding_date)->format('d .
         </div>
         <div class="map-title">Địa điểm lễ cưới222</div>
         <div class="map-container">
-            <img src="https://hn.ss.bfcplatform.vn/talentdad/ShareX/2026/06/chrome_bxlmb5uezs.png">
+            <iframe src="<?php echo htmlspecialchars($google_maps_url); ?>" width="100%" height="300" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
         </div>
         <p class="map-text">📍 <?php echo htmlspecialchars($venue_full_name); ?><br><?php echo htmlspecialchars($venue_location); ?>, Việt Nam</p>
     </div>
