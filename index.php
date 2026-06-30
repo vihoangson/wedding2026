@@ -278,26 +278,11 @@ $formattedDate = DateTime::createFromFormat('Y-m-d', $wedding_date)->format('d .
             </div>
             <div class="hongbao-qr-container">
                 <div class="qr-item">
-                    <div class="qr-label">💳 Momo</div>
-                    <div class="qr-code">
-                        <svg id="qrMomo" width="150" height="150"></svg>
+                    <div class="qr-label">💝 Chuyển Khoản Quà Cưới</div>
+                    <div class="qr-code qr-code-image">
+                        <img src="https://hn.ss.bfcplatform.vn/talentdad/ShareX/2026/06/chrome_kKmxGvRgIL.png" alt="QR code chuyển khoản nhanh" width="200" height="200">
                     </div>
-                    <div class="qr-account"><?php echo htmlspecialchars($momo_account); ?></div>
-                    <div class="qr-button-group">
-                        <button class="qr-copy-btn" onclick="copyToClipboard('<?php echo htmlspecialchars($momo_account); ?>')">Sao chép</button>
-                        <button class="qr-transfer-btn qr-transfer-momo" onclick="openMomoApp('<?php echo htmlspecialchars($momo_account); ?>')">💸 Chuyển Tiền</button>
-                    </div>
-                </div>
-                <div class="qr-item">
-                    <div class="qr-label">🏦 Ngân Hàng</div>
-                    <div class="qr-code">
-                        <svg id="qrBank" width="150" height="150"></svg>
-                    </div>
-                    <div class="qr-account"><?php echo htmlspecialchars($bank_account); ?></div>
-                    <div class="qr-button-group">
-                        <button class="qr-copy-btn" onclick="copyToClipboard('<?php echo htmlspecialchars($bank_account); ?>')">Sao chép</button>
-                        <button class="qr-transfer-btn qr-transfer-bank" onclick="openBankApp('<?php echo htmlspecialchars($bank_account); ?>')">💸 Chuyển Tiền</button>
-                    </div>
+
                 </div>
             </div>
             <p class="hongbao-modal-note">Cảm ơn bạn đã gửi lời chúc và quà cho chúng tôi! 🙏</p>
