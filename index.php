@@ -120,7 +120,7 @@ $formattedDate = DateTime::createFromFormat('Y-m-d', $wedding_date)->format('d .
             </svg>
             <div class="line"></div>
         </div>
-        <div class="map-title">Địa điểm lễ cưới</div>
+        <div class="map-title">Địa điểm lễ cưới222</div>
         <div class="map-container">
             <iframe src="<?php echo htmlspecialchars($google_maps_url); ?>" width="100%" height="300" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
         </div>
