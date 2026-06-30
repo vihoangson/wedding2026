@@ -190,30 +190,6 @@ $formattedDate = DateTime::createFromFormat('Y-m-d', $wedding_date)->format('d .
         </div>
     </div>
 
-    <!-- Block Tài Khoản Momo & Số Tài Khoản -->
-    <div class="account-section">
-        <div class="divider" aria-hidden="true">
-            <div class="line"></div>
-            <svg width="22" height="14" viewBox="0 0 22 14" fill="none">
-                <path d="M11 13C11 13 1 8 1 4.2C1 1.6 3.2 0.8 4.8 1.6C6.4 2.4 7.4 4 11 7.4C14.6 4 15.6 2.4 17.2 1.6C18.8 0.8 21 1.6 21 4.2C21 8 11 13 11 13Z" fill="#c9a87c"/>
-            </svg>
-            <div class="line"></div>
-        </div>
-        <div class="account-title">Thông tin tài khoản</div>
-        <div class="account-info">
-            <div class="account-item">
-                <div class="account-type">💳 Momo</div>
-                <div class="account-number" id="memoAccount"><?php echo htmlspecialchars($momo_account); ?></div>
-                <button class="copy-btn" onclick="copyToClipboard('<?php echo htmlspecialchars($momo_account); ?>')">Sao chép</button>
-            </div>
-            <div class="account-item">
-                <div class="account-type">🏦 Số tài khoản ngân hàng</div>
-                <div class="account-number" id="bankAccount"><?php echo htmlspecialchars($bank_account); ?></div>
-                <button class="copy-btn" onclick="copyToClipboard('<?php echo htmlspecialchars($bank_account); ?>')">Sao chép</button>
-            </div>
-        </div>
-        <p class="account-note">Nếu muốn gửi lời chúc hoặc quà có được, bạn có thể chuyển khoản đến các số tài khoản trên.</p>
-    </div>
     <!-- Block Venue Map -->
     <div class="map-section">
         <div class="divider" aria-hidden="true">
@@ -233,6 +209,95 @@ $formattedDate = DateTime::createFromFormat('Y-m-d', $wedding_date)->format('d .
         </div>
         <p class="map-text">📍 <?php echo htmlspecialchars($venue_full_name); ?><br><?php echo htmlspecialchars($venue_location); ?>, Việt Nam</p>
     </div>
+
+    <!-- Block Calendar -->
+    <div class="calendar-section">
+        <div class="divider" aria-hidden="true">
+            <div class="line"></div>
+            <svg width="22" height="14" viewBox="0 0 22 14" fill="none">
+                <path d="M11 13C11 13 1 8 1 4.2C1 1.6 3.2 0.8 4.8 1.6C6.4 2.4 7.4 4 11 7.4C14.6 4 15.6 2.4 17.2 1.6C18.8 0.8 21 1.6 21 4.2C21 8 11 13 11 13Z" fill="#c9a87c"/>
+            </svg>
+            <div class="line"></div>
+        </div>
+        <div class="calendar-title">📅 Lịch cưới</div>
+        <div class="calendar-container">
+            <div class="calendar-header">
+                <button class="calendar-nav-btn" id="prevMonth" aria-label="Tháng trước">❮</button>
+                <div class="calendar-month-year" id="monthYearDisplay"></div>
+                <button class="calendar-nav-btn" id="nextMonth" aria-label="Tháng sau">❯</button>
+            </div>
+            <div class="calendar-weekdays">
+                <div class="calendar-weekday">CN</div>
+                <div class="calendar-weekday">T2</div>
+                <div class="calendar-weekday">T3</div>
+                <div class="calendar-weekday">T4</div>
+                <div class="calendar-weekday">T5</div>
+                <div class="calendar-weekday">T6</div>
+                <div class="calendar-weekday">T7</div>
+            </div>
+            <div class="calendar-days" id="calendarDays"></div>
+        </div>
+    </div>
+
+    <!-- Phong Bao Mừng Cưới Section -->
+    <div class="hongbao-section">
+        <div class="divider" aria-hidden="true">
+            <div class="line"></div>
+            <svg width="22" height="14" viewBox="0 0 22 14" fill="none">
+                <path d="M11 13C11 13 1 8 1 4.2C1 1.6 3.2 0.8 4.8 1.6C6.4 2.4 7.4 4 11 7.4C14.6 4 15.6 2.4 17.2 1.6C18.8 0.8 21 1.6 21 4.2C21 8 11 13 11 13Z" fill="#c9a87c"/>
+            </svg>
+            <div class="line"></div>
+        </div>
+        <div class="hongbao-title">Phong Bao Mừng Cưới</div>
+        <p class="hongbao-subtitle">Nhân để mở </p>
+        <div class="hongbao-container" id="hongbaoBtn">
+            <div class="hongbao">
+                <div class="hongbao-glow"></div>
+                <div class="hongbao-text">💰</div>
+                <div class="hongbao-coins">
+                    <span class="coin coin-1">💰</span>
+                    <span class="coin coin-2">💰</span>
+                    <span class="coin coin-3">💰</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hongbao QR Modal -->
+    <div class="hongbao-modal" id="hongbaoModal">
+        <div class="hongbao-modal-overlay"></div>
+        <div class="hongbao-modal-content">
+            <button class="hongbao-modal-close" id="hongbaoClose">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
+                    <path d="M18 6L6 18M6 6l12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+            </button>
+            <div class="hongbao-modal-header">
+                <h2>Chuyển Khoản Quà Cưới</h2>
+                <p>Quét mã QR để gửi lời chúc và quà cho cô dâu & chú rể</p>
+            </div>
+            <div class="hongbao-qr-container">
+                <div class="qr-item">
+                    <div class="qr-label">💳 Momo</div>
+                    <div class="qr-code">
+                        <svg id="qrMomo" width="150" height="150"></svg>
+                    </div>
+                    <div class="qr-account"><?php echo htmlspecialchars($momo_account); ?></div>
+                    <button class="qr-copy-btn" onclick="copyToClipboard('<?php echo htmlspecialchars($momo_account); ?>')">Sao chép</button>
+                </div>
+                <div class="qr-item">
+                    <div class="qr-label">🏦 Ngân Hàng</div>
+                    <div class="qr-code">
+                        <svg id="qrBank" width="150" height="150"></svg>
+                    </div>
+                    <div class="qr-account"><?php echo htmlspecialchars($bank_account); ?></div>
+                    <button class="qr-copy-btn" onclick="copyToClipboard('<?php echo htmlspecialchars($bank_account); ?>')">Sao chép</button>
+                </div>
+            </div>
+            <p class="hongbao-modal-note">Cảm ơn bạn đã gửi lời chúc và quà cho chúng tôi! 🙏</p>
+        </div>
+    </div>
+
     <!-- Form -->
     <form id="rsvpForm" novalidate>
         <div class="form-title">Xác nhận tham dự</div>
@@ -289,6 +354,167 @@ $formattedDate = DateTime::createFromFormat('Y-m-d', $wedding_date)->format('d .
 <script>
     // Cấu hình ngày cưới từ config.php
     const WEDDING_DATE = '<?php echo $wedding_date; ?>T<?php echo $wedding_time; ?>:00';
+    const WEDDING_DATE_ONLY = '<?php echo $wedding_date; ?>'; // YYYY-MM-DD format
+</script>
+
+<!-- Calendar Script -->
+<script>
+    let currentDisplayMonth = new Date();
+    const weddingDateObj = new Date('<?php echo $wedding_date; ?>');
+
+    function initCalendar() {
+        // Set initial display to wedding month
+        currentDisplayMonth = new Date(weddingDateObj.getFullYear(), weddingDateObj.getMonth(), 1);
+        renderCalendar();
+        
+        // Add event listeners
+        document.getElementById('prevMonth').addEventListener('click', () => {
+            currentDisplayMonth.setMonth(currentDisplayMonth.getMonth() - 1);
+            renderCalendar();
+        });
+        
+        document.getElementById('nextMonth').addEventListener('click', () => {
+            currentDisplayMonth.setMonth(currentDisplayMonth.getMonth() + 1);
+            renderCalendar();
+        });
+    }
+
+    function renderCalendar() {
+        const year = currentDisplayMonth.getFullYear();
+        const month = currentDisplayMonth.getMonth();
+        
+        // Update month/year display
+        const monthNames = ['Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4', 'Tháng 5', 'Tháng 6',
+                          'Tháng 7', 'Tháng 8', 'Tháng 9', 'Tháng 10', 'Tháng 11', 'Tháng 12'];
+        document.getElementById('monthYearDisplay').textContent = monthNames[month] + ' ' + year;
+        
+        // Get first day of month and number of days
+        const firstDay = new Date(year, month, 1).getDay();
+        const daysInMonth = new Date(year, month + 1, 0).getDate();
+        const daysInPrevMonth = new Date(year, month, 0).getDate();
+        
+        const calendarDaysContainer = document.getElementById('calendarDays');
+        calendarDaysContainer.innerHTML = '';
+        
+        // Add previous month's days
+        for (let i = firstDay - 1; i >= 0; i--) {
+            const dayEl = document.createElement('div');
+            dayEl.className = 'calendar-day other-month';
+            dayEl.textContent = daysInPrevMonth - i;
+            calendarDaysContainer.appendChild(dayEl);
+        }
+        
+        // Add current month's days
+        for (let day = 1; day <= daysInMonth; day++) {
+            const dayEl = document.createElement('div');
+            dayEl.className = 'calendar-day';
+            dayEl.textContent = day;
+            
+            // Check if this is the wedding date
+            const dateStr = year + '-' + String(month + 1).padStart(2, '0') + '-' + String(day).padStart(2, '0');
+            if (dateStr === WEDDING_DATE_ONLY) {
+                dayEl.classList.add('wedding-date');
+                dayEl.title = 'Ngày cưới';
+            }
+            
+            // Check if this is today
+            const today = new Date();
+            if (day === today.getDate() && month === today.getMonth() && year === today.getFullYear()) {
+                dayEl.classList.add('today');
+            }
+            
+            calendarDaysContainer.appendChild(dayEl);
+        }
+        
+        // Add next month's days
+        const totalCells = calendarDaysContainer.children.length;
+        const remainingCells = 42 - totalCells; // 6 rows × 7 days
+        for (let day = 1; day <= remainingCells; day++) {
+            const dayEl = document.createElement('div');
+            dayEl.className = 'calendar-day other-month';
+            dayEl.textContent = day;
+            calendarDaysContainer.appendChild(dayEl);
+        }
+    }
+
+    // Initialize calendar on DOM ready
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initCalendar);
+    } else {
+        initCalendar();
+    }
+</script>
+
+<!-- QR Code Library -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+<!-- Hongbao Modal Script -->
+<script>
+    function initHongbaoModal() {
+        const hongbaoBtn = document.getElementById('hongbaoBtn');
+        const hongbaoModal = document.getElementById('hongbaoModal');
+        const hongbaoClose = document.getElementById('hongbaoClose');
+        const hongbaoOverlay = document.querySelector('.hongbao-modal-overlay');
+
+        if (hongbaoBtn && hongbaoModal) {
+            hongbaoBtn.addEventListener('click', () => {
+                hongbaoModal.classList.add('active');
+                generateQRCodes();
+            });
+
+            hongbaoClose.addEventListener('click', () => {
+                hongbaoModal.classList.remove('active');
+            });
+
+            hongbaoOverlay.addEventListener('click', () => {
+                hongbaoModal.classList.remove('active');
+            });
+
+            // Close on Escape key
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && hongbaoModal.classList.contains('active')) {
+                    hongbaoModal.classList.remove('active');
+                }
+            });
+        }
+    }
+
+    function generateQRCodes() {
+        // Clear previous QR codes
+        const qrMomo = document.getElementById('qrMomo');
+        const qrBank = document.getElementById('qrBank');
+
+        if (qrMomo && qrMomo.innerHTML === '') {
+            const momoAccount = '<?php echo htmlspecialchars($momo_account); ?>';
+            new QRCode(qrMomo, {
+                text: momoAccount,
+                width: 150,
+                height: 150,
+                colorDark: '#d41e3a',
+                colorLight: '#ffffff',
+                correctLevel: QRCode.CorrectLevel.H
+            });
+        }
+
+        if (qrBank && qrBank.innerHTML === '') {
+            const bankAccount = '<?php echo htmlspecialchars($bank_account); ?>';
+            new QRCode(qrBank, {
+                text: bankAccount,
+                width: 150,
+                height: 150,
+                colorDark: '#2e5090',
+                colorLight: '#ffffff',
+                correctLevel: QRCode.CorrectLevel.H
+            });
+        }
+    }
+
+    // Initialize when DOM is ready
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initHongbaoModal);
+    } else {
+        initHongbaoModal();
+    }
 </script>
 
 <script src="script.js"></script>
