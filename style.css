@@ -146,6 +146,112 @@ h1.names{
     margin-top:2px;
 }
 
+/* ===== COUNTDOWN TIMER ===== */
+.countdown-section{
+    margin:40px 0;
+    animation: fadeInUp 0.6s ease-out 0.2s both;
+}
+
+.countdown-title{
+    text-align:center;
+    font-family:'Cormorant Garamond', serif;
+    font-style:italic;
+    font-size:18px;
+    color:var(--rose-deep);
+    margin-bottom:20px;
+    letter-spacing:0.1em;
+}
+
+.countdown{
+    display:grid;
+    grid-template-columns:repeat(4, 1fr);
+    gap:12px;
+    margin-bottom:20px;
+}
+
+.countdown-item{
+    background:linear-gradient(135deg, rgba(251, 233, 236, 0.8), rgba(243, 210, 218, 0.6));
+    border:1px solid var(--line);
+    border-radius:8px;
+    padding:16px 12px;
+    text-align:center;
+    animation:slideInUp 0.6s ease-out;
+}
+
+.countdown-value{
+    font-family:'Jost', sans-serif;
+    font-size:24px;
+    font-weight:700;
+    color:var(--rose-deep);
+    line-height:1;
+    margin-bottom:6px;
+    text-shadow:0 2px 4px rgba(142, 68, 82, 0.1);
+}
+
+.countdown-label{
+    font-size:11px;
+    letter-spacing:0.1em;
+    text-transform:uppercase;
+    color:var(--ink-soft);
+    font-weight:500;
+}
+
+@media(max-width:560px){
+    .countdown{
+        grid-template-columns:repeat(2, 1fr);
+        gap:10px;
+    }
+    .countdown-value{
+        font-size:20px;
+    }
+}
+
+/* ===== FLOATING HEARTS ===== */
+.heart{
+    position:fixed;
+    bottom:0;
+    pointer-events:none;
+    z-index:100;
+    font-size:24px;
+    animation:floatUp 4s ease-in infinite;
+    opacity:0.8;
+}
+
+@keyframes floatUp {
+    0%{
+        bottom:0;
+        opacity:0.8;
+        transform:translateX(0) scale(1);
+    }
+    50%{
+        opacity:1;
+    }
+    100%{
+        bottom:100vh;
+        opacity:0;
+        transform:translateX(var(--tx)) scale(0.3);
+    }
+}
+
+/* ===== CONFETTI ===== */
+.confetti{
+    position:fixed;
+    pointer-events:none;
+    z-index:9998;
+    animation:confettiFall 3s ease-in forwards;
+}
+
+@keyframes confettiFall {
+    0%{
+        opacity:1;
+        transform:translateY(0) rotateZ(0deg) scale(1);
+    }
+    100%{
+        opacity:0;
+        transform:translateY(100vh) rotateZ(720deg) scale(0);
+    }
+}
+
 .quote{
     text-align:center;
     font-family:'Cormorant Garamond', serif;
