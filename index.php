@@ -195,8 +195,6 @@ $formattedDate = DateTime::createFromFormat('Y-m-d', $wedding_date)->format('d .
         </div>
     </div>
 
-
-
     <!-- Block Lời Nhắn -->
     <div class="wishes-section">
         <div class="divider" aria-hidden="true">
@@ -273,56 +271,6 @@ $formattedDate = DateTime::createFromFormat('Y-m-d', $wedding_date)->format('d .
         </div>
     </div>
 
-    <!-- Phong Bao Mừng Cưới Section -->
-    <div class="hongbao-section">
-        <div class="divider" aria-hidden="true">
-            <div class="line"></div>
-            <svg width="22" height="14" viewBox="0 0 22 14" fill="none">
-                <path d="M11 13C11 13 1 8 1 4.2C1 1.6 3.2 0.8 4.8 1.6C6.4 2.4 7.4 4 11 7.4C14.6 4 15.6 2.4 17.2 1.6C18.8 0.8 21 1.6 21 4.2C21 8 11 13 11 13Z" fill="#c9a87c"/>
-            </svg>
-            <div class="line"></div>
-        </div>
-        <div class="hongbao-title">Phong Bao Mừng Cưới</div>
-        <p class="hongbao-subtitle">Nhân để mở </p>
-        <div class="hongbao-container" id="hongbaoBtn">
-            <div class="hongbao">
-                <div class="hongbao-glow"></div>
-                <div class="hongbao-text">💰</div>
-                <div class="hongbao-coins">
-                    <span class="coin coin-1">💰</span>
-                    <span class="coin coin-2">💰</span>
-                    <span class="coin coin-3">💰</span>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Hongbao QR Modal -->
-    <div class="hongbao-modal" id="hongbaoModal">
-        <div class="hongbao-modal-overlay"></div>
-        <div class="hongbao-modal-content">
-            <button class="hongbao-modal-close" id="hongbaoClose">
-                <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
-                    <path d="M18 6L6 18M6 6l12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                </svg>
-            </button>
-            <div class="hongbao-modal-header">
-                <h2>Chuyển Khoản Quà Cưới</h2>
-                <p>Quét mã QR để gửi lời chúc và quà cho cô dâu & chú rể</p>
-            </div>
-            <div class="hongbao-qr-container">
-                <div class="qr-item">
-                    <div class="qr-label">💝 Chuyển Khoản Quà Cưới</div>
-                    <div class="qr-code qr-code-image">
-                        <img src="https://hn.ss.bfcplatform.vn/talentdad/ShareX/2026/06/chrome_kKmxGvRgIL.png" alt="QR code chuyển khoản nhanh" width="200" height="200">
-                    </div>
-
-                </div>
-            </div>
-            <p class="hongbao-modal-note">Cảm ơn bạn đã gửi lời chúc và quà cho chúng tôi! 🙏</p>
-        </div>
-    </div>
-
     <!-- Form -->
     <form id="rsvpForm" novalidate>
         <div class="form-title">Xác nhận tham dự</div>
@@ -361,6 +309,55 @@ $formattedDate = DateTime::createFromFormat('Y-m-d', $wedding_date)->format('d .
 
         <button type="submit" class="submit">Gửi xác nhận</button>
     </form>
+
+    <!-- Phong Bao Mừng Cưới Section -->
+    <div class="hongbao-section">
+        <div class="divider" aria-hidden="true">
+            <div class="line"></div>
+            <svg width="22" height="14" viewBox="0 0 22 14" fill="none">
+                <path d="M11 13C11 13 1 8 1 4.2C1 1.6 3.2 0.8 4.8 1.6C6.4 2.4 7.4 4 11 7.4C14.6 4 15.6 2.4 17.2 1.6C18.8 0.8 21 1.6 21 4.2C21 8 11 13 11 13Z" fill="#c9a87c"/>
+            </svg>
+            <div class="line"></div>
+        </div>
+        <div class="hongbao-title">Phong Bao Mừng Cưới</div>
+        <p class="hongbao-subtitle">Nhân để mở </p>
+        <div class="hongbao-container" id="hongbaoBtn">
+            <div class="hongbao">
+                <div class="hongbao-glow"></div>
+                <div class="hongbao-text">💰</div>
+                <div class="hongbao-coins">
+                    <span class="coin coin-1">💰</span>
+                    <span class="coin coin-2">💰</span>
+                    <span class="coin coin-3">💰</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Hongbao QR Modal -->
+    <div class="hongbao-modal" id="hongbaoModal">
+        <div class="hongbao-modal-overlay"></div>
+        <div class="hongbao-modal-content">
+            <button class="hongbao-modal-close" id="hongbaoClose">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
+                    <path d="M18 6L6 18M6 6l12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+            </button>
+            <div class="hongbao-modal-header">
+                <h2>Chuyển Khoản Quà Cưới</h2>
+                <p>Quét mã QR để gửi lời chúc và quà cho cô dâu & chú rể</p>
+            </div>
+            <div class="hongbao-qr-container">
+                <div class="qr-item">
+                    <div class="qr-label">💝 Chuyển Khoản Quà Cưới</div>
+                    <div class="qr-code qr-code-image">
+                        <img src="https://hn.ss.bfcplatform.vn/talentdad/ShareX/2026/06/chrome_kKmxGvRgIL.png" alt="QR code chuyển khoản nhanh" width="200" height="200">
+                    </div>
+
+                </div>
+            </div>
+            <p class="hongbao-modal-note">Cảm ơn bạn đã gửi lời chúc và quà cho chúng tôi! 🙏</p>
+        </div>
+    </div>
 
     <div class="success" id="successBox" role="alert">
         <div class="icon">
