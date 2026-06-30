@@ -1,6 +1,62 @@
 {
-  "total_rsvp": 0,
-  "last_updated": "2026-06-30 00:00:00",
-  "rsvp_list": []
+  "total_rsvp": 5,
+  "last_updated": "2026-06-30 10:30:00",
+  "rsvp_list": [
+    {
+      "id": "rsvp_1",
+      "timestamp": "2026-06-28 14:30:00",
+      "fullname": "Nguyễn Văn A",
+      "phone": "0901234567",
+      "guests": 2,
+      "attend": "yes",
+      "message": "Sẽ tham dự cùng gia đình",
+      "ip_address": "192.168.1.1",
+      "user_agent": "Mozilla/5.0"
+    },
+    {
+      "id": "rsvp_2",
+      "timestamp": "2026-06-29 09:15:00",
+      "fullname": "Trần Thị B",
+      "phone": "0912345678",
+      "guests": 1,
+      "attend": "yes",
+      "message": "Mong chúng mình sớm gặp lại",
+      "ip_address": "192.168.1.2",
+      "user_agent": "Mozilla/5.0"
+    },
+    {
+      "id": "rsvp_3",
+      "timestamp": "2026-06-29 11:45:00",
+      "fullname": "Lê Văn C",
+      "phone": "0923456789",
+      "guests": 3,
+      "attend": "yes",
+      "message": "Sẽ đến dự tiệc",
+      "ip_address": "192.168.1.3",
+      "user_agent": "Mozilla/5.0"
+    },
+    {
+      "id": "rsvp_4",
+      "timestamp": "2026-06-29 16:20:00",
+      "fullname": "Phạm Văn D",
+      "phone": "0934567890",
+      "guests": 2,
+      "attend": "no",
+      "message": "Xin lỗi không thể tham dự",
+      "ip_address": "192.168.1.4",
+      "user_agent": "Mozilla/5.0"
+    },
+    {
+      "id": "rsvp_5",
+      "timestamp": "2026-06-30 08:00:00",
+      "fullname": "Hoàng Thị E",
+      "phone": "0945678901",
+      "guests": 2,
+      "attend": "yes",
+      "message": "Chúc mừng hai bạn kết hôn hạnh phúc",
+      "ip_address": "192.168.1.5",
+      "user_agent": "Mozilla/5.0"
+    }
+  ]
 }
 

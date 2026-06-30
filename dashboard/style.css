@@ -1,0 +1,327 @@
+:root {
+    --wedding-color: #d946a6;
+    --wedding-dark: #be185d;
+    --wedding-light: #f5e6ee;
+}
+
+* {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background: linear-gradient(135deg, #f5e6ee 0%, #faf8fc 100%);
+    min-height: 100vh;
+    color: #333;
+}
+
+/* Colors */
+.text-wedding {
+    color: var(--wedding-color) !important;
+}
+
+.btn-wedding {
+    background-color: var(--wedding-color);
+    border-color: var(--wedding-color);
+    color: white;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.btn-wedding:hover {
+    background-color: var(--wedding-dark);
+    border-color: var(--wedding-dark);
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 16px rgba(217, 70, 166, 0.2);
+}
+
+/* Navbar */
+.navbar {
+    background-color: white !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.navbar-brand {
+    letter-spacing: 0.5px;
+}
+
+/* Stats Card */
+.stat-card {
+    transition: all 0.3s ease;
+    background: white;
+}
+
+.stat-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 20px rgba(217, 70, 166, 0.1) !important;
+}
+
+.stat-icon {
+    font-size: 2.5rem;
+}
+
+.stat-card .card-body {
+    padding: 2rem 1.5rem;
+}
+
+/* Cards */
+.card {
+    transition: all 0.3s ease;
+    background: white;
+    overflow: hidden;
+}
+
+.card:hover {
+    box-shadow: 0 8px 16px rgba(217, 70, 166, 0.08) !important;
+}
+
+.card-header {
+    border-color: #e9ecef !important;
+    background-color: #f8f9fa !important;
+}
+
+/* Table */
+.table {
+    font-size: 0.95rem;
+}
+
+.table thead {
+    background-color: #f8f9fa !important;
+}
+
+.table th {
+    border-bottom: 2px solid #dee2e6;
+    color: #6c757d;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    letter-spacing: 0.5px;
+    padding: 1rem;
+}
+
+.table td {
+    padding: 1rem;
+    border-color: #e9ecef;
+    vertical-align: middle;
+}
+
+.table tbody tr {
+    transition: all 0.2s ease;
+}
+
+.table tbody tr:hover {
+    background-color: #f8f9fa;
+}
+
+.table td.status-yes {
+    color: #198754;
+    font-weight: 600;
+}
+
+.table td.status-no {
+    color: #dc3545;
+    font-weight: 600;
+}
+
+.table td.status-active {
+    color: #0dcaf0;
+}
+
+.table td.status-inactive {
+    color: #6c757d;
+}
+
+/* Collapse/Expand */
+#rsvpHeader,
+#commentsHeader {
+    cursor: pointer;
+    user-select: none;
+    transition: all 0.2s ease;
+}
+
+#rsvpHeader:hover,
+#commentsHeader:hover {
+    color: var(--wedding-color);
+}
+
+#rsvpHeader i,
+#commentsHeader i {
+    transition: transform 0.3s ease;
+}
+
+#rsvpHeader.collapsed i,
+#commentsHeader.collapsed i {
+    transform: rotate(-180deg);
+}
+
+.collapse {
+    animation: slideDown 0.3s ease;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Badge */
+.badge {
+    font-size: 0.75rem;
+    padding: 0.4rem 0.6rem;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+
+.badge.bg-wedding {
+    background-color: var(--wedding-color) !important;
+}
+
+/* Modal */
+.modal-content {
+    border-radius: 12px;
+    background: white;
+}
+
+.modal-body {
+    background: white;
+}
+
+/* Form */
+.form-control,
+.form-control:focus,
+.form-select,
+.form-select:focus {
+    border-color: #dee2e6;
+    transition: all 0.3s ease;
+}
+
+.form-control:focus,
+.form-select:focus {
+    border-color: var(--wedding-color);
+    box-shadow: 0 0 0 0.2rem rgba(217, 70, 166, 0.15);
+}
+
+.form-label {
+    color: #495057;
+    font-weight: 500;
+}
+
+.input-group .btn-outline-secondary {
+    border-color: #dee2e6;
+    color: #6c757d;
+}
+
+.input-group .btn-outline-secondary:hover {
+    border-color: var(--wedding-color);
+    color: var(--wedding-color);
+    background-color: transparent;
+}
+
+/* Utility */
+.cursor-pointer {
+    cursor: pointer;
+}
+
+.fw-500 {
+    font-weight: 500;
+}
+
+.fw-600 {
+    font-weight: 600;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .container-fluid {
+        padding-left: 0.5rem;
+        padding-right: 0.5rem;
+    }
+
+    .stat-card .card-body {
+        padding: 1.5rem 1rem;
+    }
+
+    .stat-icon {
+        font-size: 2rem;
+    }
+
+    .table {
+        font-size: 0.85rem;
+    }
+
+    .table th,
+    .table td {
+        padding: 0.75rem 0.5rem;
+    }
+
+    .badge {
+        font-size: 0.65rem;
+    }
+
+    .btn-sm {
+        padding: 0.35rem 0.65rem;
+        font-size: 0.8rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .navbar-brand {
+        font-size: 1.1rem;
+    }
+
+    .stat-card .card-body {
+        padding: 1rem;
+    }
+
+    .table {
+        font-size: 0.8rem;
+    }
+
+    .table th,
+    .table td {
+        padding: 0.5rem 0.35rem;
+    }
+
+    h5 {
+        font-size: 1rem;
+    }
+}
+
+/* Scrollbar Styling */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--wedding-color);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--wedding-dark);
+}
+
+/* Loading Animation */
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.loading {
+    animation: spin 1s linear infinite;
+}
+

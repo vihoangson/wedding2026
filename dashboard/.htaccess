@@ -1,0 +1,25 @@
+# Protect dashboard directory
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    # Allow access to HTML, CSS, JS files
+    RewriteCond %{REQUEST_FILENAME} \.(html|css|js|json)$ [OR]
+    RewriteCond %{REQUEST_FILENAME} -f [OR]
+    RewriteCond %{REQUEST_FILENAME} -d
+    RewriteRule ^ - [L]
+    # Redirect all other requests to index.html
+    RewriteRule ^ index.html [QSA,L]
+</IfModule>
+
+# Disable directory listing
+<IfModule mod_autoindex.c>
+    Options -Indexes
+</IfModule>
+
+# Add security headers
+<IfModule mod_headers.c>
+    Header set X-Content-Type-Options "nosniff"
+    Header set X-Frame-Options "SAMEORIGIN"
+    Header set X-XSS-Protection "1; mode=block"
+    Header set Referrer-Policy "strict-origin-when-cross-origin"
+</IfModule>
+
