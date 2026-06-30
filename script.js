@@ -48,8 +48,13 @@ lightboxClose.addEventListener('click', closeLightbox);
 lightboxPrev.addEventListener('click', showPrevImage);
 lightboxNext.addEventListener('click', showNextImage);
 
-// Close lightbox when clicking overlay
-lightbox.querySelector('.lightbox-overlay').addEventListener('click', closeLightbox);
+// Close lightbox when clicking outside the image (on overlay or background)
+lightbox.addEventListener('click', (e) => {
+    // Chỉ đóng nếu click vào overlay hoặc lightbox-content nhưng không phải click vào image, buttons
+    if (e.target === lightbox || e.target === lightbox.querySelector('.lightbox-overlay')) {
+        closeLightbox();
+    }
+});
 
 // Keyboard navigation
 document.addEventListener('keydown', (e) => {
