@@ -121,9 +121,7 @@ $formattedDate = DateTime::createFromFormat('Y-m-d', $wedding_date)->format('d .
             <div class="line"></div>
         </div>
         <div class="map-title">Địa điểm lễ cưới</div>
-        <div class="map-container">
-            <iframe src="<?php echo htmlspecialchars($google_maps_url); ?>" width="100%" height="300" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-        </div>
+        <div class="map-container" id="map" style="height: 300px; border-radius: 8px; overflow: hidden;"></div>
         <p class="map-text">📍 <?php echo htmlspecialchars($venue_full_name); ?><br><?php echo htmlspecialchars($venue_location); ?>, Việt Nam</p>
     </div>
 
@@ -284,6 +282,32 @@ $formattedDate = DateTime::createFromFormat('Y-m-d', $wedding_date)->format('d .
 <script>
     // Cấu hình ngày cưới từ config.php
     const WEDDING_DATE = '<?php echo $wedding_date; ?>T<?php echo $wedding_time; ?>:00';
+</script>
+
+<!-- Leaflet JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script>
+    // Initialize Leaflet Map
+    const map = L.map('map').setView([<?php echo $venue_lat; ?>, <?php echo $venue_lng; ?>], 15);
+    
+    // Add OpenStreetMap tile layer
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '© OpenStreetMap contributors',
+        maxZoom: 19
+    }).addTo(map);
+    
+    // Add marker with red icon
+    const marker = L.marker([<?php echo $venue_lat; ?>, <?php echo $venue_lng; ?>], {
+        title: '<?php echo htmlspecialchars($venue_full_name); ?>'
+    }).addTo(map);
+    
+    // Add popup when marker is clicked
+    marker.bindPopup(
+        '<div style="font-family: Jost, sans-serif; text-align: center;">' +
+        '<strong style="color: #c9a87c; font-size: 14px;">📍 ' + '<?php echo htmlspecialchars($venue_full_name); ?>' + '</strong><br>' +
+        '<span style="color: #666; font-size: 12px;"><?php echo htmlspecialchars($venue_location); ?></span>' +
+        '</div>'
+    );
 </script>
 
 <script src="script.js"></script>
