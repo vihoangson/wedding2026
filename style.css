@@ -282,6 +282,12 @@ h1.names{
     box-shadow: 0 4px 15px rgba(142, 68, 82, 0.1);
 }
 
+.map-container img{
+    width:100%;
+    display:block;
+    height:auto;
+}
+
 .map-text{
     text-align:center;
     font-size:13px;
