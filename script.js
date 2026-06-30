@@ -1,5 +1,49 @@
 'use strict';
 
+// ===== COLLAGE MODAL =====
+function initCollageModal() {
+    const collagePhotos = document.querySelectorAll('.collage-photo');
+    const collageModal = document.getElementById('collageModal');
+    const collageModalImage = document.getElementById('collageModalImage');
+    const collageModalClose = document.getElementById('collageModalClose');
+    const collageModalOverlay = document.querySelector('.collage-modal-overlay');
+
+    if (!collageModal) return;
+
+    // Open modal when clicking collage photo
+    collagePhotos.forEach(photo => {
+        photo.addEventListener('click', () => {
+            const img = photo.querySelector('img');
+            if (img) {
+                collageModalImage.src = img.src;
+                collageModalImage.alt = img.alt;
+                collageModal.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            }
+        });
+    });
+
+    // Close modal functions
+    function closeCollageModal() {
+        collageModal.classList.remove('active');
+        document.body.style.overflow = 'auto';
+    }
+
+    collageModalClose.addEventListener('click', closeCollageModal);
+
+    collageModalOverlay.addEventListener('click', closeCollageModal);
+
+    // Close on Escape key
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && collageModal.classList.contains('active')) {
+            closeCollageModal();
+        }
+    });
+}
+
+// Initialize collage modal on DOM ready
+document.addEventListener('DOMContentLoaded', initCollageModal);
+
 // ===== COUNTDOWN TIMER =====
 function initCountdown() {
     // Sử dụng biến WEDDING_DATE từ index.php
@@ -87,73 +131,110 @@ document.addEventListener('DOMContentLoaded', () => {
     startFloatingHearts();
 });
 
-// ===== LIGHTBOX GALLERY =====
-const lightbox = document.getElementById('lightbox');
-const lightboxImage = document.getElementById('lightboxImage');
-const lightboxClose = document.getElementById('lightboxClose');
-const lightboxPrev = document.getElementById('lightboxPrev');
-const lightboxNext = document.getElementById('lightboxNext');
-let currentImageIndex = 0;
-let images = [];
+// ===== CAROUSEL GALLERY =====
+let currentSlideIndex = 0;
+let carouselSlides = [];
+let carouselDots = [];
+let autoPlayInterval = null;
 
-// Khởi tạo gallery
-function initGallery() {
-    images = Array.from(document.querySelectorAll('.g-item'));
+function initCarousel() {
+    carouselSlides = Array.from(document.querySelectorAll('.carousel-slide'));
+    carouselDots = Array.from(document.querySelectorAll('.carousel-dot'));
 
-    images.forEach((item, index) => {
-        item.addEventListener('click', () => {
-            currentImageIndex = index;
-            openLightbox();
+    if (carouselSlides.length === 0) return;
+
+    // Set first slide as active
+    showSlide(0);
+
+    // Add event listeners to dot buttons
+    carouselDots.forEach((dot, index) => {
+        dot.addEventListener('click', () => {
+            currentSlideIndex = index;
+            showSlide(index);
+            resetAutoPlay();
         });
+    });
+
+    // Add event listeners to nav buttons
+    const prevBtn = document.getElementById('carouselPrev');
+    const nextBtn = document.getElementById('carouselNext');
+
+    if (prevBtn) prevBtn.addEventListener('click', () => {
+        currentSlideIndex = (currentSlideIndex - 1 + carouselSlides.length) % carouselSlides.length;
+        showSlide(currentSlideIndex);
+        resetAutoPlay();
+    });
+
+    if (nextBtn) nextBtn.addEventListener('click', () => {
+        currentSlideIndex = (currentSlideIndex + 1) % carouselSlides.length;
+        showSlide(currentSlideIndex);
+        resetAutoPlay();
+    });
+
+    // Keyboard navigation
+    document.addEventListener('keydown', (e) => {
+        const carouselContainer = document.querySelector('.carousel-container');
+        if (!carouselContainer) return;
+
+        if (e.key === 'ArrowLeft') {
+            currentSlideIndex = (currentSlideIndex - 1 + carouselSlides.length) % carouselSlides.length;
+            showSlide(currentSlideIndex);
+            resetAutoPlay();
+        } else if (e.key === 'ArrowRight') {
+            currentSlideIndex = (currentSlideIndex + 1) % carouselSlides.length;
+            showSlide(currentSlideIndex);
+            resetAutoPlay();
+        }
+    });
+
+    // Start auto play
+    startAutoPlay();
+}
+
+function showSlide(index) {
+    if (carouselSlides.length === 0) return;
+
+    // Remove active class from all slides and dots
+    carouselSlides.forEach(slide => slide.classList.remove('active'));
+    carouselDots.forEach(dot => dot.classList.remove('active'));
+
+    // Add active class to current slide and dot
+    carouselSlides[index].classList.add('active');
+    carouselDots[index].classList.add('active');
+}
+
+function startAutoPlay() {
+    // Auto advance slides every 6 seconds
+    autoPlayInterval = setInterval(() => {
+        currentSlideIndex = (currentSlideIndex + 1) % carouselSlides.length;
+        showSlide(currentSlideIndex);
+    }, 6000);
+}
+
+function resetAutoPlay() {
+    if (autoPlayInterval) {
+        clearInterval(autoPlayInterval);
+    }
+    startAutoPlay();
+}
+
+// Pause auto play when user hovers over carousel
+const carouselContainer = document.querySelector('.carousel-container');
+if (carouselContainer) {
+    carouselContainer.addEventListener('mouseenter', () => {
+        if (autoPlayInterval) {
+            clearInterval(autoPlayInterval);
+            autoPlayInterval = null;
+        }
+    });
+
+    carouselContainer.addEventListener('mouseleave', () => {
+        startAutoPlay();
     });
 }
 
-function openLightbox() {
-    const imgUrl = images[currentImageIndex].dataset.img;
-    lightboxImage.src = imgUrl;
-    lightbox.classList.add('active');
-    document.body.style.overflow = 'hidden';
-}
-
-function closeLightbox() {
-    lightbox.classList.remove('active');
-    document.body.style.overflow = 'auto';
-}
-
-function showPrevImage() {
-    currentImageIndex = (currentImageIndex - 1 + images.length) % images.length;
-    lightboxImage.src = images[currentImageIndex].dataset.img;
-}
-
-function showNextImage() {
-    currentImageIndex = (currentImageIndex + 1) % images.length;
-    lightboxImage.src = images[currentImageIndex].dataset.img;
-}
-
-// Event listeners
-lightboxClose.addEventListener('click', closeLightbox);
-lightboxPrev.addEventListener('click', showPrevImage);
-lightboxNext.addEventListener('click', showNextImage);
-
-// Close lightbox when clicking outside the image (on overlay or background)
-lightbox.addEventListener('click', (e) => {
-    // Chỉ đóng nếu click vào overlay hoặc lightbox-content nhưng không phải click vào image, buttons
-    if (e.target === lightbox || e.target === lightbox.querySelector('.lightbox-overlay')) {
-        closeLightbox();
-    }
-});
-
-// Keyboard navigation
-document.addEventListener('keydown', (e) => {
-    if (!lightbox.classList.contains('active')) return;
-
-    if (e.key === 'Escape') closeLightbox();
-    if (e.key === 'ArrowLeft') showPrevImage();
-    if (e.key === 'ArrowRight') showNextImage();
-});
-
-// Initialize gallery on page load
-document.addEventListener('DOMContentLoaded', initGallery);
+// Initialize carousel on DOM ready
+document.addEventListener('DOMContentLoaded', initCarousel);
 
 // Hàm copy tài khoản vào clipboard
 function copyToClipboard(text) {

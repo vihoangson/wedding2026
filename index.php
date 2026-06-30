@@ -111,7 +111,48 @@ $formattedDate = DateTime::createFromFormat('Y-m-d', $wedding_date)->format('d .
 
     <p class="quote"><?php echo $quote; ?></p>
 
+    <!-- Photo Collage Section -->
+    <div class="collage-section">
+        <div class="collage-container">
+            <div class="collage-frame">
+                <div class="collage-header">
+                    <span class="collage-couple"><?php echo htmlspecialchars($groom_name); ?> & <?php echo htmlspecialchars($bride_name); ?></span>
+                    <span class="collage-date"><?php echo $formattedDate; ?></span>
+                </div>
 
+                <div class="collage-grid">
+                    <?php $photoCount = 0; foreach ($gallery_images as $index => $image): ?>
+                        <?php if ($photoCount < 5): ?>
+                            <div class="collage-photo collage-photo-<?php echo ($photoCount % 5) + 1; ?>">
+                                <img src="<?php echo htmlspecialchars($image['url']); ?>" alt="<?php echo htmlspecialchars($image['alt']); ?>" loading="lazy">
+                            </div>
+                            <?php $photoCount++; ?>
+                        <?php endif; ?>
+                    <?php endforeach; ?>
+                </div>
+
+                <div class="collage-decorations">
+                    <span class="decoration decoration-1">💐</span>
+                    <span class="decoration decoration-2">🌿</span>
+                    <span class="decoration decoration-3">💐</span>
+                    <span class="decoration decoration-4">🌿</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Collage Photo Modal Popup -->
+    <div class="collage-modal" id="collageModal">
+        <div class="collage-modal-overlay"></div>
+        <div class="collage-modal-content">
+            <button class="collage-modal-close" id="collageModalClose" aria-label="Đóng">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none">
+                    <path d="M18 6L6 18M6 6l12 12" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+                </svg>
+            </button>
+            <img class="collage-modal-image" id="collageModalImage" src="" alt="Enlarged photo">
+        </div>
+    </div>
 
     <div class="gallery-section">
         <div class="divider" aria-hidden="true">
@@ -122,46 +163,39 @@ $formattedDate = DateTime::createFromFormat('Y-m-d', $wedding_date)->format('d .
             <div class="line"></div>
         </div>
         <div class="gallery-title">Khoảnh khắc của chúng tôi</div>
-        <p class="gallery-subtitle">Nhấp vào ảnh để xem toàn bộ kích thước</p>
+        <p class="gallery-subtitle">Những tấm ảnh đẹp của chúng tôi</p>
+        <div class="carousel-container" role="region" aria-label="Thư viện ảnh">
+            <div class="carousel-wrapper">
+                <div class="carousel-main" id="carouselMain">
+                    <?php foreach ($gallery_images as $index => $image): ?>
+                        <div class="carousel-slide" data-index="<?php echo $index; ?>">
+                            <img src="<?php echo htmlspecialchars($image['url']); ?>" alt="<?php echo htmlspecialchars($image['alt']); ?>" loading="lazy">
+                        </div>
+                    <?php endforeach; ?>
+                </div>
 
-        <div class="gallery-grid" role="region" aria-label="Thư viện ảnh">
-            <?php foreach ($gallery_images as $index => $image): ?>
-                <figure class="g-item <?php echo ($image['featured'] ?? false) ? 'g-large' : ''; ?>" data-img="<?php echo htmlspecialchars($image['url']); ?>">
-                    <img src="<?php echo htmlspecialchars($image['url']); ?>" alt="<?php echo htmlspecialchars($image['alt']); ?>">
-                    <div class="g-overlay">
-                        <svg class="g-icon" width="40" height="40" viewBox="0 0 24 24" fill="none">
-                            <path d="M21 19V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                            <circle cx="8.5" cy="8.5" r="1.5" stroke="currentColor" stroke-width="2"/>
-                            <path d="M21 15l-5-5L5 21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
-                    </div>
-                </figure>
-            <?php endforeach; ?>
+                <button class="carousel-nav carousel-prev" id="carouselPrev" aria-label="Ảnh trước">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                        <path d="M15 19l-7-7 7-7" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </button>
+
+                <button class="carousel-nav carousel-next" id="carouselNext" aria-label="Ảnh tiếp">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                        <path d="M9 5l7 7-7 7" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </button>
+            </div>
+
+            <div class="carousel-dots" id="carouselDots">
+                <?php foreach ($gallery_images as $index => $image): ?>
+                    <button class="carousel-dot <?php echo $index === 0 ? 'active' : ''; ?>" data-index="<?php echo $index; ?>" aria-label="Ảnh <?php echo $index + 1; ?>"></button>
+                <?php endforeach; ?>
+            </div>
         </div>
     </div>
 
-    <!-- Lightbox Modal -->
-    <div class="lightbox" id="lightbox">
-        <div class="lightbox-overlay"></div>
-        <div class="lightbox-content">
-            <button class="lightbox-close" id="lightboxClose">
-                <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
-                    <path d="M18 6L6 18M6 6l12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                </svg>
-            </button>
-            <button class="lightbox-nav lightbox-prev" id="lightboxPrev">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                    <path d="M15 19l-7-7 7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-            </button>
-            <img class="lightbox-image" id="lightboxImage" src="" alt="Full size image">
-            <button class="lightbox-nav lightbox-next" id="lightboxNext">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                    <path d="M9 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-            </button>
-        </div>
-    </div>
+
 
     <!-- Block Lời Nhắn -->
     <div class="wishes-section">
