@@ -1,4 +1,4 @@
 git add .
 git commit -m "commit_message"
 git push
-ssh root@oop.vn "cd /var/www/vhosts/hoangson-yennhi.oop.vn && git pull"
+ssh root@188.166.213.71 "cd /var/www/vhosts/hoangson-yennhi.oop.vn && git pull"
