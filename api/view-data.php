@@ -6,7 +6,23 @@
 
 // Lấy tham số từ URL
 $format = isset($_GET['format']) ? $_GET['format'] : 'json'; // json, html, csv
-$dataFile = __DIR__ . '/../data.json';
+$dataDir = __DIR__ . '/../data';
+$dataFile = $dataDir . '/data.json';
+
+// Tạo folder data nếu chưa có
+if (!is_dir($dataDir)) {
+    mkdir($dataDir, 0755, true);
+}
+
+// Tạo file data.json nếu chưa có
+if (!file_exists($dataFile)) {
+    $defaultData = [
+        'total_rsvp' => 0,
+        'last_updated' => date('Y-m-d H:i:s'),
+        'rsvp_list' => []
+    ];
+    file_put_contents($dataFile, json_encode($defaultData, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
+}
 
 // Kiểm tra file tồn tại
 if (!file_exists($dataFile)) {

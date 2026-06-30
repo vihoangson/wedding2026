@@ -2,16 +2,15 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c3c68b20-eeab-489c-8926-b28e8fc13a4c" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/dashboard/00_START_HERE.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/dashboard/COMPLETION_REPORT.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/dashboard/INSTALL_GUIDE.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/dashboard/SUMMARY.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/dashboard/TESTING_GUIDE.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/dashboard/start.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/dashboard/test.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/dashboard/session-test.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/.gitkeep" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/copilotDiffState.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/copilotDiffState.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dashboard/dashboard.js" beforeDir="false" afterPath="$PROJECT_DIR$/dashboard/dashboard.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/export-csv.php" beforeDir="false" afterPath="$PROJECT_DIR$/api/export-csv.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/save-rsvp.php" beforeDir="false" afterPath="$PROJECT_DIR$/api/save-rsvp.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/view-data.php" beforeDir="false" afterPath="$PROJECT_DIR$/api/view-data.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/dashboard/index.php" beforeDir="false" afterPath="$PROJECT_DIR$/dashboard/index.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dashboard/start.php" beforeDir="false" afterPath="$PROJECT_DIR$/dashboard/start.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -132,7 +131,7 @@
             <option name="modeId" value="Agent" />
             <option name="modelType" value="builtin_family" />
             <option name="modelValue" value="claude-haiku-4.5" />
-            <option name="status" value="Completed" />
+            <option name="status" value="Processing" />
             <option name="targetType" value="LOCAL" />
           </session>
         </option>

@@ -6,17 +6,67 @@
 
 // Cấu hình
 $DASHBOARD_PASSWORD = 'admin123'; // Thay đổi mật khẩu này!
-$DATA_FILE = __DIR__ . '/../data.json';
-$COMMENTS_FILE = __DIR__ . '/../comments.json';
+$DATA_DIR = __DIR__ . '/../data';
+$DATA_FILE = $DATA_DIR . '/data.json';
+$COMMENTS_FILE = $DATA_DIR . '/comments.json';
+
+// Tạo thư mục data nếu chưa có
+if (!is_dir($DATA_DIR)) {
+    mkdir($DATA_DIR, 0755, true);
+}
+
+// Hàm tạo file JSON mặc định
+function createDefaultDataFile($filePath, $type = 'data') {
+    $defaultData = $type === 'data' 
+        ? [
+            'total_rsvp' => 0,
+            'last_updated' => date('Y-m-d H:i:s'),
+            'rsvp_list' => []
+        ]
+        : [
+            'total_comments' => 0,
+            'last_updated' => date('Y-m-d H:i:s'),
+            'comments' => []
+        ];
+    
+    file_put_contents($filePath, json_encode($defaultData, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
+}
+
+// Tạo file data.json nếu chưa có
+if (!file_exists($DATA_FILE)) {
+    createDefaultDataFile($DATA_FILE, 'data');
+}
+
+// Tạo file comments.json nếu chưa có
+if (!file_exists($COMMENTS_FILE)) {
+    createDefaultDataFile($COMMENTS_FILE, 'comments');
+}
+
+// Set cache control headers
+header('Cache-Control: no-cache, no-store, must-revalidate');
+header('Pragma: no-cache');
+header('Expires: 0');
 
 // Bắt đầu session
 session_start();
 
+// Khởi tạo biến
+$login_error = '';
+
 // Xử lý logout
 if (isset($_GET['logout'])) {
+    $_SESSION = array();
+    if (ini_get("session.use_cookies")) {
+        $params = session_get_cookie_params();
+        setcookie(session_name(), '', time() - 42000,
+            $params["path"], $params["domain"],
+            $params["secure"], $params["httponly"]
+        );
+    }
     session_destroy();
-    header('Location: ' . $_SERVER['PHP_SELF']);
-    exit;
+    session_write_close();
+    header('Location: ' . $_SERVER['PHP_SELF'], true, 302);
+    exit();
 }
 
 // Xử lý login via POST
@@ -26,9 +76,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
     if ($password === $DASHBOARD_PASSWORD) {
         $_SESSION['dashboard_logged_in'] = true;
         $_SESSION['login_time'] = time();
+        // Lưu session trước khi redirect
+        session_write_close();
         // Redirect sau khi login thành công
-        header('Location: ' . $_SERVER['PHP_SELF']);
-        exit;
+        header('Location: ' . $_SERVER['PHP_SELF'], true, 302);
+        exit();
     } else {
         $login_error = 'Mật khẩu không chính xác!';
     }
@@ -82,7 +134,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['action'])) {
 
 // Kiểm tra đã đăng nhập
 $isLoggedIn = isset($_SESSION['dashboard_logged_in']) && $_SESSION['dashboard_logged_in'] === true;
-$login_error = $login_error ?? '';
 ?>
 <!DOCTYPE html>
 <html lang="vi">

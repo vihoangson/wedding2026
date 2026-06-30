@@ -106,8 +106,10 @@
                         'dashboard.js' => __DIR__ . '/dashboard.js',
                         'style.css' => __DIR__ . '/style.css',
                         'test.php' => __DIR__ . '/test.php',
-                        '../data.json' => __DIR__ . '/../data.json',
-                        '../comments.json' => __DIR__ . '/../comments.json',
+                        'data/ (folder)' => __DIR__ . '/../data',
+                        'data/data.json' => __DIR__ . '/../data/data.json',
+                        'data/comments.json' => __DIR__ . '/../data/comments.json',
+                        'data/.gitkeep' => __DIR__ . '/../data/.gitkeep',
                     ];
 
                     foreach ($files as $name => $path):
@@ -155,29 +157,29 @@
             </div>
             <div class="card-body">
                 <?php
-                    $dataFile = __DIR__ . '/../data.json';
-                    $commentsFile = __DIR__ . '/../comments.json';
+                    $dataFile = __DIR__ . '/../data/data.json';
+                    $commentsFile = __DIR__ . '/../data/comments.json';
 
                     // Check data.json
                     if (file_exists($dataFile)) {
                         $data = json_decode(file_get_contents($dataFile), true);
-                        echo "<p><strong>data.json:</strong> ";
+                        echo "<p><strong>data/data.json:</strong> ";
                         echo "<span class='status-ok'>EXISTS</span>";
                         echo " | RSVP Count: <code>" . count($data['rsvp_list'] ?? []) . "</code>";
                         echo "</p>";
                     } else {
-                        echo "<p><strong>data.json:</strong> <span class='status-error'>NOT FOUND</span></p>";
+                        echo "<p><strong>data/data.json:</strong> <span class='status-error'>NOT FOUND</span></p>";
                     }
 
                     // Check comments.json
                     if (file_exists($commentsFile)) {
                         $comments = json_decode(file_get_contents($commentsFile), true);
-                        echo "<p><strong>comments.json:</strong> ";
+                        echo "<p><strong>data/comments.json:</strong> ";
                         echo "<span class='status-ok'>EXISTS</span>";
                         echo " | Comments Count: <code>" . count($comments['comments'] ?? []) . "</code>";
                         echo "</p>";
                     } else {
-                        echo "<p><strong>comments.json:</strong> <span class='status-error'>NOT FOUND</span></p>";
+                        echo "<p><strong>data/comments.json:</strong> <span class='status-error'>NOT FOUND</span></p>";
                     }
                 ?>
             </div>

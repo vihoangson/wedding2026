@@ -49,8 +49,24 @@ if (!in_array($attend, ['yes', 'no'])) {
 //    die(respondJSON(false, 'Số điện thoại không hợp lệ'));
 //}
 
-// Đường dẫn file data.json
-$dataFile = __DIR__ . '/../data.json';
+// Đường dẫn file data.json (sử dụng folder data/)
+$dataDir = __DIR__ . '/../data';
+$dataFile = $dataDir . '/data.json';
+
+// Tạo folder data nếu chưa có
+if (!is_dir($dataDir)) {
+    mkdir($dataDir, 0755, true);
+}
+
+// Tạo file data.json nếu chưa có
+if (!file_exists($dataFile)) {
+    $defaultData = [
+        'total_rsvp' => 0,
+        'last_updated' => date('Y-m-d H:i:s'),
+        'rsvp_list' => []
+    ];
+    file_put_contents($dataFile, json_encode($defaultData, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
+}
 
 // Tạo object dữ liệu mới
 $newRSVP = [
@@ -88,8 +104,18 @@ $saveData = [
 // Lưu vào file
 if (file_put_contents($dataFile, json_encode($saveData, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE), LOCK_EX)) {
     // Lưu thành công - Đồng thời lưu comment vào comment.json
-    $commentFile = __DIR__ . '/../comments.json';
-    
+    $commentFile = $dataDir . '/comments.json';
+
+    // Tạo file comments.json nếu chưa có
+    if (!file_exists($commentFile)) {
+        $defaultComments = [
+            'total_comments' => 0,
+            'last_updated' => date('Y-m-d H:i:s'),
+            'comments' => []
+        ];
+        file_put_contents($commentFile, json_encode($defaultComments, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
+    }
+
     // Tạo object comment mới
     $newComment = [
         'id' => uniqid('comment_', true),
@@ -101,7 +127,7 @@ if (file_put_contents($dataFile, json_encode($saveData, JSON_PRETTY_PRINT | JSON
         'ip_address' => $_SERVER['REMOTE_ADDR'] ?? '',
         'user_agent' => isset($_SERVER['HTTP_USER_AGENT']) ? substr($_SERVER['HTTP_USER_AGENT'], 0, 255) : ''
     ];
-    
+
     // Đọc file comments.json hiện tại
     $commentsData = [];
     if (file_exists($commentFile)) {
@@ -111,20 +137,20 @@ if (file_put_contents($dataFile, json_encode($saveData, JSON_PRETTY_PRINT | JSON
             $commentsData = $data['comments_list'];
         }
     }
-    
+
     // Thêm comment mới vào danh sách
     $commentsData[] = $newComment;
-    
+
     // Chuẩn bị dữ liệu để lưu
     $saveComments = [
         'total_comments' => count($commentsData),
         'last_updated' => date('Y-m-d H:i:s'),
         'comments_list' => $commentsData
     ];
-    
+
     // Lưu comments vào file
     file_put_contents($commentFile, json_encode($saveComments, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE), LOCK_EX);
-    
+
     // Trả về response thành công
     $responseData = [
         'id' => $newRSVP['id'],
