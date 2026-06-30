@@ -191,10 +191,7 @@ form.addEventListener('submit', function(e){
 
     // Validate email if provided
     const phone = document.getElementById('phone').value.trim();
-    if (phone && !validatePhone(phone)) {
-        alert('Vui lòng nhập số điện thoại hợp lệ (10-11 chữ số)');
-        return;
-    }
+    // Không validate phone - bỏ check
 
     // Show success message
     form.style.display = 'none';
@@ -216,24 +213,10 @@ function validateEmail(email) {
     return emailRegex.test(email);
 }
 
-function validatePhone(phone) {
-    const phoneRegex = /^(\+84|0)[0-9]{9,10}$/;
-    return phoneRegex.test(phone.replace(/\s/g, ''));
-}
 
 // Add input validation feedback
 document.getElementById('fullname').addEventListener('blur', function() {
     if (!this.value.trim()) {
-        this.style.borderColor = '#b8636f';
-        this.style.borderWidth = '2px';
-    } else {
-        this.style.borderColor = '#e7c3ca';
-        this.style.borderWidth = '2px';
-    }
-});
-
-document.getElementById('phone').addEventListener('blur', function() {
-    if (this.value && !validatePhone(this.value)) {
         this.style.borderColor = '#b8636f';
         this.style.borderWidth = '2px';
     } else {
