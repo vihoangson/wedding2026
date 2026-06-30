@@ -20,8 +20,8 @@ $wedding_time_label = "Tiệc chính thức"; // Nhãn giờ tiệc
 $venue_name = "Đông Phương";       // Tên địa điểm/nhà hàng
 $venue_location = "Quận 12, TP.HCM"; // Địa chỉ chi tiết
 $venue_full_name = "Trung Tâm Sự Kiện Đông Phương"; // Tên đầy đủ
-$venue_lat = 10.877937;             // Vĩ độ
-$venue_lng = 106.62575;             // Kinh độ
+$venue_lat = 10.834891326417855;             // Vĩ độ
+$venue_lng = 106.62856249008483;             // Kinh độ
 $google_maps_url = "https://www.openstreetmap.org/export/embed.html"; // URL bản đồ cơ bản
 
 // ===== THÔNG TIN TÀI KHOẢN =====
