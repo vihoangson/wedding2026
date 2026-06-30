@@ -122,8 +122,11 @@ $formattedDate = DateTime::createFromFormat('Y-m-d', $wedding_date)->format('d .
         </div>
         <div class="map-title">Địa điểm lễ cưới222</div>
         <div class="map-container">
-            <img src="https://hn.ss.bfcplatform.vn/talentdad/ShareX/2026/06/chrome_bxlmb5uezs.png" class="w-100" alt="Bản đồ địa điểm cưới">
-            <iframe src="<?php echo htmlspecialchars($google_maps_url); ?>" width="100%" height="300" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+
+            <img src="https://hn.ss.bfcplatform.vn/talentdad/ShareX/2026/06/chrome_eEH4SBYiLd.png" class="w-100 card-body" alt="Bản đồ địa điểm cưới" style="margin-bottom: 5px; border-radius: 15px;">
+            <img src="https://hn.ss.bfcplatform.vn/talentdad/ShareX/2026/06/chrome_bxlmb5uezs.png" class="w-100 card-body" alt="Bản đồ địa điểm cưới" style="margin-bottom: 5px; border-radius: 15px;">
+
+<!--            <iframe src="--><?php //echo htmlspecialchars($google_maps_url); ?><!--" width="100%" height="300" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>-->
         </div>
         <p class="map-text">📍 <?php echo htmlspecialchars($venue_full_name); ?><br><?php echo htmlspecialchars($venue_location); ?>, Việt Nam</p>
     </div>
