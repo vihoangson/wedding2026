@@ -111,25 +111,7 @@ $formattedDate = DateTime::createFromFormat('Y-m-d', $wedding_date)->format('d .
 
     <p class="quote"><?php echo $quote; ?></p>
 
-    <!-- Block Venue Map -->
-    <div class="map-section">
-        <div class="divider" aria-hidden="true">
-            <div class="line"></div>
-            <svg width="22" height="14" viewBox="0 0 22 14" fill="none">
-                <path d="M11 13C11 13 1 8 1 4.2C1 1.6 3.2 0.8 4.8 1.6C6.4 2.4 7.4 4 11 7.4C14.6 4 15.6 2.4 17.2 1.6C18.8 0.8 21 1.6 21 4.2C21 8 11 13 11 13Z" fill="#c9a87c"/>
-            </svg>
-            <div class="line"></div>
-        </div>
-        <div class="map-title">Địa điểm lễ cưới222</div>
-        <div class="map-container">
 
-            <img src="https://hn.ss.bfcplatform.vn/talentdad/ShareX/2026/06/chrome_eEH4SBYiLd.png" class="w-100 card-body" alt="Bản đồ địa điểm cưới" style="margin-bottom: 5px; border-radius: 15px;">
-            <img src="https://hn.ss.bfcplatform.vn/talentdad/ShareX/2026/06/chrome_bxlmb5uezs.png" class="w-100 card-body" alt="Bản đồ địa điểm cưới" style="margin-bottom: 5px; border-radius: 15px;">
-
-<!--            <iframe src="--><?php //echo htmlspecialchars($google_maps_url); ?><!--" width="100%" height="300" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>-->
-        </div>
-        <p class="map-text">📍 <?php echo htmlspecialchars($venue_full_name); ?><br><?php echo htmlspecialchars($venue_location); ?>, Việt Nam</p>
-    </div>
 
     <div class="gallery-section">
         <div class="divider" aria-hidden="true">
@@ -232,7 +214,26 @@ $formattedDate = DateTime::createFromFormat('Y-m-d', $wedding_date)->format('d .
         </div>
         <p class="account-note">Nếu muốn gửi lời chúc hoặc quà có được, bạn có thể chuyển khoản đến các số tài khoản trên.</p>
     </div>
+    <!-- Block Venue Map -->
+    <div class="map-section">
+        <div class="divider" aria-hidden="true">
+            <div class="line"></div>
+            <svg width="22" height="14" viewBox="0 0 22 14" fill="none">
+                <path d="M11 13C11 13 1 8 1 4.2C1 1.6 3.2 0.8 4.8 1.6C6.4 2.4 7.4 4 11 7.4C14.6 4 15.6 2.4 17.2 1.6C18.8 0.8 21 1.6 21 4.2C21 8 11 13 11 13Z" fill="#c9a87c"/>
+            </svg>
+            <div class="line"></div>
+        </div>
+        <div class="map-title">Địa điểm lễ cưới</div>
+        <div class="map-container">
 
+            <img src="https://hn.ss.bfcplatform.vn/talentdad/ShareX/2026/06/chrome_eEH4SBYiLd.png" class="w-100 card-body" alt="Bản đồ địa điểm cưới" style="margin-bottom: 5px; border-radius: 15px;">
+            <img src="https://hn.ss.bfcplatform.vn/talentdad/ShareX/2026/06/chrome_bxlmb5uezs.png" class="w-100 card-body" alt="Bản đồ địa điểm cưới" style="margin-bottom: 5px; border-radius: 15px;">
+
+            <!--            <iframe src="--><?php //echo htmlspecialchars($google_maps_url); ?><!--" width="100%" height="300" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>-->
+        </div>
+        <p class="map-text">📍 <?php echo htmlspecialchars($venue_full_name); ?><br><?php echo htmlspecialchars($venue_location); ?>, Việt Nam</p>
+    </div>
+    <!-- Form -->
     <form id="rsvpForm" novalidate>
         <div class="form-title">Xác nhận tham dự</div>
         <div class="form-sub">Vui lòng phản hồi trước ngày <?php echo DateTime::createFromFormat('Y-m-d', $rsvp_deadline)->format('d.m.Y'); ?></div>
