@@ -3,27 +3,27 @@
 // ===== COUNTDOWN TIMER =====
 function initCountdown() {
     const weddingDate = new Date('2026-12-13T11:30:00').getTime();
-    
+
     function updateCountdown() {
         const now = new Date().getTime();
         const distance = weddingDate - now;
-        
+
         const days = Math.floor(distance / (1000 * 60 * 60 * 24));
         const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
         const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
         const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-        
+
         document.getElementById('days').textContent = String(days).padStart(2, '0');
         document.getElementById('hours').textContent = String(hours).padStart(2, '0');
         document.getElementById('minutes').textContent = String(minutes).padStart(2, '0');
         document.getElementById('seconds').textContent = String(seconds).padStart(2, '0');
-        
+
         if (distance < 0) {
             document.querySelector('.countdown-title').textContent = '🎉 Ngày trọng đại đã tới!';
             document.getElementById('countdown').style.opacity = '0.5';
         }
     }
-    
+
     updateCountdown();
     setInterval(updateCountdown, 1000);
 }
@@ -34,18 +34,18 @@ function createFloatingHeart() {
     const heart = document.createElement('div');
     heart.className = 'heart';
     heart.textContent = hearts[Math.floor(Math.random() * hearts.length)];
-    
+
     const leftPos = Math.random() * 100;
     const duration = 4 + Math.random() * 2;
     const tx = (Math.random() - 0.5) * 200 - 50;
-    
+
     heart.style.left = leftPos + '%';
     heart.style.setProperty('--tx', tx + 'px');
     heart.style.animationDuration = duration + 's';
     heart.style.animationDelay = Math.random() * 0.5 + 's';
-    
+
     document.body.appendChild(heart);
-    
+
     setTimeout(() => heart.remove(), (duration + 1) * 1000);
 }
 
@@ -60,7 +60,7 @@ function startFloatingHearts() {
 function createConfetti() {
     const colors = ['#b8636f', '#c9a87c', '#fbe9ec', '#f3d2da', '#e7c3ca'];
     const shapes = ['●', '■', '▲', '★', '◆'];
-    
+
     for (let i = 0; i < 50; i++) {
         const confetti = document.createElement('div');
         confetti.className = 'confetti';
@@ -72,9 +72,9 @@ function createConfetti() {
         confetti.style.animationDuration = (Math.random() * 2 + 2.5) + 's';
         confetti.style.animationDelay = Math.random() * 0.2 + 's';
         confetti.style.transform = 'translateX(' + (Math.random() * 200 - 100) + 'px)';
-        
+
         document.body.appendChild(confetti);
-        
+
         setTimeout(() => confetti.remove(), 5000);
     }
 }
@@ -190,19 +190,19 @@ form.addEventListener('submit', function(e){
     }
 
     // Validate email if provided
-    const email = document.getElementById('email').value.trim();
-    if (email && !validateEmail(email)) {
-        alert('Vui lòng nhập địa chỉ email hợp lệ');
+    const phone = document.getElementById('phone').value.trim();
+    if (phone && !validatePhone(phone)) {
+        alert('Vui lòng nhập số điện thoại hợp lệ (10-11 chữ số)');
         return;
     }
 
     // Show success message
     form.style.display = 'none';
     successBox.classList.add('show');
-    
+
     // Trigger confetti effect
     createConfetti();
-    
+
     // Optional: Reset form after a delay
     setTimeout(() => {
         form.reset();
@@ -216,6 +216,11 @@ function validateEmail(email) {
     return emailRegex.test(email);
 }
 
+function validatePhone(phone) {
+    const phoneRegex = /^(\+84|0)[0-9]{9,10}$/;
+    return phoneRegex.test(phone.replace(/\s/g, ''));
+}
+
 // Add input validation feedback
 document.getElementById('fullname').addEventListener('blur', function() {
     if (!this.value.trim()) {
@@ -227,8 +232,8 @@ document.getElementById('fullname').addEventListener('blur', function() {
     }
 });
 
-document.getElementById('email').addEventListener('blur', function() {
-    if (this.value && !validateEmail(this.value)) {
+document.getElementById('phone').addEventListener('blur', function() {
+    if (this.value && !validatePhone(this.value)) {
         this.style.borderColor = '#b8636f';
         this.style.borderWidth = '2px';
     } else {
