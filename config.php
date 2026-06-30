@@ -17,10 +17,21 @@ $wedding_day_name = "Chủ Nhật";    // Tên ngày trong tuần
 $wedding_time_label = "Tiệc chính thức"; // Nhãn giờ tiệc
 
 // ===== ĐỊA ĐIỂM CƯỚI & NHÀ HÀNG =====
-$venue_name = "Đông Phương";       // Tên địa điểm/nhà hàng
-$venue_location = "Quận 12, TP.HCM"; // Địa chỉ chi tiết
-$venue_full_name = "Trung Tâm Sự Kiện Đông Phương"; // Tên đầy đủ
-$google_maps_url = "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3919.2765906752686!2d106.62575!3d10.877937!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31752b3b5b5b5b5b%3A0x5b5b5b5b5b5b5b5b!2sQuận%2012%2C%20TP%20HCM!5e0!3m2!1svi!2svn!4v1234567890";
+$venue_name = "Đông Phương";                         // Tên địa điểm/nhà hàng
+$venue_location = "Nguyễn Văn Quá, Quận 12, TP.HCM"; // Địa chỉ chi tiết
+$venue_full_name = "Sự Kiện Đông Phương Nguyễn Văn Quá"; // Tên đầy đủ
+
+// ===== GOOGLE MAPS — Places API + Embed =====
+// Kỹ thuật: Maps Embed API v1 với query địa điểm → Google tự hiện pin đỏ
+// Yêu cầu: bật "Maps Embed API" trên Google Cloud Console + tạo API key
+// Hướng dẫn lấy key: https://console.cloud.google.com/apis/library/maps-embed-backend.googleapis.com
+$google_maps_api_key = "YOUR_GOOGLE_MAPS_EMBED_API_KEY"; // ← Thay bằng API key của bạn
+$google_maps_query   = "Sự Kiện Đông Phương Nguyễn Văn Quá, Quận 12, TP.HCM, Việt Nam";
+$google_maps_url     = "https://www.google.com/maps/embed/v1/place"
+                     . "?key=" . urlencode($google_maps_api_key)
+                     . "&q="   . urlencode($google_maps_query)
+                     . "&language=vi"
+                     . "&zoom=16";
 
 // ===== THÔNG TIN TÀI KHOẢN =====
 $momo_account = "0987654321";      // Số tài khoản Momo
