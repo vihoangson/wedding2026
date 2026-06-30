@@ -19,54 +19,53 @@ if (isset($_GET['logout'])) {
     exit;
 }
 
-// Xử lý login via AJAX
+// Xử lý login via POST
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'login') {
-    header('Content-Type: application/json');
     $password = $_POST['password'] ?? '';
-    
+
     if ($password === $DASHBOARD_PASSWORD) {
         $_SESSION['dashboard_logged_in'] = true;
         $_SESSION['login_time'] = time();
-        echo json_encode(['success' => true, 'message' => 'Đăng nhập thành công']);
+        // Redirect sau khi login thành công
+        header('Location: ' . $_SERVER['PHP_SELF']);
+        exit;
     } else {
-        http_response_code(401);
-        echo json_encode(['success' => false, 'message' => 'Mật khẩu không chính xác']);
+        $login_error = 'Mật khẩu không chính xác!';
     }
-    exit;
 }
 
 // Xử lý lấy dữ liệu via AJAX
 if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['action'])) {
     header('Content-Type: application/json; charset=utf-8');
-    
+
     if ($_GET['action'] === 'get_data') {
         if (!isset($_SESSION['dashboard_logged_in'])) {
             http_response_code(401);
             echo json_encode(['error' => 'Unauthorized']);
             exit;
         }
-        
+
         $rsvpData = [];
         $commentsData = [];
-        
+
         // Đọc RSVP data
         if (file_exists($DATA_FILE)) {
             $data = json_decode(file_get_contents($DATA_FILE), true);
             $rsvpData = $data['rsvp_list'] ?? [];
         }
-        
+
         // Đọc comments data
         if (file_exists($COMMENTS_FILE)) {
             $data = json_decode(file_get_contents($COMMENTS_FILE), true);
             $commentsData = $data['comments'] ?? [];
         }
-        
+
         // Tính toán stats
         $totalRsvp = count($rsvpData);
         $confirmed = count(array_filter($rsvpData, fn($x) => ($x['attend'] ?? '') === 'yes'));
         $declined = count(array_filter($rsvpData, fn($x) => ($x['attend'] ?? '') === 'no'));
         $totalGuests = array_sum(array_column($rsvpData, 'guests', null));
-        
+
         echo json_encode([
             'rsvp' => $rsvpData,
             'comments' => $commentsData,
@@ -83,6 +82,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['action'])) {
 
 // Kiểm tra đã đăng nhập
 $isLoggedIn = isset($_SESSION['dashboard_logged_in']) && $_SESSION['dashboard_logged_in'] === true;
+$login_error = $login_error ?? '';
 ?>
 <!DOCTYPE html>
 <html lang="vi">
@@ -97,27 +97,32 @@ $isLoggedIn = isset($_SESSION['dashboard_logged_in']) && $_SESSION['dashboard_lo
 <body>
     <?php if (!$isLoggedIn): ?>
     <!-- Login Modal -->
-    <div class="modal fade show" id="loginModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" style="display: block;">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content border-0 shadow-lg">
-                <div class="modal-body p-5">
+    <div class="d-flex justify-content-center align-items-center" style="min-height: 100vh; background: linear-gradient(135deg, #f5e6ee 0%, #faf8fc 100%);">
+        <div style="width: 100%; max-width: 400px; padding: 20px;">
+            <div class="card border-0 shadow-lg">
+                <div class="card-body p-5">
                     <div class="text-center mb-4">
-                        <h2 class="modal-title fw-bold text-wedding mb-2">
+                        <h2 class="fw-bold text-wedding mb-2">
                             <i class="bi bi-suit-heart-fill"></i> Dashboard
                         </h2>
                         <p class="text-muted">Vui lòng đăng nhập để tiếp tục</p>
                     </div>
-                    <form id="loginForm" method="POST">
+                    <form method="POST" action="<?php echo $_SERVER['PHP_SELF']; ?>">
                         <input type="hidden" name="action" value="login">
+                        <?php if (!empty($login_error)): ?>
+                            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                <i class="bi bi-exclamation-circle"></i> <?php echo htmlspecialchars($login_error); ?>
+                                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                            </div>
+                        <?php endif; ?>
                         <div class="mb-3">
                             <label for="password" class="form-label fw-500">Mật khẩu</label>
                             <div class="input-group">
-                                <input type="password" class="form-control form-control-lg" id="password" name="password" placeholder="Nhập mật khẩu" required>
+                                <input type="password" class="form-control form-control-lg" id="password" name="password" placeholder="Nhập mật khẩu" required autofocus>
                                 <button class="btn btn-outline-secondary" type="button" id="togglePassword">
                                     <i class="bi bi-eye"></i>
                                 </button>
                             </div>
-                            <small class="text-danger d-none" id="errorMessage"></small>
                         </div>
                         <button type="submit" class="btn btn-wedding btn-lg w-100 fw-600">
                             <i class="bi bi-lock"></i> Đăng Nhập
@@ -127,7 +132,6 @@ $isLoggedIn = isset($_SESSION['dashboard_logged_in']) && $_SESSION['dashboard_lo
             </div>
         </div>
     </div>
-    <div class="modal-backdrop fade show"></div>
     <script>
         document.getElementById('togglePassword').addEventListener('click', function() {
             const input = document.getElementById('password');
@@ -138,32 +142,6 @@ $isLoggedIn = isset($_SESSION['dashboard_logged_in']) && $_SESSION['dashboard_lo
             } else {
                 input.type = 'password';
                 icon.className = 'bi bi-eye';
-            }
-        });
-
-        document.getElementById('loginForm').addEventListener('submit', async function(e) {
-            e.preventDefault();
-            const formData = new FormData(this);
-            const errorMsg = document.getElementById('errorMessage');
-
-            try {
-                const response = await fetch('<?php echo $_SERVER['PHP_SELF']; ?>', {
-                    method: 'POST',
-                    body: formData
-                });
-
-                const data = await response.json();
-
-                if (response.ok) {
-                    // Reload page to show dashboard
-                    window.location.href = '<?php echo $_SERVER['PHP_SELF']; ?>';
-                } else {
-                    errorMsg.textContent = data.message || 'Mật khẩu không chính xác';
-                    errorMsg.classList.remove('d-none');
-                }
-            } catch (error) {
-                errorMsg.textContent = 'Lỗi kết nối. Vui lòng thử lại.';
-                errorMsg.classList.remove('d-none');
             }
         });
     </script>

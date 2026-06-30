@@ -34,7 +34,11 @@ function setupEventListeners() {
 // Load Dashboard Data từ PHP Backend
 async function loadDashboardData() {
     try {
-        const response = await fetch(window.location.pathname + '?action=get_data');
+        // Tạo URL đầy đủ với parameter
+        const url = new URL(window.location.href);
+        url.searchParams.set('action', 'get_data');
+
+        const response = await fetch(url.toString());
 
         if (!response.ok) {
             if (response.status === 401) {
@@ -42,7 +46,7 @@ async function loadDashboardData() {
                 window.location.href = window.location.pathname;
                 return;
             }
-            throw new Error('Failed to load data');
+            throw new Error('Failed to load data: ' + response.status);
         }
 
         const data = await response.json();
