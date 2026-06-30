@@ -25,7 +25,7 @@ $venue_full_name = "Sự Kiện Đông Phương Nguyễn Văn Quá"; // Tên đ�
 // Kỹ thuật: Maps Embed API v1 với query địa điểm → Google tự hiện pin đỏ
 // Yêu cầu: bật "Maps Embed API" trên Google Cloud Console + tạo API key
 // Hướng dẫn lấy key: https://console.cloud.google.com/apis/library/maps-embed-backend.googleapis.com
-$google_maps_api_key = "YOUR_GOOGLE_MAPS_EMBED_API_KEY"; // ← Thay bằng API key của bạn
+$google_maps_api_key = "AIzaSyCiNiNqPvhyJdqPFflmcLqi3BjmoR9fDwI"; // ← Thay bằng API key của bạn
 $google_maps_query   = "Sự Kiện Đông Phương Nguyễn Văn Quá, Quận 12, TP.HCM, Việt Nam";
 $google_maps_url     = "https://www.google.com/maps/embed/v1/place"
                      . "?key=" . urlencode($google_maps_api_key)
