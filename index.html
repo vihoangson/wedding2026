@@ -3,355 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Thiệp mời & RSVP — Minh & Thảo</title>
+    <meta name="description" content="Thiệp mời cưới — Minh & Thảo. Xác nhận tham dự buổi lễ cưới của chúng tôi ngày 13.12.2026">
+    <meta name="theme-color" content="#fffaf6">
+    <title>Thiệp mời & RSVP — Sơn & Nhi | Đám cưới 2026</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
-    <style>
-        :root{
-            --blush:#fbe9ec;
-            --blush-deep:#f3d2da;
-            --rose:#b8636f;
-            --rose-deep:#8e4452;
-            --cream:#fffaf6;
-            --ink:#4a3438;
-            --ink-soft:#8a7174;
-            --gold:#c9a87c;
-            --line:#e7c3ca;
-        }
-
-        *{box-sizing:border-box;}
-        html,body{margin:0;padding:0;}
-        body{
-            background:
-                    radial-gradient(circle at 15% 10%, var(--blush) 0%, transparent 45%),
-                    radial-gradient(circle at 85% 90%, var(--blush-deep) 0%, transparent 50%),
-                    var(--cream);
-            font-family:'Jost', sans-serif;
-            color:var(--ink);
-            min-height:100vh;
-            display:flex;
-            align-items:center;
-            justify-content:center;
-            padding:48px 20px;
-        }
-
-        .invitation{
-            position:relative;
-            width:100%;
-            max-width:640px;
-            background:var(--cream);
-            border:1px solid var(--line);
-            box-shadow:0 30px 80px -30px rgba(142,68,82,0.25), 0 0 0 1px rgba(255,255,255,0.6) inset;
-            padding:64px 52px 56px;
-            overflow:hidden;
-        }
-
-        .invitation::before,
-        .invitation::after{
-            content:"";
-            position:absolute;
-            width:120px;
-            height:120px;
-            border:1px solid var(--gold);
-            opacity:0.55;
-        }
-        .invitation::before{ top:18px; left:18px; border-right:none; border-bottom:none; }
-        .invitation::after{ bottom:18px; right:18px; border-left:none; border-top:none; }
-
-        .eyebrow{
-            text-align:center;
-            letter-spacing:0.35em;
-            text-transform:uppercase;
-            font-size:11px;
-            color:var(--rose-deep);
-            font-weight:500;
-            margin-bottom:18px;
-        }
-
-        .monogram{
-            text-align:center;
-            font-family:'Cormorant Garamond', serif;
-            font-size:15px;
-            letter-spacing:0.5em;
-            color:var(--gold);
-            margin-bottom:22px;
-        }
-
-        .divider{
-            display:flex;
-            align-items:center;
-            justify-content:center;
-            gap:14px;
-            margin:0 auto 28px;
-            width:200px;
-        }
-        .divider .line{flex:1; height:1px; background:var(--line);}
-        .divider svg{ flex-shrink:0; }
-
-        h1.names{
-            font-family:'Cormorant Garamond', serif;
-            font-style:italic;
-            font-weight:500;
-            text-align:center;
-            font-size:clamp(40px, 7vw, 58px);
-            line-height:1.1;
-            margin:0 0 6px;
-            color:var(--rose-deep);
-        }
-
-        .amp{
-            display:block;
-            font-style:normal;
-            font-size:0.5em;
-            color:var(--gold);
-            margin:4px 0;
-        }
-
-        .subtitle{
-            text-align:center;
-            font-size:14px;
-            letter-spacing:0.08em;
-            color:var(--ink-soft);
-            margin-bottom:36px;
-        }
-
-        .details{
-            display:flex;
-            justify-content:center;
-            gap:48px;
-            text-align:center;
-            margin-bottom:40px;
-            flex-wrap:wrap;
-        }
-        .details .item .label{
-            font-size:10px;
-            letter-spacing:0.25em;
-            text-transform:uppercase;
-            color:var(--gold);
-            margin-bottom:8px;
-        }
-        .details .item .value{
-            font-family:'Cormorant Garamond', serif;
-            font-size:22px;
-            color:var(--ink);
-        }
-        .details .item .sub{
-            font-size:12px;
-            color:var(--ink-soft);
-            margin-top:2px;
-        }
-
-        .quote{
-            text-align:center;
-            font-family:'Cormorant Garamond', serif;
-            font-style:italic;
-            font-size:17px;
-            color:var(--ink-soft);
-            line-height:1.7;
-            max-width:420px;
-            margin:0 auto 44px;
-        }
-
-        .gallery-section{ margin-bottom:8px; }
-
-        .gallery-title{
-            text-align:center;
-            font-family:'Cormorant Garamond', serif;
-            font-style:italic;
-            font-size:24px;
-            color:var(--rose-deep);
-            margin-bottom:24px;
-        }
-
-        .gallery-grid{
-            display:grid;
-            grid-template-columns:1.2fr 1fr;
-            grid-template-rows:auto auto;
-            gap:10px;
-            margin-bottom:40px;
-        }
-
-        .g-item{
-            margin:0;
-            overflow:hidden;
-            position:relative;
-            border:1px solid var(--line);
-            background:var(--blush);
-        }
-        .g-item::after{
-            content:"";
-            position:absolute;
-            inset:0;
-            box-shadow:inset 0 0 0 6px var(--cream);
-            pointer-events:none;
-        }
-        .g-item img{
-            display:block;
-            width:100%;
-            height:100%;
-            object-fit:cover;
-            filter:saturate(0.92) sepia(0.06);
-            transition:transform .5s ease;
-        }
-        .g-item:hover img{ transform:scale(1.04); }
-
-        .g-large{ grid-row:1 / 3; aspect-ratio:4/5; }
-        .gallery-grid > .g-item:not(.g-large):not(.g-wide){ aspect-ratio:1/1; }
-        .g-wide{ grid-column:2/3; aspect-ratio:5/3; }
-
-        @media(max-width:480px){
-            .gallery-grid{ grid-template-columns:1fr 1fr; }
-        }
-
-        form{
-            border-top:1px solid var(--line);
-            padding-top:36px;
-        }
-
-        .form-title{
-            text-align:center;
-            font-family:'Cormorant Garamond', serif;
-            font-size:26px;
-            color:var(--rose-deep);
-            margin:0 0 4px;
-        }
-        .form-sub{
-            text-align:center;
-            font-size:12.5px;
-            color:var(--ink-soft);
-            margin-bottom:30px;
-        }
-
-        .field{ margin-bottom:22px; }
-        .field label{
-            display:block;
-            font-size:11px;
-            letter-spacing:0.15em;
-            text-transform:uppercase;
-            color:var(--ink-soft);
-            margin-bottom:8px;
-        }
-        .field input[type="text"],
-        .field input[type="email"],
-        .field input[type="number"],
-        .field textarea{
-            width:100%;
-            border:none;
-            border-bottom:1px solid var(--line);
-            background:transparent;
-            padding:8px 2px;
-            font-family:'Jost', sans-serif;
-            font-size:15px;
-            color:var(--ink);
-            outline:none;
-            transition:border-color .25s ease;
-        }
-        .field input:focus,
-        .field textarea:focus{ border-color:var(--rose); }
-        .field textarea{ resize:none; min-height:64px; line-height:1.5; }
-
-        .attend-toggle{
-            display:flex;
-            gap:12px;
-        }
-        .attend-toggle input{ display:none; }
-        .attend-toggle label{
-            flex:1;
-            text-align:center;
-            padding:13px 10px;
-            border:1px solid var(--line);
-            cursor:pointer;
-            font-size:13px;
-            letter-spacing:0.08em;
-            color:var(--ink-soft);
-            text-transform:none;
-            transition:all .25s ease;
-        }
-        .attend-toggle input:checked + label{
-            background:var(--rose);
-            border-color:var(--rose);
-            color:#fff;
-        }
-
-        .guest-row{
-            display:grid;
-            grid-template-columns:1fr 1fr;
-            gap:20px;
-        }
-        @media(max-width:480px){ .guest-row{ grid-template-columns:1fr; } }
-
-        button.submit{
-            width:100%;
-            margin-top:10px;
-            background:var(--rose-deep);
-            color:#fff;
-            border:none;
-            padding:16px;
-            font-family:'Jost', sans-serif;
-            font-size:13px;
-            letter-spacing:0.25em;
-            text-transform:uppercase;
-            cursor:pointer;
-            transition:background .25s ease, transform .15s ease;
-        }
-        button.submit:hover{ background:var(--rose); }
-        button.submit:active{ transform:scale(0.99); }
-
-        .success{
-            display:none;
-            text-align:center;
-            padding-top:36px;
-            border-top:1px solid var(--line);
-            margin-top:36px;
-        }
-        .success.show{ display:block; }
-        .success .icon{
-            width:56px; height:56px;
-            margin:0 auto 18px;
-            border-radius:50%;
-            border:1px solid var(--gold);
-            display:flex; align-items:center; justify-content:center;
-        }
-        .success h3{
-            font-family:'Cormorant Garamond', serif;
-            font-style:italic;
-            font-size:24px;
-            color:var(--rose-deep);
-            margin:0 0 10px;
-        }
-        .success p{
-            font-size:13px;
-            color:var(--ink-soft);
-            line-height:1.7;
-            max-width:340px;
-            margin:0 auto;
-        }
-
-        .footer-note{
-            text-align:center;
-            margin-top:32px;
-            font-size:11px;
-            letter-spacing:0.1em;
-            color:var(--gold);
-        }
-
-        @media(max-width:560px){
-            .invitation{ padding:48px 26px 40px; }
-            .details{ gap:28px; }
-        }
-
-        @media (prefers-reduced-motion: reduce){
-            *{ transition:none !important; }
-        }
-    </style>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<div class="invitation">
+<div class="invitation" role="main" aria-label="Trang thiệp mời cưới">
     <div class="eyebrow">Trân trọng kính mời</div>
-    <div class="monogram">M &nbsp;•&nbsp; T</div>
+    <div class="monogram">S &nbsp;•&nbsp; N</div>
 
-    <div class="divider">
+    <div class="divider" aria-hidden="true">
         <div class="line"></div>
         <svg width="22" height="14" viewBox="0 0 22 14" fill="none">
             <path d="M11 13C11 13 1 8 1 4.2C1 1.6 3.2 0.8 4.8 1.6C6.4 2.4 7.4 4 11 7.4C14.6 4 15.6 2.4 17.2 1.6C18.8 0.8 21 1.6 21 4.2C21 8 11 13 11 13Z" fill="#c9a87c"/>
@@ -365,12 +31,12 @@
     <div class="details">
         <div class="item">
             <div class="label">Ngày cưới</div>
-            <div class="value">13 . 12 . 2026</div>
+            <time class="value" datetime="2026-12-13">13 . 12 . 2026</time>
             <div class="sub">Chủ Nhật</div>
         </div>
         <div class="item">
             <div class="label">Giờ</div>
-            <div class="value">11:30</div>
+            <time class="value">11:30</time>
             <div class="sub">Tiệc chính thức</div>
         </div>
         <div class="item">
@@ -382,8 +48,24 @@
 
     <p class="quote">"Sự hiện diện của bạn chính là món quà quý giá nhất, là niềm hạnh phúc trọn vẹn nhất trong ngày trọng đại của chúng tôi."</p>
 
+    <!-- Block Venue Map -->
+    <div class="map-section">
+        <div class="divider" aria-hidden="true">
+            <div class="line"></div>
+            <svg width="22" height="14" viewBox="0 0 22 14" fill="none">
+                <path d="M11 13C11 13 1 8 1 4.2C1 1.6 3.2 0.8 4.8 1.6C6.4 2.4 7.4 4 11 7.4C14.6 4 15.6 2.4 17.2 1.6C18.8 0.8 21 1.6 21 4.2C21 8 11 13 11 13Z" fill="#c9a87c"/>
+            </svg>
+            <div class="line"></div>
+        </div>
+        <div class="map-title">Địa điểm lễ cưới</div>
+        <div class="map-container">
+            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3919.2765906752686!2d106.62575!3d10.877937!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31752b3b5b5b5b5b%3A0x5b5b5b5b5b5b5b5b!2sQuận%2012%2C%20TP%20HCM!5e0!3m2!1svi!2svn!4v1234567890" width="100%" height="300" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+        </div>
+        <p class="map-text">📍 Trung Tâm Sự Kiện Đông Phương<br>Quận 12, Thành phố Hồ Chí Minh, Việt Nam</p>
+    </div>
+
     <div class="gallery-section">
-        <div class="divider">
+        <div class="divider" aria-hidden="true">
             <div class="line"></div>
             <svg width="22" height="14" viewBox="0 0 22 14" fill="none">
                 <path d="M11 13C11 13 1 8 1 4.2C1 1.6 3.2 0.8 4.8 1.6C6.4 2.4 7.4 4 11 7.4C14.6 4 15.6 2.4 17.2 1.6C18.8 0.8 21 1.6 21 4.2C21 8 11 13 11 13Z" fill="#c9a87c"/>
@@ -392,29 +74,83 @@
         </div>
         <div class="gallery-title">Khoảnh khắc của chúng tôi</div>
 
-        <div class="gallery-grid">
+        <div class="gallery-grid" role="region" aria-label="Thư viện ảnh">
             <figure class="g-item g-large">
-                <img src="https://hn.ss.bfcplatform.vn/talentdad/ShareX/2026/06/chrome_iYKOBwJQnw.png" alt="Ảnh cưới 1">
+                <img src="https://hn.ss.bfcplatform.vn/talentdad/ShareX/2026/06/chrome_iYKOBwJQnw.png" alt="Ảnh khoảnh khắc cưới 1">
             </figure>
             <figure class="g-item">
-                <img src="https://hn.ss.bfcplatform.vn/talentdad/ShareX/2026/06/chrome_7FJaGtaf0Z.png" alt="Ảnh cưới 2">
+                <img src="https://hn.ss.bfcplatform.vn/talentdad/ShareX/2026/06/chrome_7FJaGtaf0Z.png" alt="Ảnh khoảnh khắc cưới 2">
             </figure>
             <figure class="g-item">
-                <img src="https://hn.ss.bfcplatform.vn/talentdad/ShareX/2026/06/chrome_idfrF4sgD2.png" alt="Ảnh cưới 3">
+                <img src="https://hn.ss.bfcplatform.vn/talentdad/ShareX/2026/06/chrome_idfrF4sgD2.png" alt="Ảnh khoảnh khắc cưới 3">
             </figure>
             <figure class="g-item">
-                <img src="https://hn.ss.bfcplatform.vn/talentdad/ShareX/2026/06/chrome_iYKOBwJQnw.png" alt="Ảnh cưới 4">
+                <img src="https://hn.ss.bfcplatform.vn/talentdad/ShareX/2026/06/chrome_iYKOBwJQnw.png" alt="Ảnh khoảnh khắc cưới 4">
+            </figure>
+            <figure class="g-item">
+                <img src="https://hn.ss.bfcplatform.vn/talentdad/ShareX/2026/06/chrome_8rrVQarr8A.jpg" alt="Ảnh khoảnh khắc cưới 5">
             </figure>
         </div>
     </div>
 
-    <form id="rsvpForm">
+    <!-- Block Lời Nhắn -->
+    <div class="wishes-section">
+        <div class="divider" aria-hidden="true">
+            <div class="line"></div>
+            <svg width="22" height="14" viewBox="0 0 22 14" fill="none">
+                <path d="M11 13C11 13 1 8 1 4.2C1 1.6 3.2 0.8 4.8 1.6C6.4 2.4 7.4 4 11 7.4C14.6 4 15.6 2.4 17.2 1.6C18.8 0.8 21 1.6 21 4.2C21 8 11 13 11 13Z" fill="#c9a87c"/>
+            </svg>
+            <div class="line"></div>
+        </div>
+        <div class="wishes-title">Lời chúc của khách mời</div>
+        <div class="wishes-container" id="wishesContainer">
+            <div class="wish-item">
+                <div class="wish-name">Nguyễn Văn A</div>
+                <div class="wish-text">Chúc 2 người hạnh phúc bên nhau!</div>
+            </div>
+            <div class="wish-item">
+                <div class="wish-name">Trần Thị B</div>
+                <div class="wish-text">Đám cưới tuyệt vời! Chúc hai bạn luôn yêu thương nhau 💕</div>
+            </div>
+            <div class="wish-item">
+                <div class="wish-name">Lê Văn C</div>
+                <div class="wish-text">Sớm có con yêu, hạnh phúc mãi mãi!</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Block Tài Khoản Momo & Số Tài Khoản -->
+    <div class="account-section">
+        <div class="divider" aria-hidden="true">
+            <div class="line"></div>
+            <svg width="22" height="14" viewBox="0 0 22 14" fill="none">
+                <path d="M11 13C11 13 1 8 1 4.2C1 1.6 3.2 0.8 4.8 1.6C6.4 2.4 7.4 4 11 7.4C14.6 4 15.6 2.4 17.2 1.6C18.8 0.8 21 1.6 21 4.2C21 8 11 13 11 13Z" fill="#c9a87c"/>
+            </svg>
+            <div class="line"></div>
+        </div>
+        <div class="account-title">Thông tin tài khoản</div>
+        <div class="account-info">
+            <div class="account-item">
+                <div class="account-type">💳 Momo</div>
+                <div class="account-number" id="memoAccount">0987654321</div>
+                <button class="copy-btn" onclick="copyToClipboard('0987654321')">Sao chép</button>
+            </div>
+            <div class="account-item">
+                <div class="account-type">🏦 Số tài khoản ngân hàng</div>
+                <div class="account-number" id="bankAccount">0123456789</div>
+                <button class="copy-btn" onclick="copyToClipboard('0123456789')">Sao chép</button>
+            </div>
+        </div>
+        <p class="account-note">Nếu muốn gửi lời chúc hoặc quà có được, bạn có thể chuyển khoản đến các số tài khoản trên.</p>
+    </div>
+
+    <form id="rsvpForm" novalidate>
         <div class="form-title">Xác nhận tham dự</div>
         <div class="form-sub">Vui lòng phản hồi trước ngày 01.01.2027</div>
 
         <div class="field">
-            <label for="fullname">Họ và tên</label>
-            <input type="text" id="fullname" name="fullname" placeholder="Nguyễn Văn A" required>
+            <label for="fullname">Họ và tên <span aria-label="bắt buộc">*</span></label>
+            <input type="text" id="fullname" name="fullname" placeholder="Nguyễn Văn A" required aria-required="true">
         </div>
 
         <div class="guest-row">
@@ -423,15 +159,15 @@
                 <input type="email" id="email" name="email" placeholder="email@vidu.com">
             </div>
             <div class="field">
-                <label for="guests">Số người tham dự</label>
-                <input type="number" id="guests" name="guests" min="1" max="10" value="1">
+                <label for="guests">Số người tham dự <span aria-label="bắt buộc">*</span></label>
+                <input type="number" id="guests" name="guests" min="1" max="10" value="1" required aria-required="true">
             </div>
         </div>
 
         <div class="field">
-            <label>Bạn có thể tham dự?</label>
+            <label>Bạn có thể tham dự? <span aria-label="bắt buộc">*</span></label>
             <div class="attend-toggle">
-                <input type="radio" id="attendYes" name="attend" value="yes" checked>
+                <input type="radio" id="attendYes" name="attend" value="yes" checked required aria-required="true">
                 <label for="attendYes">Vui mừng tham dự</label>
                 <input type="radio" id="attendNo" name="attend" value="no">
                 <label for="attendNo">Xin phép vắng mặt</label>
@@ -446,7 +182,7 @@
         <button type="submit" class="submit">Gửi xác nhận</button>
     </form>
 
-    <div class="success" id="successBox">
+    <div class="success" id="successBox" role="alert">
         <div class="icon">
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
                 <path d="M4 12.5L9.5 18L20 6" stroke="#c9a87c" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
@@ -459,15 +195,7 @@
     <div class="footer-note">M &amp; T — 14.02.2027</div>
 </div>
 
-<script>
-    const form = document.getElementById('rsvpForm');
-    const successBox = document.getElementById('successBox');
-    form.addEventListener('submit', function(e){
-        e.preventDefault();
-        form.style.display = 'none';
-        successBox.classList.add('show');
-    });
-</script>
+<script src="script.js"></script>
 
 </body>
 </html>

@@ -1,7 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="c3c68b20-eeab-489c-8926-b28e8fc13a4c" name="Changes" comment="" />
+    <list default="true" id="c3c68b20-eeab-489c-8926-b28e8fc13a4c" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/script.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/script.sh" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/style.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/index.html" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -13,14 +19,14 @@
   <component name="CopilotChats">
     <option name="panelChat">
       <chat>
-        <option name="activeSessionId" value="be0561c5-fdbd-4eed-a239-c41efac00e33" />
+        <option name="activeSessionId" value="da115e0f-5928-4ac2-91d9-df93ed31e510" />
         <option name="sessions">
           <session>
             <option name="chatType" value="PANEL" />
             <option name="id" value="0837fd39-bbb2-4571-a9cb-5ffaded06103" />
             <option name="modeId" value="Agent" />
             <option name="modelType" value="builtin_family" />
-            <option name="modelValue" value="claude-haiku-4.5" />
+            <option name="modelValue" value="claude-sonnet-4.6" />
             <option name="status" value="Stopped" />
             <option name="targetType" value="LOCAL" />
           </session>
@@ -51,6 +57,39 @@
           <session>
             <option name="chatType" value="PANEL" />
             <option name="id" value="be0561c5-fdbd-4eed-a239-c41efac00e33" />
+            <option name="modeId" value="Ask" />
+            <option name="modelType" value="builtin_family" />
+            <option name="modelValue" value="auto" />
+            <option name="targetType" value="LOCAL" />
+          </session>
+          <session>
+            <option name="chatType" value="PANEL" />
+            <option name="id" value="f809f129-2f89-4e6f-a823-c706cb22cf66" />
+            <option name="modeId" value="Agent" />
+            <option name="modelType" value="builtin_family" />
+            <option name="modelValue" value="auto" />
+            <option name="targetType" value="LOCAL" />
+          </session>
+          <session>
+            <option name="chatType" value="PANEL" />
+            <option name="id" value="e6953d80-1439-4ac4-81b2-3e5eb98544f0" />
+            <option name="modeId" value="Ask" />
+            <option name="modelType" value="builtin_family" />
+            <option name="modelValue" value="auto" />
+            <option name="targetType" value="LOCAL" />
+          </session>
+          <session>
+            <option name="chatType" value="PANEL" />
+            <option name="id" value="9ca432b1-86d3-46d4-8afa-e8156e19ca71" />
+            <option name="modeId" value="Agent" />
+            <option name="modelType" value="builtin_family" />
+            <option name="modelValue" value="claude-haiku-4.5" />
+            <option name="status" value="Completed" />
+            <option name="targetType" value="LOCAL" />
+          </session>
+          <session>
+            <option name="chatType" value="PANEL" />
+            <option name="id" value="da115e0f-5928-4ac2-91d9-df93ed31e510" />
             <option name="modeId" value="Ask" />
             <option name="modelType" value="builtin_family" />
             <option name="modelValue" value="auto" />
