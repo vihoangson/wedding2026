@@ -721,6 +721,20 @@ body.hongbao-modal-open{
     line-height:1.4;
 }
 
+.qr-button-group{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:8px;
+    width:100%;
+}
+
+@media(max-width:480px){
+    .qr-button-group{
+        grid-template-columns:1fr 1fr;
+        gap:6px;
+    }
+}
+
 .qr-copy-btn{
     width:100%;
     padding:8px 12px;
@@ -742,6 +756,41 @@ body.hongbao-modal-open{
 
 .qr-copy-btn:active{
     transform:scale(0.98);
+}
+
+.qr-transfer-btn{
+    width:100%;
+    padding:8px 12px;
+    background:linear-gradient(135deg, var(--gold), #d4a574);
+    color:#fff;
+    border:none;
+    border-radius:4px;
+    font-size:11px;
+    letter-spacing:0.1em;
+    font-weight:600;
+    cursor:pointer;
+    transition:all var(--transition);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:4px;
+}
+
+.qr-transfer-btn:hover{
+    background:linear-gradient(135deg, #d4a574, var(--gold));
+    transform:translateY(-2px);
+    box-shadow:0 4px 12px rgba(201, 168, 124, 0.3);
+}
+
+.qr-transfer-btn:active{
+    transform:scale(0.98);
+}
+
+@media(max-width:480px){
+    .qr-transfer-btn{
+        font-size:10px;
+        padding:7px 10px;
+    }
 }
 
 .hongbao-modal-note{

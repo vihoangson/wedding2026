@@ -283,7 +283,10 @@ $formattedDate = DateTime::createFromFormat('Y-m-d', $wedding_date)->format('d .
                         <svg id="qrMomo" width="150" height="150"></svg>
                     </div>
                     <div class="qr-account"><?php echo htmlspecialchars($momo_account); ?></div>
-                    <button class="qr-copy-btn" onclick="copyToClipboard('<?php echo htmlspecialchars($momo_account); ?>')">Sao chép</button>
+                    <div class="qr-button-group">
+                        <button class="qr-copy-btn" onclick="copyToClipboard('<?php echo htmlspecialchars($momo_account); ?>')">Sao chép</button>
+                        <button class="qr-transfer-btn qr-transfer-momo" onclick="openMomoApp('<?php echo htmlspecialchars($momo_account); ?>')">💸 Chuyển Tiền</button>
+                    </div>
                 </div>
                 <div class="qr-item">
                     <div class="qr-label">🏦 Ngân Hàng</div>
@@ -291,7 +294,10 @@ $formattedDate = DateTime::createFromFormat('Y-m-d', $wedding_date)->format('d .
                         <svg id="qrBank" width="150" height="150"></svg>
                     </div>
                     <div class="qr-account"><?php echo htmlspecialchars($bank_account); ?></div>
-                    <button class="qr-copy-btn" onclick="copyToClipboard('<?php echo htmlspecialchars($bank_account); ?>')">Sao chép</button>
+                    <div class="qr-button-group">
+                        <button class="qr-copy-btn" onclick="copyToClipboard('<?php echo htmlspecialchars($bank_account); ?>')">Sao chép</button>
+                        <button class="qr-transfer-btn qr-transfer-bank" onclick="openBankApp('<?php echo htmlspecialchars($bank_account); ?>')">💸 Chuyển Tiền</button>
+                    </div>
                 </div>
             </div>
             <p class="hongbao-modal-note">Cảm ơn bạn đã gửi lời chúc và quà cho chúng tôi! 🙏</p>
@@ -366,13 +372,13 @@ $formattedDate = DateTime::createFromFormat('Y-m-d', $wedding_date)->format('d .
         // Set initial display to wedding month
         currentDisplayMonth = new Date(weddingDateObj.getFullYear(), weddingDateObj.getMonth(), 1);
         renderCalendar();
-        
+
         // Add event listeners
         document.getElementById('prevMonth').addEventListener('click', () => {
             currentDisplayMonth.setMonth(currentDisplayMonth.getMonth() - 1);
             renderCalendar();
         });
-        
+
         document.getElementById('nextMonth').addEventListener('click', () => {
             currentDisplayMonth.setMonth(currentDisplayMonth.getMonth() + 1);
             renderCalendar();
@@ -382,20 +388,20 @@ $formattedDate = DateTime::createFromFormat('Y-m-d', $wedding_date)->format('d .
     function renderCalendar() {
         const year = currentDisplayMonth.getFullYear();
         const month = currentDisplayMonth.getMonth();
-        
+
         // Update month/year display
         const monthNames = ['Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4', 'Tháng 5', 'Tháng 6',
                           'Tháng 7', 'Tháng 8', 'Tháng 9', 'Tháng 10', 'Tháng 11', 'Tháng 12'];
         document.getElementById('monthYearDisplay').textContent = monthNames[month] + ' ' + year;
-        
+
         // Get first day of month and number of days
         const firstDay = new Date(year, month, 1).getDay();
         const daysInMonth = new Date(year, month + 1, 0).getDate();
         const daysInPrevMonth = new Date(year, month, 0).getDate();
-        
+
         const calendarDaysContainer = document.getElementById('calendarDays');
         calendarDaysContainer.innerHTML = '';
-        
+
         // Add previous month's days
         for (let i = firstDay - 1; i >= 0; i--) {
             const dayEl = document.createElement('div');
@@ -403,29 +409,29 @@ $formattedDate = DateTime::createFromFormat('Y-m-d', $wedding_date)->format('d .
             dayEl.textContent = daysInPrevMonth - i;
             calendarDaysContainer.appendChild(dayEl);
         }
-        
+
         // Add current month's days
         for (let day = 1; day <= daysInMonth; day++) {
             const dayEl = document.createElement('div');
             dayEl.className = 'calendar-day';
             dayEl.textContent = day;
-            
+
             // Check if this is the wedding date
             const dateStr = year + '-' + String(month + 1).padStart(2, '0') + '-' + String(day).padStart(2, '0');
             if (dateStr === WEDDING_DATE_ONLY) {
                 dayEl.classList.add('wedding-date');
                 dayEl.title = 'Ngày cưới';
             }
-            
+
             // Check if this is today
             const today = new Date();
             if (day === today.getDate() && month === today.getMonth() && year === today.getFullYear()) {
                 dayEl.classList.add('today');
             }
-            
+
             calendarDaysContainer.appendChild(dayEl);
         }
-        
+
         // Add next month's days
         const totalCells = calendarDaysContainer.children.length;
         const remainingCells = 42 - totalCells; // 6 rows × 7 days
@@ -450,6 +456,64 @@ $formattedDate = DateTime::createFromFormat('Y-m-d', $wedding_date)->format('d .
 
 <!-- Hongbao Modal Script -->
 <script>
+    // Open Momo app for transfer
+    function openMomoApp(account) {
+        // Extract phone number from account (if it contains phone number)
+        const phoneMatch = account.match(/\d{10,11}/);
+        const phone = phoneMatch ? phoneMatch[0] : account;
+
+        // Try to open Momo app via deeplink
+        const momoDeeplink = `momo://app?ACTION=TRANSFER&PHONE=${phone}&AMOUNT=0`;
+
+        // Fallback URLs
+        const momoWebLink = `https://me.momo.vn`;
+
+        // Try to open app on mobile
+        if (/mobile|tablet|android|iphone/i.test(navigator.userAgent)) {
+            // Create a hidden link and click it
+            const link = document.createElement('a');
+            link.href = momoDeeplink;
+            link.style.display = 'none';
+            document.body.appendChild(link);
+            link.click();
+
+            // Wait a bit to see if app opened, if not, fallback to web
+            setTimeout(() => {
+                if (!document.hidden) {
+                    window.location.href = momoWebLink;
+                }
+                link.remove();
+            }, 1500);
+        } else {
+            // On desktop, open Momo web
+            window.open(momoWebLink, '_blank');
+        }
+    }
+
+    // Open Bank app or web for transfer
+    function openBankApp(account) {
+        // For bank transfer, we can open popular banking apps or web
+        // This is a fallback to show a message
+        const bankMessage = `Số tài khoản: ${account}\n\nVui lòng mở app ngân hàng của bạn và chuyển khoản đến số tài khoản trên.`;
+
+        if (/mobile|tablet|android|iphone/i.test(navigator.userAgent)) {
+            // On mobile, try to open a banking service
+            // Common approach: Open app store or banking website
+            const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
+
+            if (isIOS) {
+                // For iOS, try to open banking apps or fallback
+                window.location.href = 'https://www.vietcombank.com.vn';
+            } else {
+                // For Android, promote banking apps
+                window.location.href = 'https://www.vietcombank.com.vn';
+            }
+        } else {
+            // Show message on desktop
+            alert(bankMessage);
+        }
+    }
+
     function initHongbaoModal() {
         const hongbaoBtn = document.getElementById('hongbaoBtn');
         const hongbaoModal = document.getElementById('hongbaoModal');
