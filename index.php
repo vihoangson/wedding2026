@@ -4,22 +4,23 @@ require_once 'config.php';
 
 // Hàm để lấy danh sách lời chúc từ comments.json
 function getActiveComments() {
-    $commentsFile = __DIR__ . '/comments.json';
-    
+    // Đọc từ data folder (nơi save-rsvp.php lưu)
+    $commentsFile = __DIR__ . '/data/comments.json';
+
     if (!file_exists($commentsFile)) {
         return [];
     }
-    
+
     $jsonContent = file_get_contents($commentsFile);
     $data = json_decode($jsonContent, true);
-    
+
     if ($data && isset($data['comments'])) {
         // Lọc chỉ những comment có active = true
         return array_filter($data['comments'], function($comment) {
             return isset($comment['active']) && $comment['active'] === true;
         });
     }
-    
+
     return [];
 }
 

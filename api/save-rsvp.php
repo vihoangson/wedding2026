@@ -120,9 +120,9 @@ if (file_put_contents($dataFile, json_encode($saveData, JSON_PRETTY_PRINT | JSON
     $newComment = [
         'id' => uniqid('comment_', true),
         'rsvp_id' => $newRSVP['id'],
-        'sender_name' => htmlspecialchars($fullname),
+        'name' => htmlspecialchars($fullname),
         'sent_at' => date('Y-m-d H:i:s'),
-        'status' => 'inactive',
+        'active' => false,
         'message' => !empty($message) ? htmlspecialchars($message) : '',
         'ip_address' => $_SERVER['REMOTE_ADDR'] ?? '',
         'user_agent' => isset($_SERVER['HTTP_USER_AGENT']) ? substr($_SERVER['HTTP_USER_AGENT'], 0, 255) : ''
@@ -133,8 +133,8 @@ if (file_put_contents($dataFile, json_encode($saveData, JSON_PRETTY_PRINT | JSON
     if (file_exists($commentFile)) {
         $jsonContent = file_get_contents($commentFile);
         $data = json_decode($jsonContent, true);
-        if ($data && isset($data['comments_list'])) {
-            $commentsData = $data['comments_list'];
+        if ($data && isset($data['comments'])) {
+            $commentsData = $data['comments'];
         }
     }
 
@@ -145,7 +145,7 @@ if (file_put_contents($dataFile, json_encode($saveData, JSON_PRETTY_PRINT | JSON
     $saveComments = [
         'total_comments' => count($commentsData),
         'last_updated' => date('Y-m-d H:i:s'),
-        'comments_list' => $commentsData
+        'comments' => $commentsData
     ];
 
     // Lưu comments vào file

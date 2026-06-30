@@ -2,18 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c3c68b20-eeab-489c-8926-b28e8fc13a4c" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/DATA_FOLDER_UPDATE.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/DATA_FOLDER_UPDATE.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DATA_SETUP_DONE.txt" beforeDir="false" afterPath="$PROJECT_DIR$/docs/DATA_SETUP_DONE.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/LOGIN_FIXED.txt" beforeDir="false" afterPath="$PROJECT_DIR$/docs/LOGIN_FIXED.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/QUICK_SUMMARY.txt" beforeDir="false" afterPath="$PROJECT_DIR$/docs/QUICK_SUMMARY.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/comments.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/dashboard/00_START_HERE.txt" beforeDir="false" afterPath="$PROJECT_DIR$/docs/00_START_HERE.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dashboard/COMPLETION_REPORT.txt" beforeDir="false" afterPath="$PROJECT_DIR$/docs/COMPLETION_REPORT.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dashboard/INSTALL_GUIDE.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/INSTALL_GUIDE.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dashboard/LOGIN_FIX_COMPLETE.txt" beforeDir="false" afterPath="$PROJECT_DIR$/docs/LOGIN_FIX_COMPLETE.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dashboard/SUMMARY.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/SUMMARY.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dashboard/TESTING_GUIDE.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/TESTING_GUIDE.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data.json" beforeDir="false" />
+      <change afterPath="$PROJECT_DIR$/test-submit.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/view-data.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/save-rsvp.php" beforeDir="false" afterPath="$PROJECT_DIR$/api/save-rsvp.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -199,6 +191,11 @@
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
+  <component name="Push.Settings">
+    <force-push-targets>
+      <force-push-target remote-path="origin" branch="wedding" />
+    </force-push-targets>
+  </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="D:\xampp8\htdocs\vhosts\weddingpage\dashboard" />
