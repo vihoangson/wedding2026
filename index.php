@@ -459,21 +459,32 @@ $formattedDate = DateTime::createFromFormat('Y-m-d', $wedding_date)->format('d .
         if (hongbaoBtn && hongbaoModal) {
             hongbaoBtn.addEventListener('click', () => {
                 hongbaoModal.classList.add('active');
+                document.body.classList.add('hongbao-modal-open');
+                // Scroll modal to top when opened
+                const modalContent = document.querySelector('.hongbao-modal-content');
+                if (modalContent) {
+                    setTimeout(() => {
+                        modalContent.scrollTop = 0;
+                    }, 50);
+                }
                 generateQRCodes();
             });
 
             hongbaoClose.addEventListener('click', () => {
                 hongbaoModal.classList.remove('active');
+                document.body.classList.remove('hongbao-modal-open');
             });
 
             hongbaoOverlay.addEventListener('click', () => {
                 hongbaoModal.classList.remove('active');
+                document.body.classList.remove('hongbao-modal-open');
             });
 
             // Close on Escape key
             document.addEventListener('keydown', (e) => {
                 if (e.key === 'Escape' && hongbaoModal.classList.contains('active')) {
                     hongbaoModal.classList.remove('active');
+                    document.body.classList.remove('hongbao-modal-open');
                 }
             });
         }
