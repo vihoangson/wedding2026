@@ -2,7 +2,9 @@
 
 // ===== COUNTDOWN TIMER =====
 function initCountdown() {
-    const weddingDate = new Date('2026-12-13T11:30:00').getTime();
+    // Sử dụng biến WEDDING_DATE từ index.php
+    const weddingDateString = typeof WEDDING_DATE !== 'undefined' ? WEDDING_DATE : '2026-12-13T11:30:00';
+    const weddingDate = new Date(weddingDateString).getTime();
 
     function updateCountdown() {
         const now = new Date().getTime();

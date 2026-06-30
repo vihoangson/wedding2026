@@ -1,0 +1,53 @@
+{
+  "comments": [
+    {
+      "id": 1,
+      "name": "Nguyễn Văn A",
+      "message": "Chúc 2 người hạnh phúc bên nhau!",
+      "active": true
+    },
+    {
+      "id": 2,
+      "name": "Trần Thị B",
+      "message": "Đám cưới tuyệt vời! Chúc hai bạn luôn yêu thương nhau 💕",
+      "active": true
+    },
+    {
+      "id": 3,
+      "name": "Lê Văn C",
+      "message": "Sớm có con yêu, hạnh phúc mãi mãi!",
+      "active": true
+    },
+    {
+      "id": 4,
+      "name": "Phạm Văn D",
+      "message": "Chúc mừng hai bạn kết hôn! May mắn và yêu thương theo bước chân của hai bạn.",
+      "active": false
+    },
+    {
+      "id": 5,
+      "name": "Hoàng Thị E",
+      "message": "Đó là niệm vui chứng thực bằng tình yêu của hai bạn. Chúc mừng!",
+      "active": true
+    },
+    {
+      "id": 6,
+      "name": "Đinh Văn F",
+      "message": "Bí quyết hạnh phúc là tình yêu, niềm tin và sự chấp nhận. Chúc hai bạn có tất cả!",
+      "active": true
+    },
+    {
+      "id": 7,
+      "name": "Tô Thị G",
+      "message": "Tình yêu không phải là tìm ai phù hợp. Tình yêu là tự làm cho người kia phù hợp. Chúc hai bạn!",
+      "active": false
+    },
+    {
+      "id": 8,
+      "name": "Vũ Văn H",
+      "message": "Hôn nhân là hai linh hồn bước vào một bước nhảy. Chúc hai bạn nhảy đẹp!",
+      "active": true
+    }
+  ]
+}
+
