@@ -191,23 +191,62 @@ form.addEventListener('submit', function(e){
         return;
     }
 
-    // Validate email if provided
+    // Prepare data to send
     const phone = document.getElementById('phone').value.trim();
-    // Không validate phone - bỏ check
+    const message = document.getElementById('message').value.trim();
 
-    // Show success message
-    form.style.display = 'none';
-    successBox.classList.add('show');
+    const dataToSend = {
+        fullname: fullname,
+        phone: phone,
+        guests: parseInt(guests),
+        attend: attend.value,
+        message: message
+    };
 
-    // Trigger confetti effect
-    createConfetti();
+    // Disable submit button
+    const submitBtn = form.querySelector('button.submit');
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Đang gửi...';
 
-    // Optional: Reset form after a delay
-    setTimeout(() => {
-        form.reset();
-        form.style.display = 'block';
-        successBox.classList.remove('show');
-    }, 4000);
+    // Send data to API
+    fetch('api/save-rsvp.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(dataToSend)
+    })
+    .then(response => response.json())
+    .then(result => {
+        if (result.success) {
+            // Show success message
+            form.style.display = 'none';
+            successBox.classList.add('show');
+
+            // Trigger confetti effect
+            createConfetti();
+
+            // Reset form after a delay
+            setTimeout(() => {
+                form.reset();
+                form.style.display = 'block';
+                successBox.classList.remove('show');
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Gửi xác nhận';
+            }, 4000);
+        } else {
+            // Show error message
+            alert('Lỗi: ' + result.message);
+            submitBtn.disabled = false;
+            submitBtn.textContent = 'Gửi xác nhận';
+        }
+    })
+    .catch(error => {
+        console.error('Lỗi:', error);
+        alert('Lỗi kết nối. Vui lòng thử lại.');
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Gửi xác nhận';
+    });
 });
 
 function validateEmail(email) {

@@ -2,11 +2,16 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c3c68b20-eeab-489c-8926-b28e8fc13a4c" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/CONFIGURE_GUIDE.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/MIGRATION_GUIDE.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/API_SAVE_DATA_GUIDE.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/COMPLETION_SUMMARY.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/RSVP_DATA_MANAGEMENT.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/RSVP_SAVE_DATA_SUMMARY.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/api/export-csv.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/api/save-rsvp.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/api/view-data.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/copilotDiffState.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/copilotDiffState.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/delopy.sh" beforeDir="false" afterPath="$PROJECT_DIR$/delopy.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/script.js" beforeDir="false" afterPath="$PROJECT_DIR$/script.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
