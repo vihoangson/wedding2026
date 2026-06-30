@@ -348,7 +348,7 @@ $formattedDate = DateTime::createFromFormat('Y-m-d', $wedding_date)->format('d .
             </div>
             <div class="hongbao-qr-container">
                 <div class="qr-item">
-                    <div class="qr-label">💝 Chuyển Khoản Quà Cưới</div>
+                    <div class="qr-label">💝 Quà Cưới</div>
                     <div class="qr-code qr-code-image">
                         <img src="https://hn.ss.bfcplatform.vn/talentdad/ShareX/2026/06/chrome_kKmxGvRgIL.png" alt="QR code chuyển khoản nhanh" width="200" height="200">
                     </div>
