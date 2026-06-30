@@ -45,9 +45,9 @@ if (!in_array($attend, ['yes', 'no'])) {
 }
 
 // Validate phone nếu có
-if (!empty($phone) && !preg_match('/^[0-9\-\+\s\(\)]{9,15}$/', $phone)) {
-    die(respondJSON(false, 'Số điện thoại không hợp lệ'));
-}
+//if (!empty($phone) && !preg_match('/^[0-9\-\+\s\(\)]{9,15}$/', $phone)) {
+//    die(respondJSON(false, 'Số điện thoại không hợp lệ'));
+//}
 
 // Đường dẫn file data.json
 $dataFile = __DIR__ . '/../data.json';
