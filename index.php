@@ -213,13 +213,6 @@ $formattedDate = DateTime::createFromFormat('Y-m-d', $wedding_date)->format('d .
                 </svg>
                 Xem Thiệp Mời
             </a>
-            <a href="/dashboard/" class="link-btn link-btn-secondary">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
-                    <polyline points="9 22 9 12 15 12 15 22"/>
-                </svg>
-                Bảng Điều Khiển
-            </a>
             <a href="#rsvpForm" class="link-btn link-btn-accent">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
@@ -438,7 +431,7 @@ $formattedDate = DateTime::createFromFormat('Y-m-d', $wedding_date)->format('d .
             </svg>
             <span class="bottom-nav-dot"></span>
         </a>
-        <a href="#calendarSection" class="bottom-nav-item" data-target="#calendarSection" aria-label="Lịch cưới">
+        <a href="/dashboard/" class="bottom-nav-item" data-target="#calendarSection" aria-label="Lịch cưới">
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M18 2v2M6 2v2M3 8h18M5 4h14a2 2 0 0 1 2 2v13a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z"/>
             </svg>
