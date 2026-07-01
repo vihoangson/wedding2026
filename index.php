@@ -53,7 +53,7 @@ $formattedDate = DateTime::createFromFormat('Y-m-d', $wedding_date)->format('d .
 </head>
 <body>
 
-<div class="invitation" role="main" aria-label="Trang thiệp mời cưới">
+<div class="invitation" role="main" aria-label="Trang thiệp mời cưới" id="home">
     <div class="eyebrow">Trân trọng kính mời</div>
     <div class="monogram"><?php echo htmlspecialchars($groom_initial); ?> &nbsp;•&nbsp; <?php echo htmlspecialchars($bride_initial); ?></div>
 
@@ -154,7 +154,7 @@ $formattedDate = DateTime::createFromFormat('Y-m-d', $wedding_date)->format('d .
         </div>
     </div>
 
-    <div class="gallery-section">
+    <div class="gallery-section" id="gallerySection">
         <div class="divider" aria-hidden="true">
             <div class="line"></div>
             <svg width="22" height="14" viewBox="0 0 22 14" fill="none">
@@ -231,7 +231,7 @@ $formattedDate = DateTime::createFromFormat('Y-m-d', $wedding_date)->format('d .
     </div>
 
     <!-- Block Lời Nhắn -->
-    <div class="wishes-section">
+    <div class="wishes-section" id="wishesSection">
         <div class="divider" aria-hidden="true">
             <div class="line"></div>
             <svg width="22" height="14" viewBox="0 0 22 14" fill="none">
@@ -278,7 +278,7 @@ $formattedDate = DateTime::createFromFormat('Y-m-d', $wedding_date)->format('d .
     </div>
 
     <!-- Block Calendar -->
-    <div class="calendar-section">
+    <div class="calendar-section" id="calendarSection">
         <div class="divider" aria-hidden="true">
             <div class="line"></div>
             <svg width="22" height="14" viewBox="0 0 22 14" fill="none">
@@ -406,6 +406,45 @@ $formattedDate = DateTime::createFromFormat('Y-m-d', $wedding_date)->format('d .
 
     <div class="footer-note"><?php echo htmlspecialchars($footer_initials); ?> — <?php echo htmlspecialchars($footer_date); ?></div>
 </div>
+
+<!-- Bottom Navigation Bar (dùng chung cho mobile & desktop) -->
+<nav class="bottom-nav" id="bottomNav" aria-label="Điều hướng nhanh">
+    <div class="bottom-nav-bar">
+        <a href="#home" class="bottom-nav-item active" data-target="#home" aria-label="Trang chủ">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M3 10.5L12 3l9 7.5"/>
+                <path d="M5 9.5V20a1 1 0 0 0 1 1h4v-6h4v6h4a1 1 0 0 0 1-1V9.5"/>
+            </svg>
+            <span class="bottom-nav-dot"></span>
+        </a>
+        <a href="#gallerySection" class="bottom-nav-item" data-target="#gallerySection" aria-label="Ảnh cưới">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="11" cy="11" r="7"/>
+                <path d="M21 21l-4.3-4.3"/>
+            </svg>
+            <span class="bottom-nav-dot"></span>
+        </a>
+        <a href="#wishesSection" class="bottom-nav-item" data-target="#wishesSection" aria-label="Lời chúc">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 21s-7.2-4.5-9.6-9C.8 8.6 2.3 5 5.8 5c2 0 3.4 1 4.2 2.3C10.8 6 12.2 5 14.2 5c3.5 0 5 3.6 3.4 7-2.4 4.5-9.6 9-9.6 9z"/>
+            </svg>
+            <span class="bottom-nav-dot"></span>
+        </a>
+        <a href="#calendarSection" class="bottom-nav-item" data-target="#calendarSection" aria-label="Lịch cưới">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M18 2v2M6 2v2M3 8h18M5 4h14a2 2 0 0 1 2 2v13a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z"/>
+            </svg>
+            <span class="bottom-nav-dot"></span>
+        </a>
+        <a href="#rsvpForm" class="bottom-nav-item" data-target="#rsvpForm" aria-label="Xác nhận tham dự">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="8" r="4"/>
+                <path d="M4 21c0-4 3.6-6.5 8-6.5s8 2.5 8 6.5"/>
+            </svg>
+            <span class="bottom-nav-dot"></span>
+        </a>
+    </div>
+</nav>
 
 <!-- UPDATE script.js để sử dụng ngày cưới từ PHP -->
 <script>
@@ -644,6 +683,50 @@ $formattedDate = DateTime::createFromFormat('Y-m-d', $wedding_date)->format('d .
 </script>
 
 <script src="script.js"></script>
+
+<!-- Bottom Navigation Script -->
+<script>
+    (function () {
+        const navItems = Array.from(document.querySelectorAll('.bottom-nav-item'));
+        if (!navItems.length) return;
+
+        const targets = navItems
+            .map((item) => document.querySelector(item.getAttribute('data-target')))
+            .filter(Boolean);
+
+        function setActive(id) {
+            navItems.forEach((item) => {
+                item.classList.toggle('active', item.getAttribute('data-target') === '#' + id);
+            });
+        }
+
+        // Smooth scroll with offset so content isn't hidden behind the fixed bar
+        navItems.forEach((item) => {
+            item.addEventListener('click', (e) => {
+                e.preventDefault();
+                const target = document.querySelector(item.getAttribute('data-target'));
+                if (!target) return;
+                const navHeight = document.getElementById('bottomNav').offsetHeight;
+                const top = target.getBoundingClientRect().top + window.pageYOffset - (navHeight + 16);
+                window.scrollTo({ top, behavior: 'smooth' });
+                setActive(target.id);
+            });
+        });
+
+        // Highlight active item while scrolling
+        if ('IntersectionObserver' in window) {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting) {
+                        setActive(entry.target.id);
+                    }
+                });
+            }, { rootMargin: '-45% 0px -45% 0px', threshold: 0 });
+
+            targets.forEach((target) => observer.observe(target));
+        }
+    })();
+</script>
 
 </body>
 </html>

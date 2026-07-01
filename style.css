@@ -1856,3 +1856,77 @@ button.submit:active{
     *{ transition:none !important; animation: none !important; }
 }
 
+
+/* ===== Bottom Navigation Bar (mobile & desktop dùng chung) ===== */
+.bottom-nav{
+    position:fixed;
+    left:0;
+    right:0;
+    bottom:0;
+    z-index:1000;
+    display:flex;
+    justify-content:center;
+    padding:14px 16px calc(14px + env(safe-area-inset-bottom));
+    background:linear-gradient(180deg, rgba(184,99,111,0) 0%, var(--rose) 45%);
+    pointer-events:none;
+}
+.bottom-nav-bar{
+    pointer-events:auto;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:6px;
+    width:100%;
+    max-width:360px;
+    background:#fff;
+    border-radius:999px;
+    padding:10px 22px;
+    box-shadow:0 12px 30px -8px rgba(142,68,82,0.45), 0 0 0 1px rgba(255,255,255,0.5) inset;
+}
+.bottom-nav-item{
+    position:relative;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    color:var(--ink-soft);
+    text-decoration:none;
+    padding:6px 4px;
+    transition:color var(--transition);
+}
+.bottom-nav-item svg{
+    display:block;
+    transition:transform var(--transition);
+}
+.bottom-nav-item .bottom-nav-dot{
+    margin-top:6px;
+    width:16px;
+    height:3px;
+    border-radius:3px;
+    background:transparent;
+    transition:background var(--transition);
+}
+.bottom-nav-item.active{
+    color:var(--rose-deep);
+}
+.bottom-nav-item.active svg{
+    transform:translateY(-1px);
+}
+.bottom-nav-item.active .bottom-nav-dot{
+    background:var(--rose-deep);
+}
+.bottom-nav-item:hover{
+    color:var(--rose-deep);
+}
+
+/* Chừa chỗ để nội dung không bị thanh menu che mất */
+body{
+    padding-bottom:104px;
+}
+
+@media (min-width:641px){
+    .bottom-nav-bar{
+        max-width:420px;
+        padding:12px 28px;
+    }
+}
