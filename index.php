@@ -409,6 +409,14 @@ $formattedDate = DateTime::createFromFormat('Y-m-d', $wedding_date)->format('d .
 
 <!-- Bottom Navigation Bar (dùng chung cho mobile & desktop) -->
 <nav class="bottom-nav" id="bottomNav" aria-label="Điều hướng nhanh">
+    <button type="button" class="bottom-nav-toggle" id="bottomNavToggle" aria-label="Mở menu điều hướng" aria-expanded="false">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="3" width="7" height="7" rx="1.5"/>
+            <rect x="3" y="14" width="7" height="7" rx="1.5"/>
+            <rect x="14" y="14" width="7" height="7" rx="1.5"/>
+            <rect x="14.5" y="3.5" width="7" height="7" rx="1.5" transform="rotate(45 18 7)"/>
+        </svg>
+    </button>
     <div class="bottom-nav-bar">
         <a href="#home" class="bottom-nav-item active" data-target="#home" aria-label="Trang chủ">
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
@@ -688,6 +696,17 @@ $formattedDate = DateTime::createFromFormat('Y-m-d', $wedding_date)->format('d .
 <script>
     (function () {
         const navItems = Array.from(document.querySelectorAll('.bottom-nav-item'));
+        const bottomNav = document.getElementById('bottomNav');
+        const toggleBtn = document.getElementById('bottomNavToggle');
+
+        if (bottomNav && toggleBtn) {
+            toggleBtn.addEventListener('click', () => {
+                const isOpen = bottomNav.classList.toggle('open');
+                toggleBtn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+                toggleBtn.setAttribute('aria-label', isOpen ? 'Đóng menu điều hướng' : 'Mở menu điều hướng');
+            });
+        }
+
         if (!navItems.length) return;
 
         const targets = navItems
@@ -710,6 +729,15 @@ $formattedDate = DateTime::createFromFormat('Y-m-d', $wedding_date)->format('d .
                 const top = target.getBoundingClientRect().top + window.pageYOffset - (navHeight + 16);
                 window.scrollTo({ top, behavior: 'smooth' });
                 setActive(target.id);
+
+                // Đóng menu sau khi chọn mục
+                if (bottomNav) {
+                    bottomNav.classList.remove('open');
+                    if (toggleBtn) {
+                        toggleBtn.setAttribute('aria-expanded', 'false');
+                        toggleBtn.setAttribute('aria-label', 'Mở menu điều hướng');
+                    }
+                }
             });
         });
 

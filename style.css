@@ -1860,15 +1860,38 @@ button.submit:active{
 /* ===== Bottom Navigation Bar (mobile & desktop dùng chung) ===== */
 .bottom-nav{
     position:fixed;
-    left:0;
-    right:0;
-    bottom:0;
+    right:20px;
+    bottom:calc(20px + env(safe-area-inset-bottom));
     z-index:1000;
     display:flex;
-    justify-content:center;
-    padding:14px 16px calc(14px + env(safe-area-inset-bottom));
-    background:linear-gradient(180deg, rgba(184,99,111,0) 0%, var(--rose) 45%);
+    flex-direction:column;
+    align-items:flex-end;
     pointer-events:none;
+}
+.bottom-nav-toggle{
+    pointer-events:auto;
+    width:44px;
+    height:44px;
+    margin-bottom:10px;
+    border:none;
+    border-radius:50%;
+    background:#fff;
+    color:var(--rose-deep);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    cursor:pointer;
+    box-shadow:0 10px 24px -8px rgba(142,68,82,0.45), 0 0 0 1px rgba(255,255,255,0.5) inset;
+    transition:transform var(--transition), background var(--transition);
+}
+.bottom-nav-toggle svg{
+    transition:transform var(--transition);
+}
+.bottom-nav-toggle:hover{
+    background:var(--blush);
+}
+.bottom-nav.open .bottom-nav-toggle svg{
+    transform:rotate(90deg);
 }
 .bottom-nav-bar{
     pointer-events:auto;
@@ -1876,12 +1899,27 @@ button.submit:active{
     align-items:center;
     justify-content:space-between;
     gap:6px;
-    width:100%;
-    max-width:360px;
+    width:min(360px, calc(100vw - 40px));
     background:#fff;
     border-radius:999px;
     padding:10px 22px;
     box-shadow:0 12px 30px -8px rgba(142,68,82,0.45), 0 0 0 1px rgba(255,255,255,0.5) inset;
+    max-height:0;
+    opacity:0;
+    transform:translateY(12px);
+    overflow:hidden;
+    padding-top:0;
+    padding-bottom:0;
+    pointer-events:none;
+    transition:max-height var(--transition), opacity var(--transition), transform var(--transition), padding var(--transition);
+}
+.bottom-nav.open .bottom-nav-bar{
+    max-height:100px;
+    opacity:1;
+    transform:translateY(0);
+    padding-top:10px;
+    padding-bottom:10px;
+    pointer-events:auto;
 }
 .bottom-nav-item{
     position:relative;
@@ -1919,14 +1957,14 @@ button.submit:active{
     color:var(--rose-deep);
 }
 
-/* Chừa chỗ để nội dung không bị thanh menu che mất */
+/* Chừa chỗ để nội dung không bị nút mở menu che mất */
 body{
-    padding-bottom:104px;
+    padding-bottom:80px;
 }
 
 @media (min-width:641px){
     .bottom-nav-bar{
-        max-width:420px;
+        width:min(420px, calc(100vw - 40px));
         padding:12px 28px;
     }
 }
