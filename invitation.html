@@ -1,0 +1,215 @@
+
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<title>Hoàng Sơn & Yến Nhi</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Italiana&family=Jost:wght@300;400;500&display=swap');
+
+  :root{
+    --cream:#faf5ec;
+    --blush:#e8c4b8;
+    --terracotta:#b8734f;
+    --sage:#8a9678;
+    --ink:#3a3128;
+    --gold:#c9a45c;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{
+    background: radial-gradient(ellipse at top, #fffdf9, var(--cream) 60%);
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-family:'Jost', sans-serif;
+    padding:40px 20px;
+  }
+
+  .card{
+    position:relative;
+    width:440px;
+    max-width:100%;
+    background:#fffefb;
+    border:1px solid rgba(184,115,79,0.25);
+    padding:56px 40px 44px;
+    text-align:center;
+    box-shadow: 0 30px 60px -20px rgba(58,49,40,0.25), 0 0 0 1px rgba(255,255,255,0.5) inset;
+  }
+
+  .card::before{
+    content:"";
+    position:absolute;
+    inset:10px;
+    border:1px solid var(--gold);
+    opacity:0.5;
+    pointer-events:none;
+  }
+
+  .corner{
+    position:absolute;
+    width:70px;
+    height:70px;
+    opacity:0.9;
+  }
+  .corner svg{ width:100%; height:100%; }
+  .tl{ top:-4px; left:-4px; }
+  .tr{ top:-4px; right:-4px; transform:scaleX(-1); }
+  .bl{ bottom:-4px; left:-4px; transform:scaleY(-1); }
+  .br{ bottom:-4px; right:-4px; transform:scale(-1,-1); }
+
+  .eyebrow{
+    font-family:'Jost', sans-serif;
+    font-size:11px;
+    letter-spacing:5px;
+    text-transform:uppercase;
+    color:var(--terracotta);
+    margin-bottom:14px;
+  }
+
+  .names{
+    font-family:'Italiana', serif;
+    font-size:34px;
+    color:var(--ink);
+    line-height:1.3;
+    letter-spacing:1px;
+  }
+
+  .amp{
+    display:block;
+    font-family:'Cormorant Garamond', serif;
+    font-style:italic;
+    font-size:22px;
+    color:var(--sage);
+    margin:4px 0;
+  }
+
+  .divider{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:12px;
+    margin:20px auto 26px;
+    width:70%;
+  }
+  .divider .line{ flex:1; height:1px; background:linear-gradient(90deg, transparent, var(--gold), transparent); }
+  .divider .leaf{ width:14px; height:14px; color:var(--sage); }
+
+  .qr-wrap{
+    position:relative;
+    width:220px;
+    height:220px;
+    margin:0 auto 22px;
+    background:#fff;
+    padding:14px;
+    border:1px solid rgba(138,150,120,0.4);
+  }
+  .qr-wrap img{
+    width:100%;
+    height:100%;
+    display:block;
+  }
+  .qr-frame-corner{
+    position:absolute;
+    width:20px;
+    height:20px;
+    border-color:var(--terracotta);
+  }
+  .qr-frame-corner.tl2{ top:-6px; left:-6px; border-top:2px solid; border-left:2px solid; }
+  .qr-frame-corner.tr2{ top:-6px; right:-6px; border-top:2px solid; border-right:2px solid; }
+  .qr-frame-corner.bl2{ bottom:-6px; left:-6px; border-bottom:2px solid; border-left:2px solid; }
+  .qr-frame-corner.br2{ bottom:-6px; right:-6px; border-bottom:2px solid; border-right:2px solid; }
+
+  .caption{
+    font-family:'Cormorant Garamond', serif;
+    font-style:italic;
+    font-size:17px;
+    color:var(--ink);
+    opacity:0.85;
+    margin-bottom:6px;
+  }
+  .sub{
+    font-size:10px;
+    letter-spacing:3px;
+    text-transform:uppercase;
+    color:var(--sage);
+  }
+
+  .date-row{
+    margin-top:22px;
+    font-family:'Cormorant Garamond', serif;
+    font-size:15px;
+    letter-spacing:2px;
+    color:var(--terracotta);
+  }
+</style>
+</head>
+<body>
+  <div class="card">
+    <div class="corner tl">
+      <svg viewBox="0 0 70 70" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M2 2 Q2 40 40 40" stroke="#c9a45c" stroke-width="1.2" opacity="0.7"/>
+        <path d="M2 2 C 20 6, 6 20, 2 2 Z" fill="#8a9678" opacity="0.5"/>
+        <circle cx="14" cy="10" r="3" fill="#e8c4b8"/>
+        <path d="M2 20 C 14 20, 14 8, 2 2" stroke="#b8734f" stroke-width="1" opacity="0.6"/>
+      </svg>
+    </div>
+    <div class="corner tr">
+      <svg viewBox="0 0 70 70" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M2 2 Q2 40 40 40" stroke="#c9a45c" stroke-width="1.2" opacity="0.7"/>
+        <path d="M2 2 C 20 6, 6 20, 2 2 Z" fill="#8a9678" opacity="0.5"/>
+        <circle cx="14" cy="10" r="3" fill="#e8c4b8"/>
+        <path d="M2 20 C 14 20, 14 8, 2 2" stroke="#b8734f" stroke-width="1" opacity="0.6"/>
+      </svg>
+    </div>
+    <div class="corner bl">
+      <svg viewBox="0 0 70 70" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M2 2 Q2 40 40 40" stroke="#c9a45c" stroke-width="1.2" opacity="0.7"/>
+        <path d="M2 2 C 20 6, 6 20, 2 2 Z" fill="#8a9678" opacity="0.5"/>
+        <circle cx="14" cy="10" r="3" fill="#e8c4b8"/>
+        <path d="M2 20 C 14 20, 14 8, 2 2" stroke="#b8734f" stroke-width="1" opacity="0.6"/>
+      </svg>
+    </div>
+    <div class="corner br">
+      <svg viewBox="0 0 70 70" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M2 2 Q2 40 40 40" stroke="#c9a45c" stroke-width="1.2" opacity="0.7"/>
+        <path d="M2 2 C 20 6, 6 20, 2 2 Z" fill="#8a9678" opacity="0.5"/>
+        <circle cx="14" cy="10" r="3" fill="#e8c4b8"/>
+        <path d="M2 20 C 14 20, 14 8, 2 2" stroke="#b8734f" stroke-width="1" opacity="0.6"/>
+      </svg>
+    </div>
+
+    <div class="eyebrow">Save The Date</div>
+    <div class="names">Hoàng Sơn<span class="amp">&</span>Yến Nhi</div>
+
+    <div class="divider">
+      <span class="line"></span>
+      <svg class="leaf" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C7 2 3 8 3 13c0 5 4 8 9 9 5-1 9-4 9-9 0-5-4-11-9-11zm0 4c2 3 3 6 3 8 0 3-1.5 5-3 6-1.5-1-3-3-3-6 0-2 1-5 3-8z"/></svg>
+      <span class="line"></span>
+    </div>
+
+    <div class="qr-wrap">
+      <div class="qr-frame-corner tl2"></div>
+      <div class="qr-frame-corner tr2"></div>
+      <div class="qr-frame-corner bl2"></div>
+      <div class="qr-frame-corner br2"></div>
+      <img id="qrImg" src="" alt="QR Code thiệp cưới">
+    </div>
+
+    <div class="caption">Quét mã để xem thiệp mời</div>
+    <div class="sub">Scan For Invitation</div>
+
+    <div class="date-row">— Trân Trọng Kính Mời —</div>
+  </div>
+
+<script>
+const QR_DATA = "data:image/png;base64,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";
+document.getElementById('qrImg').src = QR_DATA;
+
+document.body.style.cursor = 'pointer';
+document.body.addEventListener('click', function(){
+  window.location.href = '/';
+});
+</script>
+</body>
+</html>
