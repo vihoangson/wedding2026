@@ -195,6 +195,41 @@ $formattedDate = DateTime::createFromFormat('Y-m-d', $wedding_date)->format('d .
         </div>
     </div>
 
+    <!-- Block Links Section -->
+    <div class="links-section">
+        <div class="divider" aria-hidden="true">
+            <div class="line"></div>
+            <svg width="22" height="14" viewBox="0 0 22 14" fill="none">
+                <path d="M11 13C11 13 1 8 1 4.2C1 1.6 3.2 0.8 4.8 1.6C6.4 2.4 7.4 4 11 7.4C14.6 4 15.6 2.4 17.2 1.6C18.8 0.8 21 1.6 21 4.2C21 8 11 13 11 13Z" fill="#c9a87c"/>
+            </svg>
+            <div class="line"></div>
+        </div>
+        <div class="links-title">Thêm thông tin</div>
+        <div class="links-container">
+            <a href="/invitation.html" class="link-btn link-btn-primary" target="_blank" rel="noopener noreferrer">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M7 18c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0-4.5c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0-4.5c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/>
+                    <path d="M19 3H7v4.5"/>
+                </svg>
+                Xem Thiệp Mời
+            </a>
+            <a href="/dashboard/" class="link-btn link-btn-secondary">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+                    <polyline points="9 22 9 12 15 12 15 22"/>
+                </svg>
+                Bảng Điều Khiển
+            </a>
+            <a href="#rsvpForm" class="link-btn link-btn-accent">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+                    <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+                </svg>
+                Xác Nhận Tham Dự
+            </a>
+        </div>
+    </div>
+
     <!-- Block Lời Nhắn -->
     <div class="wishes-section">
         <div class="divider" aria-hidden="true">
