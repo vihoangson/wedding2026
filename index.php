@@ -39,12 +39,15 @@ $inviterName = ($decodedInviterName !== '' && $decodedInviterName !== false)
 
 // Khóa trang chủ: nếu không có ?inviter= thì chuyển sang trang chờ (thiếu lời mời);
 // nếu có ?inviter= nhưng giải mã/kiểm tra toàn vẹn thất bại (bị sửa/giả mạo) thì báo lỗi riêng.
+// Lưu ý: PHẢI dùng đường dẫn tuyệt đối (bắt đầu bằng "/"), vì nếu dùng đường dẫn tương đối
+// "waiting.php" thì khi request đến từ /invite/<ma>, trình duyệt sẽ resolve thành
+// /invite/waiting.php và bị RewriteRule ^invite/... bắt lại => redirect loop (ERR_TOO_MANY_REDIRECTS).
 if ($rawInviterParam === '') {
-    header('Location: waiting.php?reason=missing');
+    header('Location: /waiting.php?reason=missing');
     exit;
 }
 if ($decodedInviterName === false || $inviterName === '') {
-    header('Location: waiting.php?reason=invalid');
+    header('Location: /waiting.php?reason=invalid');
     exit;
 }
 
