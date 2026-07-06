@@ -34,6 +34,13 @@ $rawInviterParam = isset($_GET['inviter']) ? trim($_GET['inviter']) : '';
 $decodedInviterName = $rawInviterParam !== '' ? decodeInviterName($rawInviterParam, $inviter_secret_key) : '';
 $inviterName = $decodedInviterName !== '' ? htmlspecialchars($decodedInviterName, ENT_QUOTES, 'UTF-8') : '';
 
+// Khóa trang chủ: nếu không có tên người mời hợp lệ (không có ?inviter= hoặc giải mã thất bại)
+// thì chuyển hướng sang trang chờ, không cho xem thiệp trực tiếp.
+if ($inviterName === '') {
+    header('Location: waiting.php');
+    exit;
+}
+
 // Hàm tính toán tên ngày trong tuần
 function getDayName($dateString) {
     $date = new DateTime($dateString);
