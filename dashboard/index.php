@@ -159,6 +159,41 @@ document.getElementById('togglePassword').addEventListener('click', function() {
 </nav>
 
 <div class="container-fluid py-4">
+    <!-- Invite Link Generator -->
+    <div class="row mb-4">
+        <div class="col-lg-12 mb-4">
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-white border-bottom py-3">
+                    <h5 class="mb-0 fw-bold">
+                        <i class="bi bi-link-45deg"></i> Tạo Link Mời Cá Nhân Hóa
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="row g-2 align-items-end">
+                        <div class="col-md-8">
+                            <label for="inviterName" class="form-label fw-500">Tên người được mời</label>
+                            <input type="text" class="form-control" id="inviterName" placeholder="VD: Anh Nguyễn Văn A">
+                        </div>
+                        <div class="col-md-4">
+                            <button type="button" class="btn btn-wedding w-100 fw-600" id="generateLinkBtn">
+                                <i class="bi bi-magic"></i> Tạo Link
+                            </button>
+                        </div>
+                    </div>
+                    <div class="mt-3 d-none" id="generatedLinkWrap">
+                        <label class="form-label fw-500">Link để gửi</label>
+                        <div class="input-group">
+                            <input type="text" class="form-control" id="generatedLink" readonly>
+                            <button class="btn btn-outline-secondary" type="button" id="copyLinkBtn">
+                                <i class="bi bi-clipboard"></i> Copy
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Stats -->
     <div class="row mb-4">
         <div class="col-md-3 mb-3">

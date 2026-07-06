@@ -29,6 +29,72 @@ function setupEventListeners() {
     if (commentsHeader) {
         commentsHeader.addEventListener('click', toggleCommentsTable);
     }
+
+    // Invite link generator
+    const generateLinkBtn = document.getElementById('generateLinkBtn');
+    const inviterNameInput = document.getElementById('inviterName');
+    const copyLinkBtn = document.getElementById('copyLinkBtn');
+
+    if (generateLinkBtn) {
+        generateLinkBtn.addEventListener('click', generateInviteLink);
+    }
+    if (inviterNameInput) {
+        inviterNameInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                generateInviteLink();
+            }
+        });
+    }
+    if (copyLinkBtn) {
+        copyLinkBtn.addEventListener('click', copyInviteLink);
+    }
+}
+
+// Tạo link mời cá nhân hóa dạng abc.com/invite/<ten-da-encode>
+function generateInviteLink() {
+    const nameInput = document.getElementById('inviterName');
+    const name = (nameInput.value || '').trim();
+
+    if (!name) {
+        nameInput.focus();
+        return;
+    }
+
+    // Xác định URL gốc của website (bỏ phần /dashboard/...)
+    const path = window.location.pathname;
+    const dashboardIndex = path.indexOf('/dashboard');
+    const rootPath = dashboardIndex !== -1 ? path.substring(0, dashboardIndex) : '';
+    const baseUrl = window.location.origin + rootPath + '/invite/';
+
+    // Encode tên để đảm bảo an toàn khi đưa vào URL
+    const encodedName = encodeURIComponent(name);
+    const link = baseUrl + encodedName;
+
+    const linkInput = document.getElementById('generatedLink');
+    const wrap = document.getElementById('generatedLinkWrap');
+    linkInput.value = link;
+    wrap.classList.remove('d-none');
+}
+
+// Copy link vào clipboard
+function copyInviteLink() {
+    const linkInput = document.getElementById('generatedLink');
+    if (!linkInput.value) return;
+
+    linkInput.select();
+    linkInput.setSelectionRange(0, 99999);
+
+    navigator.clipboard.writeText(linkInput.value).then(() => {
+        const btn = document.getElementById('copyLinkBtn');
+        const originalHtml = btn.innerHTML;
+        btn.innerHTML = '<i class="bi bi-check2"></i> Đã copy';
+        setTimeout(() => {
+            btn.innerHTML = originalHtml;
+        }, 1500);
+    }).catch(() => {
+        document.execCommand('copy');
+    });
 }
 
 // Load Dashboard Data từ PHP Backend
