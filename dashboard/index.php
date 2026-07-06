@@ -1,6 +1,5 @@
 <?php
 session_start();
-require_once __DIR__ . '/../config.php'; // Nạp $inviter_secret_key + encodeInviterName()
 
 $DASHBOARD_PASSWORD = 'admin123';
 $DATA_DIR = __DIR__ . '/../data';
@@ -74,24 +73,6 @@ if (isset($_GET['action']) && $_GET['action'] === 'get_data') {
             'total_guests' => $guests
         ]
     ]));
-}
-
-// Mã hóa tên khách mời để tạo link thiệp (không lộ tên trực tiếp trên URL)
-if (isset($_GET['action']) && $_GET['action'] === 'encode_inviter') {
-    header('Content-Type: application/json');
-
-    if (!isset($_SESSION['logged_in'])) {
-        http_response_code(401);
-        die(json_encode(['error' => 'Unauthorized']));
-    }
-
-    $name = isset($_GET['name']) ? trim($_GET['name']) : '';
-    if ($name === '') {
-        http_response_code(400);
-        die(json_encode(['error' => 'Thiếu tên người mời']));
-    }
-
-    die(json_encode(['encoded' => encodeInviterName($name, $inviter_secret_key)]));
 }
 
 $is_logged_in = isset($_SESSION['logged_in']);
