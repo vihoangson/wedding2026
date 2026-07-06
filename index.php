@@ -78,7 +78,10 @@ $formattedDate = DateTime::createFromFormat('Y-m-d', $wedding_date)->format('d .
 <body>
 
 <div class="invitation" role="main" aria-label="Trang thiệp mời cưới" id="home">
-    <div class="eyebrow">Trân trọng kính mời<?php if ($inviterName !== ''): ?>: <?php echo htmlspecialchars(htmlspecialchars_decode($inviterName, ENT_QUOTES), ENT_QUOTES, 'UTF-8'); ?><?php endif; ?></div>
+    <div class="eyebrow">Trân trọng kính mời</div>
+    <?php if ($inviterName !== ''): ?>
+    <div class="guest-name"><?php echo htmlspecialchars(htmlspecialchars_decode($inviterName, ENT_QUOTES), ENT_QUOTES, 'UTF-8'); ?></div>
+    <?php endif; ?>
     <div class="monogram"><?php echo htmlspecialchars($groom_initial); ?> &nbsp;•&nbsp; <?php echo htmlspecialchars($bride_initial); ?></div>
 
     <div class="divider" aria-hidden="true">
