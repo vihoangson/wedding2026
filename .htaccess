@@ -1,0 +1,7 @@
+# Wedding invitation - friendly URL for personalized invite links
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # abc.com/invite/<ten-nguoi-duoc-moi-da-encode> -> index.php?inviter=<ten>
+    RewriteRule ^invite/([^/]+)/?$ index.php?inviter=$1 [L,QSA,NC]
+</IfModule>

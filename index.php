@@ -27,6 +27,11 @@ function getActiveComments() {
 // Lấy danh sách lời chúc hoạt động
 $activeComments = getActiveComments();
 
+// Lấy tên người được mời từ query string (?inviter=...), nếu không có thì để trống
+// Giá trị đầu vào được encode (htmlspecialchars) ngay khi nhận để tránh XSS,
+// khi hiển thị ra sẽ decode (htmlspecialchars_decode) rồi encode lại 1 lần trước khi in ra HTML
+$inviterName = isset($_GET['inviter']) ? htmlspecialchars(trim($_GET['inviter']), ENT_QUOTES, 'UTF-8') : '';
+
 // Hàm tính toán tên ngày trong tuần
 function getDayName($dateString) {
     $date = new DateTime($dateString);
@@ -54,7 +59,7 @@ $formattedDate = DateTime::createFromFormat('Y-m-d', $wedding_date)->format('d .
 <body>
 
 <div class="invitation" role="main" aria-label="Trang thiệp mời cưới" id="home">
-    <div class="eyebrow">Trân trọng kính mời</div>
+    <div class="eyebrow">Trân trọng kính mời<?php if ($inviterName !== ''): ?>: <?php echo htmlspecialchars(htmlspecialchars_decode($inviterName, ENT_QUOTES), ENT_QUOTES, 'UTF-8'); ?><?php endif; ?></div>
     <div class="monogram"><?php echo htmlspecialchars($groom_initial); ?> &nbsp;•&nbsp; <?php echo htmlspecialchars($bride_initial); ?></div>
 
     <div class="divider" aria-hidden="true">
