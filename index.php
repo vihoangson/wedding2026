@@ -27,10 +27,12 @@ function getActiveComments() {
 // Lấy danh sách lời chúc hoạt động
 $activeComments = getActiveComments();
 
-// Lấy tên người được mời từ query string (?inviter=...), nếu không có thì để trống
-// Giá trị đầu vào được encode (htmlspecialchars) ngay khi nhận để tránh XSS,
-// khi hiển thị ra sẽ decode (htmlspecialchars_decode) rồi encode lại 1 lần trước khi in ra HTML
-$inviterName = isset($_GET['inviter']) ? htmlspecialchars(trim($_GET['inviter']), ENT_QUOTES, 'UTF-8') : '';
+// Lấy tên người được mời từ query string (?inviter=<mã đã mã hóa>), nếu không có thì để trống
+// Tên khách được mã hóa (xem encodeInviterName trong config.php) nên trên URL sẽ là 1 chuỗi
+// không đọc được trực tiếp. Ở đây giải mã ngược lại rồi encode (htmlspecialchars) để hiển thị an toàn.
+$rawInviterParam = isset($_GET['inviter']) ? trim($_GET['inviter']) : '';
+$decodedInviterName = $rawInviterParam !== '' ? decodeInviterName($rawInviterParam, $inviter_secret_key) : '';
+$inviterName = $decodedInviterName !== '' ? htmlspecialchars($decodedInviterName, ENT_QUOTES, 'UTF-8') : '';
 
 // Hàm tính toán tên ngày trong tuần
 function getDayName($dateString) {
