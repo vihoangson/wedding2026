@@ -695,7 +695,7 @@ $formattedDate = DateTime::createFromFormat('Y-m-d', $wedding_date)->format('d .
     }
 </script>
 
-<script src="script.js"></script>
+<script src="/script.js"></script>
 
 <!-- Bottom Navigation Script -->
 <script>
