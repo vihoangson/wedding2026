@@ -51,8 +51,10 @@ function setupEventListeners() {
     }
 }
 
-// Tạo link mời cá nhân hóa dạng abc.com/invite/<ten-da-encode>
-function generateInviteLink() {
+// Tạo link mời cá nhân hóa dạng abc.com/invite/<ten-da-ma-hoa>
+// Tên khách được mã hóa ở server (config.php) nên không lộ tên trực tiếp trên URL,
+// nhưng index.php sẽ tự giải mã ngược lại để hiển thị đúng tên khách.
+async function generateInviteLink() {
     const nameInput = document.getElementById('inviterName');
     const name = (nameInput.value || '').trim();
 
@@ -61,20 +63,49 @@ function generateInviteLink() {
         return;
     }
 
-    // Xác định URL gốc của website (bỏ phần /dashboard/...)
-    const path = window.location.pathname;
-    const dashboardIndex = path.indexOf('/dashboard');
-    const rootPath = dashboardIndex !== -1 ? path.substring(0, dashboardIndex) : '';
-    const baseUrl = window.location.origin + rootPath + '/invite/';
+    const generateLinkBtn = document.getElementById('generateLinkBtn');
+    const originalBtnHtml = generateLinkBtn ? generateLinkBtn.innerHTML : '';
+    if (generateLinkBtn) {
+        generateLinkBtn.disabled = true;
+        generateLinkBtn.innerHTML = '<span class="spinner-border spinner-border-sm"></span> Đang tạo...';
+    }
 
-    // Encode tên để đảm bảo an toàn khi đưa vào URL
-    const encodedName = encodeURIComponent(name);
-    const link = baseUrl + encodedName;
+    try {
+        // Xác định URL gốc của website (bỏ phần /dashboard/...)
+        const path = window.location.pathname;
+        const dashboardIndex = path.indexOf('/dashboard');
+        const rootPath = dashboardIndex !== -1 ? path.substring(0, dashboardIndex) : '';
+        const baseUrl = window.location.origin + rootPath + '/invite/';
 
-    const linkInput = document.getElementById('generatedLink');
-    const wrap = document.getElementById('generatedLinkWrap');
-    linkInput.value = link;
-    wrap.classList.remove('d-none');
+        // Gọi backend để mã hóa tên khách (khóa bí mật chỉ nằm ở server)
+        const url = new URL(window.location.href);
+        url.searchParams.set('action', 'encode_inviter');
+        url.searchParams.set('name', name);
+
+        const response = await fetch(url.toString());
+        if (!response.ok) {
+            throw new Error('Encode failed: ' + response.status);
+        }
+        const data = await response.json();
+        if (!data.encoded) {
+            throw new Error('Không nhận được dữ liệu mã hóa');
+        }
+
+        const link = baseUrl + encodeURIComponent(data.encoded);
+
+        const linkInput = document.getElementById('generatedLink');
+        const wrap = document.getElementById('generatedLinkWrap');
+        linkInput.value = link;
+        wrap.classList.remove('d-none');
+    } catch (err) {
+        console.error(err);
+        alert('Không thể tạo link mời, vui lòng thử lại.');
+    } finally {
+        if (generateLinkBtn) {
+            generateLinkBtn.disabled = false;
+            generateLinkBtn.innerHTML = originalBtnHtml;
+        }
+    }
 }
 
 // Copy link vào clipboard
