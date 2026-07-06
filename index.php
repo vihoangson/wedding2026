@@ -311,7 +311,12 @@ $formattedDate = DateTime::createFromFormat('Y-m-d', $wedding_date)->format('d .
 
         <div class="field">
             <label for="fullname">Họ và tên <span aria-label="bắt buộc">*</span></label>
-            <input type="text" id="fullname" name="fullname" placeholder="Nguyễn Văn A" required aria-required="true">
+            <?php
+                // Nếu đã có tên người được mời từ link /invite/<ten>, tự điền và khóa không cho sửa
+                $fullnameValue = $inviterName !== '' ? htmlspecialchars_decode($inviterName, ENT_QUOTES) : '';
+                $fullnameReadonly = $inviterName !== '' ? 'readonly' : '';
+            ?>
+            <input type="text" id="fullname" name="fullname" placeholder="Nguyễn Văn A" value="<?php echo htmlspecialchars($fullnameValue, ENT_QUOTES, 'UTF-8'); ?>" <?php echo $fullnameReadonly; ?> required aria-required="true">
         </div>
 
         <div class="guest-row">
