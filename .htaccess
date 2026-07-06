@@ -4,4 +4,7 @@
 
     # abc.com/invite/<ten-nguoi-duoc-moi-da-encode> -> index.php?inviter=<ten>
     RewriteRule ^invite/([^/]+)/?$ index.php?inviter=$1 [L,QSA,NC]
+
+    # abc.com/waiting -> waiting.php
+    RewriteRule ^waiting/?$ waiting.php [L,QSA,NC]
 </IfModule>

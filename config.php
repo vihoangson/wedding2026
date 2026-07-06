@@ -51,16 +51,21 @@ $inviter_secret_key = "yennhi-hoangson-2026-secret";
 
 /**
  * Mã hóa tên khách mời thành chuỗi không thể đọc trực tiếp (nhưng giải mã được).
- * Kỹ thuật: XOR với khóa bí mật rồi encode Base64 kiểu URL-safe.
+ * Kỹ thuật: gắn kèm checksum toàn vẹn (HMAC rút gọn) rồi XOR với khóa bí mật,
+ * cuối cùng encode Base64 kiểu URL-safe. Checksum giúp phát hiện link bị sửa/giả mạo.
  */
 function encodeInviterName($plainText, $key) {
     if ($plainText === '') {
         return '';
     }
+    // Checksum toàn vẹn: 10 ký tự hex đầu của HMAC-SHA256(plainText, key)
+    $checksum = substr(hash_hmac('sha256', $plainText, $key), 0, 10);
+    $payload = $checksum . '|' . $plainText;
+
     $xored = '';
     $keyLen = strlen($key);
-    for ($i = 0; $i < strlen($plainText); $i++) {
-        $xored .= chr(ord($plainText[$i]) ^ ord($key[$i % $keyLen]));
+    for ($i = 0; $i < strlen($payload); $i++) {
+        $xored .= chr(ord($payload[$i]) ^ ord($key[$i % $keyLen]));
     }
     // Base64 URL-safe: thay +/ thành -_ và bỏ dấu = ở cuối
     return rtrim(strtr(base64_encode($xored), '+/', '-_'), '=');
@@ -68,7 +73,11 @@ function encodeInviterName($plainText, $key) {
 
 /**
  * Giải mã ngược chuỗi đã được encodeInviterName() tạo ra, trả về tên khách gốc.
- * Trả về chuỗi rỗng nếu dữ liệu không hợp lệ.
+ *
+ * Trả về:
+ *  - string tên khách nếu link hợp lệ và toàn vẹn (chưa bị sửa/giả mạo)
+ *  - '' (chuỗi rỗng) nếu không có dữ liệu đầu vào
+ *  - false nếu dữ liệu không hợp lệ, bị hỏng hoặc bị sửa/giả mạo (sai checksum)
  */
 function decodeInviterName($encodedText, $key) {
     if ($encodedText === '') {
@@ -81,14 +90,33 @@ function decodeInviterName($encodedText, $key) {
         $b64 .= str_repeat('=', 4 - $mod4);
     }
     $xored = base64_decode($b64, true);
-    if ($xored === false) {
-        return '';
+    if ($xored === false || $xored === '') {
+        return false;
     }
     $keyLen = strlen($key);
-    $plainText = '';
+    $payload = '';
     for ($i = 0; $i < strlen($xored); $i++) {
-        $plainText .= chr(ord($xored[$i]) ^ ord($key[$i % $keyLen]));
+        $payload .= chr(ord($xored[$i]) ^ ord($key[$i % $keyLen]));
     }
+
+    // Payload phải có dạng "<checksum>|<tên khách>"
+    $separatorPos = strpos($payload, '|');
+    if ($separatorPos === false) {
+        return false;
+    }
+    $checksum = substr($payload, 0, $separatorPos);
+    $plainText = substr($payload, $separatorPos + 1);
+
+    if ($plainText === '') {
+        return false;
+    }
+
+    // Kiểm tra toàn vẹn: so sánh checksum nhận được với checksum tính lại từ tên khách
+    $expectedChecksum = substr(hash_hmac('sha256', $plainText, $key), 0, 10);
+    if (!hash_equals($expectedChecksum, $checksum)) {
+        return false; // Dữ liệu đã bị sửa/giả mạo hoặc sai khóa
+    }
+
     return $plainText;
 }
 

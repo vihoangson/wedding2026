@@ -1,6 +1,20 @@
 <?php
 // Trang chờ hiển thị khi truy cập trang chủ mà không có link mời hợp lệ (?inviter=...)
 require_once 'config.php';
+
+// Lý do được index.php truyền qua (?reason=missing|invalid) để hiển thị thông báo phù hợp
+$reason = isset($_GET['reason']) ? $_GET['reason'] : 'missing';
+if ($reason === 'invalid') {
+    $waitingTitle = 'Link mời không hợp lệ';
+    $waitingMessage = 'Đường link bạn truy cập đã bị chỉnh sửa hoặc không còn đúng định dạng nên hệ thống không thể xác thực.<br>'
+        . 'Vui lòng sử dụng đúng nguyên vẹn đường link đã được gửi riêng để xem thiệp mời,'
+        . ' hoặc liên hệ trực tiếp với cô dâu / chú rể để được hỗ trợ.';
+} else {
+    $waitingTitle = 'Thiệp mời chưa sẵn sàng';
+    $waitingMessage = 'Rất tiếc, chúng tôi không tìm thấy thông tin lời mời hợp lệ dành cho bạn.<br>'
+        . 'Vui lòng sử dụng đúng đường link đã được gửi riêng để xem thiệp mời,'
+        . ' hoặc liên hệ trực tiếp với cô dâu / chú rể để được hỗ trợ.';
+}
 ?>
 <!DOCTYPE html>
 <html lang="vi">
@@ -70,18 +84,113 @@ require_once 'config.php';
     line-height:1.7;
     color: rgba(58,49,40,0.75);
   }
+
+  /* ===== COUNTDOWN ===== */
+  .countdown-title{
+    text-align:center;
+    font-family:'Cormorant Garamond', serif;
+    font-style:italic;
+    font-size:16px;
+    color: var(--terracotta);
+    letter-spacing:0.08em;
+    margin: 28px 0 16px;
+  }
+  .countdown{
+    display:grid;
+    grid-template-columns:repeat(4, 1fr);
+    gap:10px;
+    margin-bottom: 6px;
+  }
+  .countdown-item{
+    background: linear-gradient(135deg, rgba(232,196,184,0.35), rgba(201,164,92,0.15));
+    border:1px solid rgba(184,115,79,0.25);
+    border-radius:8px;
+    padding:14px 8px;
+    text-align:center;
+  }
+  .countdown-value{
+    font-family:'Jost', sans-serif;
+    font-size:22px;
+    font-weight:700;
+    color: var(--terracotta);
+    line-height:1;
+    margin-bottom:6px;
+  }
+  .countdown-label{
+    font-size:10px;
+    letter-spacing:0.1em;
+    text-transform:uppercase;
+    color: rgba(58,49,40,0.6);
+    font-weight:500;
+  }
+  @media(max-width:420px){
+    .countdown{ grid-template-columns:repeat(2, 1fr); gap:10px; }
+  }
 </style>
 </head>
 <body>
   <div class="card">
     <div class="icon">💌</div>
     <div class="names"><?php echo htmlspecialchars($groom_name . ' & ' . $bride_name, ENT_QUOTES, 'UTF-8'); ?></div>
-    <h1>Thiệp mời chưa sẵn sàng</h1>
+    <h1><?php echo htmlspecialchars($waitingTitle, ENT_QUOTES, 'UTF-8'); ?></h1>
     <p>
-      Rất tiếc, chúng tôi không tìm thấy thông tin lời mời hợp lệ dành cho bạn.<br>
-      Vui lòng sử dụng đúng đường link đã được gửi riêng để xem thiệp mời,
-      hoặc liên hệ trực tiếp với cô dâu / chú rể để được hỗ trợ.
+      <?php echo $waitingMessage; ?>
     </p>
+
+    <!-- Countdown Timer -->
+    <div class="countdown-title" id="countdownTitle">Đếm ngược đến ngày trọng đại</div>
+    <div class="countdown" id="countdown">
+        <div class="countdown-item">
+            <div class="countdown-value" id="days">00</div>
+            <div class="countdown-label">Ngày</div>
+        </div>
+        <div class="countdown-item">
+            <div class="countdown-value" id="hours">00</div>
+            <div class="countdown-label">Giờ</div>
+        </div>
+        <div class="countdown-item">
+            <div class="countdown-value" id="minutes">00</div>
+            <div class="countdown-label">Phút</div>
+        </div>
+        <div class="countdown-item">
+            <div class="countdown-value" id="seconds">00</div>
+            <div class="countdown-label">Giây</div>
+        </div>
+    </div>
   </div>
+
+  <script>
+    // Ngày cưới lấy từ config.php
+    const WEDDING_DATE = '<?php echo $wedding_date; ?>T<?php echo $wedding_time; ?>:00';
+    const weddingDate = new Date(WEDDING_DATE).getTime();
+
+    function updateCountdown() {
+        const now = new Date().getTime();
+        const distance = weddingDate - now;
+
+        if (distance < 0) {
+            document.getElementById('countdownTitle').textContent = '🎉 Ngày trọng đại đã tới!';
+            document.getElementById('countdown').style.opacity = '0.5';
+            document.getElementById('days').textContent = '00';
+            document.getElementById('hours').textContent = '00';
+            document.getElementById('minutes').textContent = '00';
+            document.getElementById('seconds').textContent = '00';
+            return;
+        }
+
+        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+        document.getElementById('days').textContent = String(days).padStart(2, '0');
+        document.getElementById('hours').textContent = String(hours).padStart(2, '0');
+        document.getElementById('minutes').textContent = String(minutes).padStart(2, '0');
+        document.getElementById('seconds').textContent = String(seconds).padStart(2, '0');
+    }
+
+    updateCountdown();
+    setInterval(updateCountdown, 1000);
+  </script>
 </body>
 </html>
