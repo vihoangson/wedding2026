@@ -290,7 +290,7 @@ form.addEventListener('submit', function(e){
     submitBtn.textContent = 'Đang gửi...';
 
     // Send data to API
-    fetch('api/save-rsvp.php', {
+    fetch('/api/save-rsvp.php', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
