@@ -43,6 +43,14 @@ return [
     // ===== QUOTE =====
     'quote' => '"Sự hiện diện của bạn chính là món quà quý giá nhất, là niềm hạnh phúc trọn vẹn nhất trong ngày trọng đại của chúng tôi."',
 
+    // ===== VIDEO CƯỚI =====
+    'wedding_video' => [
+        'thumbnail' => 'https://i.ytimg.com/vi/UffbK_aACAs/hqdefault.jpg',
+        'youtube_url' => 'https://www.youtube.com/watch?v=UffbK_aACAs',
+        'title' => 'Video Cưới Của Chúng Tôi',
+        'subtitle' => 'Cùng xem lại những khoảnh khắc đáng nhớ',
+    ],
+
     // ===== DANH SÁCH ẢNH GALLERY =====
     'gallery_images' => [
         [

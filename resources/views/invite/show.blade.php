@@ -155,6 +155,40 @@
         </div>
     </div>
 
+    <!-- Block Video Section -->
+    <div class="video-section" id="videoSection">
+        <div class="divider" aria-hidden="true">
+            <div class="line"></div>
+            <svg width="22" height="14" viewBox="0 0 22 14" fill="none">
+                <path d="M11 13C11 13 1 8 1 4.2C1 1.6 3.2 0.8 4.8 1.6C6.4 2.4 7.4 4 11 7.4C14.6 4 15.6 2.4 17.2 1.6C18.8 0.8 21 1.6 21 4.2C21 8 11 13 11 13Z" fill="#c9a87c"/>
+            </svg>
+            <div class="line"></div>
+        </div>
+        <div class="video-title">{{ config('wedding.wedding_video.title') }}</div>
+        <p class="video-subtitle">{{ config('wedding.wedding_video.subtitle') }}</p>
+        <div class="video-player" id="videoPlayer" data-youtube-url="{{ config('wedding.wedding_video.youtube_url') }}">
+            <img class="video-thumbnail" src="{{ config('wedding.wedding_video.thumbnail') }}" alt="{{ config('wedding.wedding_video.title') }}" loading="lazy">
+            <button type="button" class="video-play-btn" id="videoPlayBtn" aria-label="Phát video">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
+                    <path d="M8 5v14l11-7L8 5z" fill="currentColor"/>
+                </svg>
+            </button>
+        </div>
+    </div>
+
+    <!-- Video Fullscreen Modal Popup -->
+    <div class="video-modal" id="videoModal">
+        <div class="video-modal-overlay"></div>
+        <div class="video-modal-content">
+            <button class="video-modal-close" id="videoModalClose" aria-label="Đóng">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none">
+                    <path d="M18 6L6 18M6 6l12 12" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+                </svg>
+            </button>
+            <div class="video-modal-frame" id="videoModalFrame"></div>
+        </div>
+    </div>
+
     <!-- Block Links Section -->
     <div class="links-section">
         <div class="divider" aria-hidden="true">
@@ -570,6 +604,63 @@
 </script>
 
 <script src="/script.js"></script>
+
+<!-- Wedding Video Embed Script -->
+<script>
+    (function () {
+        const player = document.getElementById('videoPlayer');
+        const modal = document.getElementById('videoModal');
+        const modalFrame = document.getElementById('videoModalFrame');
+        const modalClose = document.getElementById('videoModalClose');
+        const modalOverlay = modal ? modal.querySelector('.video-modal-overlay') : null;
+        if (!player || !modal || !modalFrame) return;
+
+        function getYoutubeId(url) {
+            if (!url) return null;
+            const match = url.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|shorts\/))([a-zA-Z0-9_-]{11})/);
+            return match ? match[1] : null;
+        }
+
+        function openVideoModal() {
+            const youtubeUrl = player.getAttribute('data-youtube-url');
+            const videoId = getYoutubeId(youtubeUrl);
+            if (!videoId) return;
+
+            const iframe = document.createElement('iframe');
+            iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0`;
+            iframe.title = 'Video cưới';
+            iframe.frameBorder = '0';
+            iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
+            iframe.allowFullscreen = true;
+
+            modalFrame.innerHTML = '';
+            modalFrame.appendChild(iframe);
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeVideoModal() {
+            modal.classList.remove('active');
+            modalFrame.innerHTML = '';
+            document.body.style.overflow = '';
+        }
+
+        player.addEventListener('click', openVideoModal);
+
+        if (modalClose) {
+            modalClose.addEventListener('click', closeVideoModal);
+        }
+        if (modalOverlay) {
+            modalOverlay.addEventListener('click', closeVideoModal);
+        }
+
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape' && modal.classList.contains('active')) {
+                closeVideoModal();
+            }
+        });
+    })();
+</script>
 
 <!-- Bottom Navigation Script -->
 <script>
