@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AboutUsController;
 use App\Http\Controllers\InviteController;
 use App\Http\Controllers\MemoryController;
 use Illuminate\Support\Facades\Route;
@@ -27,4 +28,7 @@ Route::get('/waiting', [InviteController::class, 'waiting'])->name('waiting');
 
 // Facebook-style timeline of "our" memories.
 Route::get('/memorize', [MemoryController::class, 'index'])->name('memorize');
+
+// Elegant greenery-framed invitation profile card.
+Route::get('/about-us', [AboutUsController::class, 'index'])->name('about-us');
 

@@ -51,6 +51,40 @@ body.memorize-body{
     color:#1c1e21;
 }
 
+.mz-topbar-nav{
+    display:flex;
+    align-items:center;
+    gap:4px;
+    margin-left:16px;
+}
+
+.mz-nav-link{
+    padding:8px 14px;
+    border-radius:6px;
+    font-size:15px;
+    font-weight:600;
+    color:#65676b;
+    text-decoration:none;
+    transition:background 0.15s ease, color 0.15s ease;
+}
+
+.mz-nav-link:hover{
+    background:#f0f2f5;
+    color:#1c1e21;
+}
+
+.mz-nav-link.active{
+    color:#b8734f;
+    background:#fbeee7;
+}
+
+@media (max-width:520px){
+    .mz-nav-link{
+        padding:6px 10px;
+        font-size:14px;
+    }
+}
+
 .mz-wrapper{
     max-width:940px;
     margin:0 auto;

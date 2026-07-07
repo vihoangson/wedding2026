@@ -14,6 +14,10 @@
     <div class="mz-topbar-inner">
         <div class="mz-logo">{{ config('wedding.groom_initial') }}{{ config('wedding.bride_initial') }}</div>
         <div class="mz-topbar-title">Kỷ niệm</div>
+        <nav class="mz-topbar-nav">
+            <a href="/" class="mz-nav-link">Thiệp cưới</a>
+            <a href="/about-us" class="mz-nav-link active">Về chúng tôi</a>
+        </nav>
     </div>
 </div>
 
