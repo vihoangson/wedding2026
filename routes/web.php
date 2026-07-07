@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\InviteController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,6 +14,13 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// No personalized link on the bare homepage -> waiting page (missing reason).
+Route::get('/', [InviteController::class, 'index'])->name('home');
+
+// Personalized invite link: /invite/<encoded-guest-token>
+Route::get('/invite/{token}', [InviteController::class, 'show'])
+    ->where('token', '[^/]+')
+    ->name('invite.show');
+
+Route::get('/waiting', [InviteController::class, 'waiting'])->name('waiting');
+
