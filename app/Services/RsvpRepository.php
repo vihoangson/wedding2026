@@ -75,6 +75,22 @@ class RsvpRepository
         }));
     }
 
+    /**
+     * Get every RSVP submission (used by the /dashboard admin panel).
+     */
+    public function getAllRsvp(): array
+    {
+        return $this->readList($this->dataFile, 'rsvp_list');
+    }
+
+    /**
+     * Get every comment/wish, active or not (used by the /dashboard admin panel).
+     */
+    public function getAllComments(): array
+    {
+        return $this->readList($this->commentsFile, 'comments');
+    }
+
     protected function readList(string $file, string $key): array
     {
         if (! file_exists($file)) {

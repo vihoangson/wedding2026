@@ -40,6 +40,10 @@ return [
     // ⚠️ Đổi khóa này sẽ khiến các link đã gửi trước đó không còn giải mã đúng nữa.
     'inviter_secret_key' => env('INVITER_SECRET_KEY', 'yennhi-hoangson-2026-secret'),
 
+    // ===== MẬT KHẨU ĐĂNG NHẬP DASHBOARD (/dashboard) =====
+    // ⚠️ Đổi mật khẩu mặc định này trước khi đưa trang lên production!
+    'dashboard_password' => env('DASHBOARD_PASSWORD', 'admin123'),
+
     // ===== QUOTE =====
     'quote' => '"Sự hiện diện của bạn chính là món quà quý giá nhất, là niềm hạnh phúc trọn vẹn nhất trong ngày trọng đại của chúng tôi."',
 
