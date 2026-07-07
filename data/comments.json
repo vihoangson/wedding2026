@@ -1,0 +1,27 @@
+{
+  "total_comments": 2,
+  "last_updated": "2026-06-30 10:30:00",
+  "comments": [
+    {
+      "id": "comment_test_1",
+      "rsvp_id": "rsvp_test_1",
+      "name": "Nguyễn Văn A",
+      "sent_at": "2026-06-28 14:22:00",
+      "active": true,
+      "message": "Chúc mừng ngày trọng đại, em rất vui được tham gia.",
+      "ip_address": "192.168.1.1",
+      "user_agent": "Mozilla/5.0"
+    },
+    {
+      "id": "comment_test_2",
+      "rsvp_id": "rsvp_test_2",
+      "name": "Trần Thị B",
+      "sent_at": "2026-06-29 09:15:00",
+      "active": false,
+      "message": "Cảm ơn lời mời, mong có cơ hội gặp lại.",
+      "ip_address": "192.168.1.2",
+      "user_agent": "Mozilla/5.0"
+    }
+  ]
+}
+
