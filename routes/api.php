@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\MemoryCommentController;
 use App\Http\Controllers\RsvpController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -21,3 +22,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 // Port of the legacy /api/save-rsvp.php endpoint.
 Route::post('/rsvp', [RsvpController::class, 'store'])->name('api.rsvp.store');
+
+// Add a comment to a /memorize timeline post.
+Route::post('/memory-comments', [MemoryCommentController::class, 'store'])->name('api.memory-comments.store');

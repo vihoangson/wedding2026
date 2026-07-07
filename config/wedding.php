@@ -51,6 +51,14 @@ return [
         'subtitle' => 'Cùng xem lại những khoảnh khắc đáng nhớ',
     ],
 
+    // ===== TRANG KỶ NIỆM (/memorize) - LAYOUT KIỂU FACEBOOK =====
+    'memorize' => [
+        'page_name' => 'Hoàng Sơn & Yến Nhi',
+        'page_bio' => 'Kỷ niệm hành trình yêu thương của chúng tôi 💕',
+        'cover_photo' => 'https://hn.ss.bfcplatform.vn/talentdad/ShareX/2026/06/chrome_bxlmb5uezs.png',
+        'avatar' => 'https://hn.ss.bfcplatform.vn/talentdad/ShareX/2026/06/chrome_iYKOBwJQnw.png',
+    ],
+
     // ===== DANH SÁCH ẢNH GALLERY =====
     'gallery_images' => [
         [

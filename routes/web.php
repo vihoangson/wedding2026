@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\InviteController;
+use App\Http\Controllers\MemoryController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -23,4 +24,7 @@ Route::get('/invite/{token}', [InviteController::class, 'show'])
     ->name('invite.show');
 
 Route::get('/waiting', [InviteController::class, 'waiting'])->name('waiting');
+
+// Facebook-style timeline of "our" memories.
+Route::get('/memorize', [MemoryController::class, 'index'])->name('memorize');
 

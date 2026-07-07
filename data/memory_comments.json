@@ -1,0 +1,51 @@
+{
+    "total_comments": 6,
+    "last_updated": "2026-07-07 03:08:36",
+    "comments": [
+        {
+            "id": "mzc_seed_1",
+            "post_id": "post_1",
+            "name": "Thảo Vân",
+            "message": "Nhìn tấm ảnh này là nhớ lại ngay cái ngày hai đứa quen nhau ở quán cafe đó luôn 😍",
+            "created_at": "2026-06-20 10:15:00",
+            "ip_address": "",
+            "user_agent": ""
+        },
+        {
+            "id": "mzc_seed_2",
+            "post_id": "post_4",
+            "name": "Minh Khang",
+            "message": "Chúc mừng hai đứa nha! Đợi ngày 13.12 lắm luôn đó 🎉",
+            "created_at": "2026-06-16 08:40:00",
+            "ip_address": "",
+            "user_agent": ""
+        },
+        {
+            "id": "mzc_6a4c6da74404e2.34094908",
+            "post_id": "post_1",
+            "name": "ádasd",
+            "message": "ádasd",
+            "created_at": "2026-07-07 03:08:23",
+            "ip_address": "127.0.0.1",
+            "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/150.0.0.0 Safari\/537.36"
+        },
+        {
+            "id": "mzc_6a4c6dac5299e8.07079308",
+            "post_id": "post_1",
+            "name": "ádasd",
+            "message": "sfdasf",
+            "created_at": "2026-07-07 03:08:28",
+            "ip_address": "127.0.0.1",
+            "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/150.0.0.0 Safari\/537.36"
+        },
+        {
+            "id": "mzc_6a4c6db41f04c7.72815172",
+            "post_id": "post_2",
+            "name": "adfa",
+            "message": "ádf",
+            "created_at": "2026-07-07 03:08:36",
+            "ip_address": "127.0.0.1",
+            "user_agent": "Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/150.0.0.0 Safari\/537.36"
+        }
+    ]
+}
