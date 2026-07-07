@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use App\Services\BackupService;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -24,6 +25,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->initializeDataFiles();
+        $this->backupToS3();
     }
 
     /**
@@ -54,6 +56,21 @@ class AppServiceProvider extends ServiceProvider
             if (!file_exists($filePath) && file_exists($examplePath)) {
                 copy($examplePath, $filePath);
             }
+        }
+    }
+
+    /**
+     * Backup JSON files to S3 if today's backups don't exist.
+     *
+     * @return void
+     */
+    private function backupToS3()
+    {
+        try {
+            $backupService = new BackupService();
+            $backupService->backupMissingFiles();
+        } catch (\Exception $e) {
+            // Silently fail - don't break app startup if S3 is unreachable
         }
     }
 }
