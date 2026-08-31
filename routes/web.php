@@ -26,6 +26,7 @@ Route::get('/invite/{token}', [InviteController::class, 'show'])
     ->name('invite.show');
 
 Route::get('/waiting', [InviteController::class, 'waiting'])->name('waiting');
+Route::get('/thiep-cuoi', [InviteController::class, 'index'])->name('thiep-cuoi');
 
 // Facebook-style timeline of "our" memories.
 Route::get('/memorize', [MemoryController::class, 'index'])->name('memorize');
