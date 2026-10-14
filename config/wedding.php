@@ -71,25 +71,6 @@ return [
             'alt' => 'Ảnh khoảnh khắc cưới 1',
             'featured' => true,
         ],
-        [
-            'url' => 'https://hn.ss.bfcplatform.vn/talentdad/ShareX/2026/06/chrome_7FJaGtaf0Z.png',
-            'alt' => 'Ảnh khoảnh khắc cưới 2',
-            'featured' => false,
-        ],
-        [
-            'url' => 'https://hn.ss.bfcplatform.vn/talentdad/ShareX/2026/06/chrome_idfrF4sgD2.png',
-            'alt' => 'Ảnh khoảnh khắc cưới 3',
-            'featured' => false,
-        ],
-        [
-            'url' => 'https://hn.ss.bfcplatform.vn/talentdad/ShareX/2026/06/chrome_iYKOBwJQnw.png',
-            'alt' => 'Ảnh khoảnh khắc cưới 4',
-            'featured' => false,
-        ],
-        [
-            'url' => 'https://hn.ss.bfcplatform.vn/talentdad/ShareX/2026/06/chrome_8rrVQarr8A.jpg',
-            'alt' => 'Ảnh khoảnh khắc cưới 5',
-            'featured' => false,
-        ],
+     
     ],
 ];
