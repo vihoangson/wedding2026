@@ -49,8 +49,8 @@ return [
 
     // ===== VIDEO CƯỚI =====
     'wedding_video' => [
-        'thumbnail' => 'https://i.ytimg.com/vi/UffbK_aACAs/hqdefault.jpg',
-        'youtube_url' => 'https://www.youtube.com/watch?v=UffbK_aACAs',
+        'thumbnail' => 'https://i.ytimg.com/vi/nVsYiUhuwcY/hqdefault.jpg',
+        'youtube_url' => 'https://youtube.com/shorts/nVsYiUhuwcY',
         'title' => 'Video Cưới Của Chúng Tôi',
         'subtitle' => 'Cùng xem lại những khoảnh khắc đáng nhớ',
     ],
