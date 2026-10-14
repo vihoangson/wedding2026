@@ -55,6 +55,7 @@ return [
         'subtitle' => 'Cùng xem lại những khoảnh khắc đáng nhớ',
     ],
 
+
     // ===== TRANG KỶ NIỆM (/memorize) - LAYOUT KIỂU FACEBOOK =====
     'memorize' => [
         'page_name' => 'Hoàng Sơn & Yến Nhi',
