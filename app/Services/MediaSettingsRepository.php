@@ -5,7 +5,8 @@ namespace App\Services;
 /**
  * File-based store (data/media.json) for the image/video links editable
  * from /dashboard/config. Values saved here override the defaults in
- * config/wedding.php (gallery_images, wedding_video, memorize cover/avatar).
+ * config/wedding.php (gallery_images, moments_images, wedding_video,
+ * memorize cover/avatar).
  */
 class MediaSettingsRepository
 {
@@ -58,8 +59,10 @@ class MediaSettingsRepository
     {
         $settings = $this->get();
 
-        if (array_key_exists('gallery_images', $settings)) {
-            config(['wedding.gallery_images' => $settings['gallery_images']]);
+        foreach (['gallery_images', 'moments_images'] as $key) {
+            if (array_key_exists($key, $settings)) {
+                config(['wedding.'.$key => $settings[$key]]);
+            }
         }
 
         if (isset($settings['wedding_video'])) {

@@ -64,13 +64,22 @@ return [
         'avatar' => 'https://hn.ss.bfcplatform.vn/talentdad/ShareX/2026/06/chrome_iYKOBwJQnw.png',
     ],
 
-    // ===== DANH SÁCH ẢNH GALLERY =====
+    // ===== DANH SÁCH ẢNH GALLERY (khung collage phía trên, tối đa 5 ảnh) =====
     'gallery_images' => [
         [
             'url' => 'https://hn.ss.bfcplatform.vn/talentdad/ShareX/2026/06/chrome_iYKOBwJQnw.png',
             'alt' => 'Ảnh khoảnh khắc cưới 1',
             'featured' => true,
         ],
-     
+
+    ],
+
+    // ===== ẢNH "KHOẢNH KHẮC CỦA CHÚNG TÔI" (carousel, bộ ảnh riêng) =====
+    'moments_images' => [
+        [
+            'url' => 'https://hn.ss.bfcplatform.vn/talentdad/ShareX/2026/06/chrome_iYKOBwJQnw.png',
+            'alt' => 'Khoảnh khắc của chúng tôi 1',
+            'featured' => false,
+        ],
     ],
 ];

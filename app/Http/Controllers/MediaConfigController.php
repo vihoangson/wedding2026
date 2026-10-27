@@ -23,6 +23,7 @@ class MediaConfigController extends Controller
 
         return view('dashboard.config', [
             'galleryImages' => config('wedding.gallery_images', []),
+            'momentsImages' => config('wedding.moments_images', []),
             'video' => config('wedding.wedding_video', []),
             'memorize' => config('wedding.memorize', []),
         ]);
@@ -34,10 +35,14 @@ class MediaConfigController extends Controller
     public function update(Request $request, MediaSettingsRepository $media)
     {
         $data = $request->validate([
-            'gallery' => ['nullable', 'array'],
+            'gallery' => ['nullable', 'array', 'max:5'],
             'gallery.*.url' => ['required', 'url', 'max:2048'],
             'gallery.*.alt' => ['nullable', 'string', 'max:255'],
             'gallery.*.featured' => ['nullable', 'boolean'],
+            'moments' => ['nullable', 'array'],
+            'moments.*.url' => ['required', 'url', 'max:2048'],
+            'moments.*.alt' => ['nullable', 'string', 'max:255'],
+            'moments.*.featured' => ['nullable', 'boolean'],
             'video.title' => ['nullable', 'string', 'max:255'],
             'video.subtitle' => ['nullable', 'string', 'max:255'],
             'video.youtube_url' => ['nullable', 'url', 'max:2048'],
@@ -45,24 +50,20 @@ class MediaConfigController extends Controller
             'memorize.cover_photo' => ['nullable', 'url', 'max:2048'],
             'memorize.avatar' => ['nullable', 'url', 'max:2048'],
         ], [
-            'gallery.*.url.required' => 'Vui lòng nhập link ảnh (hoặc xoá dòng trống).',
-            'gallery.*.url.url' => 'Link ảnh không hợp lệ.',
+            'gallery.max' => 'Khung collage chỉ hiển thị tối đa 5 ảnh.',
+            'gallery.*.url.required' => 'Vui lòng nhập link ảnh collage (hoặc xoá dòng trống).',
+            'gallery.*.url.url' => 'Link ảnh collage không hợp lệ.',
+            'moments.*.url.required' => 'Vui lòng nhập link ảnh "Khoảnh khắc" (hoặc xoá dòng trống).',
+            'moments.*.url.url' => 'Link ảnh "Khoảnh khắc" không hợp lệ.',
             'video.youtube_url.url' => 'Link YouTube không hợp lệ.',
             'video.thumbnail.url' => 'Link ảnh thumbnail không hợp lệ.',
             'memorize.cover_photo.url' => 'Link ảnh bìa không hợp lệ.',
             'memorize.avatar.url' => 'Link ảnh đại diện không hợp lệ.',
         ]);
 
-        $gallery = array_map(function (array $image, int $index) {
-            return [
-                'url' => trim($image['url']),
-                'alt' => trim($image['alt'] ?? '') ?: 'Ảnh khoảnh khắc cưới '.($index + 1),
-                'featured' => (bool) ($image['featured'] ?? false),
-            ];
-        }, array_values($data['gallery'] ?? []), array_keys(array_values($data['gallery'] ?? [])));
-
         $media->save([
-            'gallery_images' => $gallery,
+            'gallery_images' => $this->normalizeImages($data['gallery'] ?? [], 'Ảnh khoảnh khắc cưới'),
+            'moments_images' => $this->normalizeImages($data['moments'] ?? [], 'Khoảnh khắc của chúng tôi'),
             'wedding_video' => [
                 'title' => trim($data['video']['title'] ?? ''),
                 'subtitle' => trim($data['video']['subtitle'] ?? ''),
@@ -76,5 +77,23 @@ class MediaConfigController extends Controller
         ]);
 
         return redirect()->route('dashboard.config')->with('config_saved', 'Đã lưu cấu hình hình ảnh & video.');
+    }
+
+    /**
+     * Re-index submitted image rows and fill in a default alt text.
+     */
+    private function normalizeImages(array $images, string $altPrefix): array
+    {
+        $result = [];
+
+        foreach (array_values($images) as $index => $image) {
+            $result[] = [
+                'url' => trim($image['url']),
+                'alt' => trim($image['alt'] ?? '') ?: $altPrefix.' '.($index + 1),
+                'featured' => (bool) ($image['featured'] ?? false),
+            ];
+        }
+
+        return $result;
     }
 }

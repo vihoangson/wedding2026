@@ -66,49 +66,22 @@
     <form method="POST" action="{{ route('dashboard.config.update') }}" id="mediaConfigForm">
         @csrf
 
-        <!-- Gallery -->
-        <div class="card border-0 shadow-sm mb-4">
-            <div class="card-header bg-white border-bottom py-3 d-flex justify-content-between align-items-center">
-                <h5 class="mb-0 fw-bold">
-                    <i class="bi bi-images"></i> Ảnh Gallery
-                    <span class="badge bg-wedding ms-2" id="galleryCount">{{ count($galleryImages) }}</span>
-                </h5>
-                <button type="button" class="btn btn-wedding btn-sm" id="addGalleryRow">
-                    <i class="bi bi-plus-lg"></i> Thêm ảnh
-                </button>
-            </div>
-            <div class="card-body">
-                <p class="text-muted small mb-3">
-                    5 ảnh đầu tiên sẽ hiện ở khung collage trên thiệp; tất cả ảnh đều hiện trong carousel.
-                </p>
-                <div id="galleryRows">
-                    @foreach(old('gallery', $galleryImages) as $i => $image)
-                        <div class="gallery-row row g-2 align-items-center py-2">
-                            <div class="col-auto">
-                                <img class="media-preview" src="{{ $image['url'] ?? '' }}" alt="">
-                            </div>
-                            <div class="col-md-5">
-                                <input type="url" class="form-control js-preview-src" name="gallery[{{ $i }}][url]" value="{{ $image['url'] ?? '' }}" placeholder="https://..." required>
-                            </div>
-                            <div class="col-md-3">
-                                <input type="text" class="form-control" name="gallery[{{ $i }}][alt]" value="{{ $image['alt'] ?? '' }}" placeholder="Mô tả ảnh (alt)">
-                            </div>
-                            <div class="col-auto">
-                                <div class="form-check">
-                                    <input type="hidden" name="gallery[{{ $i }}][featured]" value="0">
-                                    <input class="form-check-input" type="checkbox" name="gallery[{{ $i }}][featured]" value="1" id="featured{{ $i }}" @checked(!empty($image['featured']))>
-                                    <label class="form-check-label" for="featured{{ $i }}">Nổi bật</label>
-                                </div>
-                            </div>
-                            <div class="col-auto ms-auto">
-                                <button type="button" class="btn btn-outline-secondary btn-sm js-move-up" title="Lên"><i class="bi bi-arrow-up"></i></button>
-                                <button type="button" class="btn btn-outline-danger btn-sm js-remove-row" title="Xoá"><i class="bi bi-trash"></i></button>
-                            </div>
-                        </div>
-                    @endforeach
-                </div>
-            </div>
-        </div>
+        @include("dashboard.partials.image-list", [
+            "name" => "gallery",
+            "title" => "Ảnh khung collage (phía trên)",
+            "icon" => "bi-grid-1x2",
+            "hint" => "Hiển thị trong khung collage đầu thiệp — tối đa 5 ảnh.",
+            "max" => 5,
+            "images" => old("gallery", $galleryImages),
+        ])
+
+        @include("dashboard.partials.image-list", [
+            "name" => "moments",
+            "title" => "Khoảnh khắc của chúng tôi",
+            "icon" => "bi-images",
+            "hint" => "Bộ ảnh riêng cho carousel \"Khoảnh khắc của chúng tôi\". Để trống thì ẩn mục này trên thiệp.",
+            "images" => old("moments", $momentsImages),
+        ])
 
         <!-- Video -->
         <div class="card border-0 shadow-sm mb-4">
@@ -173,7 +146,7 @@
     </form>
 </div>
 
-<template id="galleryRowTemplate">
+<template id="imageRowTemplate">
     <div class="gallery-row row g-2 align-items-center py-2">
         <div class="col-auto">
             <img class="media-preview" src="" alt="">
@@ -200,57 +173,58 @@
 
 <script>
 (function () {
-    const rows = document.getElementById('galleryRows');
-    const template = document.getElementById('galleryRowTemplate');
-    const counter = document.getElementById('galleryCount');
+    const template = document.getElementById('imageRowTemplate');
 
-    // Rewrite gallery[i][field] names so indexes stay 0..n-1 in display order.
-    function reindex() {
-        rows.querySelectorAll('.gallery-row').forEach(function (row, i) {
-            row.querySelectorAll('input').forEach(function (input) {
-                const field = input.dataset.field || (input.name.match(/\[(\w+)\]$/) || [])[1];
-                if (!field) return;
-                input.dataset.field = field;
-                input.name = 'gallery[' + i + '][' + field + ']';
+    document.querySelectorAll('.js-image-list').forEach(function (list) {
+        const name = list.dataset.name;
+        const max = parseInt(list.dataset.max, 10) || 0;
+        const rows = list.querySelector('.js-rows');
+        const addBtn = list.querySelector('.js-add-row');
+
+        // Rewrite name[i][field] so indexes stay 0..n-1 in display order.
+        function reindex() {
+            const all = rows.querySelectorAll('.gallery-row');
+            all.forEach(function (row, i) {
+                row.querySelectorAll('input[data-field]').forEach(function (input) {
+                    input.name = name + '[' + i + '][' + input.dataset.field + ']';
+                });
+                const id = name + 'Featured' + i;
+                row.querySelector('.form-check-input').id = id;
+                row.querySelector('.form-check-label').htmlFor = id;
             });
-            const checkbox = row.querySelector('.form-check-input');
-            const label = row.querySelector('.form-check-label');
-            checkbox.id = 'featured' + i;
-            label.htmlFor = 'featured' + i;
-        });
-        counter.textContent = rows.querySelectorAll('.gallery-row').length;
-    }
+            list.querySelector('.js-count').textContent = all.length;
+            addBtn.disabled = max > 0 && all.length >= max;
+        }
 
-    function updatePreview(input) {
+        addBtn.addEventListener('click', function () {
+            rows.appendChild(template.content.cloneNode(true));
+            reindex();
+            rows.lastElementChild.querySelector('input[type=url]').focus();
+        });
+
+        rows.addEventListener('click', function (e) {
+            const row = e.target.closest('.gallery-row');
+            if (!row) return;
+            if (e.target.closest('.js-remove-row')) {
+                row.remove();
+                reindex();
+            } else if (e.target.closest('.js-move-up') && row.previousElementSibling) {
+                rows.insertBefore(row, row.previousElementSibling);
+                reindex();
+            }
+        });
+
+        reindex();
+    });
+
+    document.addEventListener('input', function (e) {
+        const input = e.target;
+        if (!input.classList.contains('js-preview-src')) return;
         const target = input.dataset.preview
             ? document.querySelector(input.dataset.preview)
             : input.closest('.gallery-row').querySelector('.media-preview');
         if (target) target.src = input.value.trim();
-    }
-
-    document.getElementById('addGalleryRow').addEventListener('click', function () {
-        rows.appendChild(template.content.cloneNode(true));
-        reindex();
-        rows.lastElementChild.querySelector('input[type=url]').focus();
     });
-
-    rows.addEventListener('click', function (e) {
-        const row = e.target.closest('.gallery-row');
-        if (!row) return;
-        if (e.target.closest('.js-remove-row')) {
-            row.remove();
-            reindex();
-        } else if (e.target.closest('.js-move-up') && row.previousElementSibling) {
-            rows.insertBefore(row, row.previousElementSibling);
-            reindex();
-        }
-    });
-
-    document.addEventListener('input', function (e) {
-        if (e.target.classList.contains('js-preview-src')) updatePreview(e.target);
-    });
-
-    reindex();
 })();
 </script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
