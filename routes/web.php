@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AboutUsController;
+use App\Http\Controllers\CalendarController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DashboardInviteController;
 use App\Http\Controllers\InviteController;
@@ -28,6 +29,9 @@ Route::get('/invite/{token}', [InviteController::class, 'show'])
     ->name('invite.show');
 
 Route::get('/waiting', [InviteController::class, 'waiting'])->name('waiting');
+
+// "Add to calendar" file for iPhone / Outlook.
+Route::get('/dam-cuoi.ics', [CalendarController::class, 'ics'])->name('calendar.ics');
 Route::get('/thiep-cuoi', [InviteController::class, 'index'])->name('thiep-cuoi');
 
 // Facebook-style timeline of "our" memories.

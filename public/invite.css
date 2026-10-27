@@ -366,6 +366,22 @@ a { color: inherit; }
     color: var(--rose-deep);
 }
 
+.add-calendar { margin-top: clamp(40px, 6vw, 56px); }
+.add-calendar-title {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 18px;
+    color: var(--ink-soft);
+}
+.add-calendar-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 16px;
+}
+.add-calendar-buttons .btn { padding: 0 22px; letter-spacing: .2em; }
+
 /* ---------- Collage ---------- */
 .collage {
     display: grid;

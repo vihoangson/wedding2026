@@ -17,7 +17,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Be+Vietnam+Pro:wght@300;400;500&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="/invite.css?v=3">
+    <link rel="stylesheet" href="/invite.css?v=4">
     <script>document.documentElement.classList.add('js');</script>
 </head>
 <body>
@@ -113,6 +113,20 @@
                 <div class="countdown-item"><span class="countdown-value" id="hours">00</span><span class="countdown-label">Giờ</span></div>
                 <div class="countdown-item"><span class="countdown-value" id="minutes">00</span><span class="countdown-label">Phút</span></div>
                 <div class="countdown-item"><span class="countdown-value" id="seconds">00</span><span class="countdown-label">Giây</span></div>
+            </div>
+        </div>
+
+        <div class="add-calendar reveal">
+            <p class="add-calendar-title">Lưu ngày cưới vào lịch của bạn</p>
+            <div class="add-calendar-buttons">
+                <a href="{{ app(\App\Services\WeddingCalendar::class)->googleUrl() }}" class="btn btn-outline" target="_blank" rel="noopener noreferrer">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M16 2v4M8 2v4M3 9h18"/></svg>
+                    Google Calendar
+                </a>
+                <a href="{{ route('calendar.ics') }}" class="btn btn-outline">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"/></svg>
+                    iPhone / Outlook
+                </a>
             </div>
         </div>
     </section>

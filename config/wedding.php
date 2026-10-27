@@ -16,6 +16,8 @@ return [
     'wedding_date' => '2026-12-13', // YYYY-MM-DD
     'wedding_time' => '11:30',
     'wedding_time_label' => 'Tiệc chính thức',
+    'timezone' => 'Asia/Ho_Chi_Minh',
+    'duration_minutes' => 180, // độ dài sự kiện khi thêm vào lịch điện thoại
 
     // ===== ĐỊA ĐIỂM CƯỚI & NHÀ HÀNG =====
     'venue_name' => 'Đông Phương',
