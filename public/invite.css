@@ -614,6 +614,17 @@ a { color: inherit; }
     text-align: left;
 }
 
+.rsvp-notice {
+    margin: 0 0 26px;
+    padding: 14px 16px;
+    border-left: 2px solid var(--rose);
+    background: var(--paper);
+    font-size: 13px;
+    line-height: 1.6;
+    color: var(--ink-soft);
+}
+.rsvp-notice strong { font-weight: 500; color: var(--rose-deep); }
+
 .field { margin: 0 0 26px; padding: 0; border: 0; min-width: 0; }
 .field-row { display: grid; gap: 0 22px; }
 

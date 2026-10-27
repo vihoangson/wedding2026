@@ -42,6 +42,15 @@ class InviteController extends Controller
 
         $weddingDate = Carbon::createFromFormat('Y-m-d', config('wedding.wedding_date'));
 
+        // Prefill the RSVP form when this guest already answered. Stored
+        // values are HTML-escaped, so decode them before Blade escapes again.
+        $previousRsvp = $rsvp->findByToken($token);
+        if ($previousRsvp) {
+            $previousRsvp['phone'] = htmlspecialchars_decode($previousRsvp['phone'] ?? '', ENT_QUOTES);
+            $previousRsvp['message'] = htmlspecialchars_decode($previousRsvp['message'] ?? '', ENT_QUOTES);
+            $previousRsvp['confirmed_at'] = Carbon::parse($previousRsvp['updated_at'] ?? $previousRsvp['timestamp'])->format('H:i d/m/Y');
+        }
+
         return view('invite.show', [
             'guestName' => $guestName,
             'weddingDayName' => self::WEEKDAY_NAMES[$weddingDate->dayOfWeek],
@@ -49,6 +58,7 @@ class InviteController extends Controller
             'rsvpDeadline' => Carbon::createFromFormat('Y-m-d', config('wedding.rsvp_deadline'))->format('d.m.Y'),
             'activeComments' => $rsvp->getActiveComments(),
             'inviteToken' => $token,
+            'previousRsvp' => $previousRsvp,
             // Don't count the couple previewing links from the dashboard as a guest open.
             'trackOpen' => ! $request->session()->get('dashboard_logged_in'),
         ]);

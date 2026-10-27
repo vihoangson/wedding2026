@@ -330,6 +330,7 @@ function populateRsvpTable(rsvpList) {
         <tr>
             <td>
                 <small class="text-muted">${formatDate(rsvp.timestamp)}</small>
+                ${rsvp.updated_at ? `<div><span class="badge bg-warning text-dark">Đã sửa ${formatDate(rsvp.updated_at)}</span></div>` : ''}
             </td>
             <td>
                 <strong>${escapeHtml(rsvp.fullname)}</strong>

@@ -281,7 +281,9 @@ form.addEventListener('submit', function(e){
         phone: phone,
         guests: parseInt(guests),
         attend: attend.value,
-        message: message
+        message: message,
+        // Ties the RSVP to this guest's invite link so resending updates it
+        token: form.dataset.token || ''
     };
 
     // Disable submit button
@@ -301,19 +303,28 @@ form.addEventListener('submit', function(e){
     .then(result => {
         if (result.success) {
             // Show success message
+            const successMessage = document.getElementById('successMessage');
+            if (successMessage && result.data && result.data.updated) {
+                successMessage.textContent = result.message;
+            }
             form.style.display = 'none';
             successBox.classList.add('show');
 
             // Trigger confetti effect
             createConfetti();
 
-            // Reset form after a delay
+            // Show the form again (keeping the answers) so the guest can update it later
             setTimeout(() => {
-                form.reset();
+                const notice = document.getElementById('rsvpNotice');
+                const confirmedAt = document.getElementById('rsvpConfirmedAt');
+                if (notice && confirmedAt && result.data) {
+                    confirmedAt.textContent = result.data.confirmed_at;
+                    notice.hidden = false;
+                }
                 form.style.display = 'block';
                 successBox.classList.remove('show');
                 submitBtn.disabled = false;
-                submitBtn.textContent = 'Gửi xác nhận';
+                submitBtn.textContent = 'Cập nhật xác nhận';
             }, 4000);
         } else {
             // Show error message

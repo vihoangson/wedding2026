@@ -25,16 +25,21 @@ class RsvpRepository
     }
 
     /**
-     * Persist a new RSVP submission and its related (initially inactive)
-     * comment/wish entry. Returns the newly created RSVP record.
+     * Persist an RSVP submission and its related comment/wish entry.
+     *
+     * When $attributes['token'] (the guest's invite token) matches an earlier
+     * RSVP, that RSVP is updated instead of adding a duplicate; its wish goes
+     * back to pending approval if the message changed.
+     *
+     * Returns ['rsvp' => record, 'updated' => bool].
      */
     public function store(array $attributes): array
     {
         $rsvpList = $this->readList($this->dataFile, 'rsvp_list');
+        $token = $attributes['token'] ?? '';
+        $now = now()->format('Y-m-d H:i:s');
 
-        $newRsvp = [
-            'id' => uniqid('rsvp_', true),
-            'timestamp' => now()->format('Y-m-d H:i:s'),
+        $fields = [
             'fullname' => e($attributes['fullname']),
             'phone' => $attributes['phone'] !== '' ? e($attributes['phone']) : '',
             'guests' => $attributes['guests'],
@@ -44,23 +49,72 @@ class RsvpRepository
             'user_agent' => $attributes['user_agent'] ?? '',
         ];
 
-        $rsvpList[] = $newRsvp;
+        $index = $token !== '' ? $this->indexOfToken($rsvpList, $token) : null;
+
+        if ($index !== null) {
+            $rsvp = array_merge($rsvpList[$index], $fields, ['updated_at' => $now]);
+            $rsvpList[$index] = $rsvp;
+        } else {
+            $rsvp = ['id' => uniqid('rsvp_', true), 'timestamp' => $now] + ($token !== '' ? ['token' => $token] : []) + $fields;
+            $rsvpList[] = $rsvp;
+        }
+
         $this->writeList($this->dataFile, 'total_rsvp', 'rsvp_list', $rsvpList);
+        $this->saveCommentFor($rsvp, $now);
 
+        return ['rsvp' => $rsvp, 'updated' => $index !== null];
+    }
+
+    /**
+     * The RSVP previously sent with this invite token, if any.
+     */
+    public function findByToken(string $token): ?array
+    {
+        $rsvpList = $this->readList($this->dataFile, 'rsvp_list');
+        $index = $this->indexOfToken($rsvpList, $token);
+
+        return $index === null ? null : $rsvpList[$index];
+    }
+
+    private function indexOfToken(array $rsvpList, string $token): ?int
+    {
+        foreach ($rsvpList as $i => $rsvp) {
+            if (($rsvp['token'] ?? null) === $token) {
+                return $i;
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * Create the wish entry for an RSVP, or update it when the RSVP is resent.
+     */
+    private function saveCommentFor(array $rsvp, string $now): void
+    {
         $comments = $this->readList($this->commentsFile, 'comments');
-        $comments[] = [
-            'id' => uniqid('comment_', true),
-            'rsvp_id' => $newRsvp['id'],
-            'name' => $newRsvp['fullname'],
-            'sent_at' => now()->format('Y-m-d H:i:s'),
-            'active' => false,
-            'message' => $newRsvp['message'],
-            'ip_address' => $newRsvp['ip_address'],
-            'user_agent' => $newRsvp['user_agent'],
+        $entry = [
+            'rsvp_id' => $rsvp['id'],
+            'name' => $rsvp['fullname'],
+            'sent_at' => $now,
+            'message' => $rsvp['message'],
+            'ip_address' => $rsvp['ip_address'],
+            'user_agent' => $rsvp['user_agent'],
         ];
-        $this->writeList($this->commentsFile, 'total_comments', 'comments', $comments);
 
-        return $newRsvp;
+        $existing = array_search($rsvp['id'], array_column($comments, 'rsvp_id'), true);
+
+        if ($existing === false) {
+            $comments[] = ['id' => uniqid('comment_', true)] + $entry + ['active' => false];
+        } else {
+            $messageChanged = ($comments[$existing]['message'] ?? '') !== $entry['message'];
+            $comments[$existing] = array_merge($comments[$existing], $entry);
+            if ($messageChanged) {
+                $comments[$existing]['active'] = false;
+            }
+        }
+
+        $this->writeList($this->commentsFile, 'total_comments', 'comments', $comments);
     }
 
     /**
