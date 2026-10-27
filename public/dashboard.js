@@ -1,6 +1,6 @@
 // Dashboard - JavaScript Frontend
 // Port of the legacy dashboard/dashboard.js, adapted to call the Laravel
-// /dashboard/data and /dashboard/encode-inviter JSON endpoints instead of
+// /dashboard/data, /dashboard/invites and /dashboard/comments JSON endpoints instead of
 // dashboard/index.php?action=...
 
 let dashboardState = {
@@ -17,6 +17,7 @@ let dashboardState = {
 document.addEventListener('DOMContentLoaded', () => {
     setupEventListeners();
     loadDashboardData();
+    loadInvites();
 });
 
 // Setup Event Listeners
@@ -32,24 +33,19 @@ function setupEventListeners() {
         commentsHeader.addEventListener('click', toggleCommentsTable);
     }
 
-    // Invite link generator
-    const generateLinkBtn = document.getElementById('generateLinkBtn');
-    const inviterNameInput = document.getElementById('inviterName');
-    const copyLinkBtn = document.getElementById('copyLinkBtn');
+    // Guest list / invite link generator
+    const generateInvitesBtn = document.getElementById('generateInvitesBtn');
+    const invitesTableBody = document.getElementById('invitesTableBody');
+    const invitesSearch = document.getElementById('invitesSearch');
 
-    if (generateLinkBtn) {
-        generateLinkBtn.addEventListener('click', generateInviteLink);
+    if (generateInvitesBtn) {
+        generateInvitesBtn.addEventListener('click', generateInvites);
     }
-    if (inviterNameInput) {
-        inviterNameInput.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter') {
-                e.preventDefault();
-                generateInviteLink();
-            }
-        });
+    if (invitesTableBody) {
+        invitesTableBody.addEventListener('click', handleInviteAction);
     }
-    if (copyLinkBtn) {
-        copyLinkBtn.addEventListener('click', copyInviteLink);
+    if (invitesSearch) {
+        invitesSearch.addEventListener('input', renderInvites);
     }
 
     // Approve / hide / delete guest wishes
@@ -108,76 +104,148 @@ async function handleCommentAction(e) {
     }
 }
 
-// Tạo link mời cá nhân hóa dạng abc.com/invite/<ten-da-ma-hoa>
-// Tên khách được mã hóa ở server (InviterCodec) nên không lộ tên trực tiếp
-// trên URL, nhưng InviteController sẽ tự giải mã ngược lại để hiển thị đúng tên khách.
-async function generateInviteLink() {
-    const nameInput = document.getElementById('inviterName');
-    const name = (nameInput.value || '').trim();
+// ===== Danh sách khách mời =====
+// Tên khách được mã hóa ở server (InviterCodec) thành link /invite/<token>;
+// server lưu danh sách vào data/invites.json và soạn sẵn tin nhắn Zalo.
+let invitesState = [];
 
-    if (!name) {
-        nameInput.focus();
+async function loadInvites() {
+    try {
+        const response = await fetch(window.DASHBOARD_INVITES_URL, { headers: { 'Accept': 'application/json' } });
+        if (response.status === 401) {
+            window.location.reload();
+            return;
+        }
+        if (!response.ok) {
+            throw new Error('Failed to load invites: ' + response.status);
+        }
+        const data = await response.json();
+        invitesState = data.invites || [];
+        renderInvites();
+    } catch (err) {
+        console.error(err);
+    }
+}
+
+async function generateInvites() {
+    const textarea = document.getElementById('inviteNames');
+    const resultBox = document.getElementById('generateInvitesResult');
+    const btn = document.getElementById('generateInvitesBtn');
+    const names = (textarea.value || '').trim();
+
+    if (!names) {
+        textarea.focus();
         return;
     }
 
-    const generateLinkBtn = document.getElementById('generateLinkBtn');
-    const originalBtnHtml = generateLinkBtn ? generateLinkBtn.innerHTML : '';
-    if (generateLinkBtn) {
-        generateLinkBtn.disabled = true;
-        generateLinkBtn.innerHTML = '<span class="spinner-border spinner-border-sm"></span> Đang tạo...';
-    }
+    const originalBtnHtml = btn.innerHTML;
+    btn.disabled = true;
+    btn.innerHTML = '<span class="spinner-border spinner-border-sm"></span> Đang tạo...';
 
     try {
-        const baseUrl = window.DASHBOARD_INVITE_BASE_URL;
-
-        // Gọi backend để mã hóa tên khách (khóa bí mật chỉ nằm ở server)
-        const url = new URL(window.DASHBOARD_ENCODE_INVITER_URL, window.location.origin);
-        url.searchParams.set('name', name);
-
-        const response = await fetch(url.toString());
-        if (!response.ok) {
-            throw new Error('Encode failed: ' + response.status);
-        }
+        const response = await dashboardRequest(window.DASHBOARD_INVITES_URL, 'POST', { names: names });
         const data = await response.json();
-        if (!data.encoded) {
-            throw new Error('Không nhận được dữ liệu mã hóa');
+        if (!response.ok) {
+            throw new Error(data.error || data.message || ('Request failed: ' + response.status));
         }
 
-        const link = baseUrl + encodeURIComponent(data.encoded);
-
-        const linkInput = document.getElementById('generatedLink');
-        const wrap = document.getElementById('generatedLinkWrap');
-        linkInput.value = link;
-        wrap.classList.remove('d-none');
+        textarea.value = '';
+        resultBox.innerHTML = `<span class="text-success"><i class="bi bi-check-circle"></i> Đã tạo ${data.created} link mới</span>`
+            + (data.existing ? ` <span class="text-muted">· ${data.existing} tên đã có sẵn</span>` : '');
+        await loadInvites();
     } catch (err) {
         console.error(err);
-        alert('Không thể tạo link mời, vui lòng thử lại.');
+        resultBox.innerHTML = `<span class="text-danger">${escapeHtml(err.message || 'Không thể tạo link mời, vui lòng thử lại.')}</span>`;
     } finally {
-        if (generateLinkBtn) {
-            generateLinkBtn.disabled = false;
-            generateLinkBtn.innerHTML = originalBtnHtml;
+        btn.disabled = false;
+        btn.innerHTML = originalBtnHtml;
+    }
+}
+
+function renderInvites() {
+    const tbody = document.getElementById('invitesTableBody');
+    if (!tbody) return;
+
+    const keyword = (document.getElementById('invitesSearch').value || '').trim().toLowerCase();
+    const list = keyword
+        ? invitesState.filter(invite => invite.name.toLowerCase().includes(keyword))
+        : invitesState;
+
+    document.getElementById('invitesCount').textContent = invitesState.length;
+
+    if (list.length === 0) {
+        tbody.innerHTML = `
+            <tr>
+                <td colspan="3" class="text-center text-muted py-4">
+                    <i class="bi bi-inbox"></i> ${keyword ? 'Không tìm thấy khách mời' : 'Chưa có khách mời nào'}
+                </td>
+            </tr>
+        `;
+        return;
+    }
+
+    tbody.innerHTML = list.map(invite => `
+        <tr>
+            <td><strong>${escapeHtml(invite.name)}</strong></td>
+            <td>
+                <a href="${escapeHtml(invite.link)}" target="_blank" rel="noopener" class="small text-break">${escapeHtml(invite.link)}</a>
+            </td>
+            <td class="text-end text-nowrap">
+                <button type="button" class="btn btn-outline-secondary btn-sm" data-invite-action="copy-link" data-token="${escapeHtml(invite.token)}" title="Copy link"><i class="bi bi-link-45deg"></i></button>
+                <button type="button" class="btn btn-primary btn-sm" data-invite-action="copy-zalo" data-token="${escapeHtml(invite.token)}"><i class="bi bi-chat-dots"></i> Copy Zalo</button>
+                <button type="button" class="btn btn-outline-danger btn-sm" data-invite-action="delete" data-token="${escapeHtml(invite.token)}" title="Xoá khỏi danh sách"><i class="bi bi-trash"></i></button>
+            </td>
+        </tr>
+    `).join('');
+}
+
+async function handleInviteAction(e) {
+    const btn = e.target.closest('[data-invite-action]');
+    if (!btn) return;
+
+    const invite = invitesState.find(item => item.token === btn.dataset.token);
+    if (!invite) return;
+
+    const action = btn.dataset.inviteAction;
+
+    if (action === 'copy-link' || action === 'copy-zalo') {
+        await copyText(action === 'copy-zalo' ? invite.message : invite.link);
+        const originalHtml = btn.innerHTML;
+        btn.innerHTML = '<i class="bi bi-check2"></i> Đã copy';
+        setTimeout(() => { btn.innerHTML = originalHtml; }, 1500);
+        return;
+    }
+
+    if (action === 'delete') {
+        if (!confirm(`Xoá "${invite.name}" khỏi danh sách?\n(Link đã gửi vẫn mở được thiệp.)`)) return;
+
+        btn.disabled = true;
+        try {
+            const response = await dashboardRequest(window.DASHBOARD_INVITES_URL + '/' + encodeURIComponent(invite.token), 'DELETE');
+            if (!response.ok) throw new Error('Request failed: ' + response.status);
+            await loadInvites();
+        } catch (err) {
+            console.error(err);
+            alert('Không thể xoá khách mời, vui lòng thử lại.');
+            btn.disabled = false;
         }
     }
 }
 
-// Copy link vào clipboard
-function copyInviteLink() {
-    const linkInput = document.getElementById('generatedLink');
-    if (!linkInput.value) return;
-
-    linkInput.select();
-    linkInput.setSelectionRange(0, 99999);
-
-    navigator.clipboard.writeText(linkInput.value).then(() => {
-        const btn = document.getElementById('copyLinkBtn');
-        const originalHtml = btn.innerHTML;
-        btn.innerHTML = '<i class="bi bi-check2"></i> Đã copy';
-        setTimeout(() => {
-            btn.innerHTML = originalHtml;
-        }, 1500);
-    }).catch(() => {
+// Copy vào clipboard (có fallback cho trình duyệt/http không hỗ trợ Clipboard API)
+async function copyText(text) {
+    try {
+        await navigator.clipboard.writeText(text);
+    } catch (err) {
+        const temp = document.createElement('textarea');
+        temp.value = text;
+        temp.style.position = 'fixed';
+        temp.style.opacity = '0';
+        document.body.appendChild(temp);
+        temp.select();
         document.execCommand('copy');
-    });
+        temp.remove();
+    }
 }
 
 // Load Dashboard Data từ Laravel Backend

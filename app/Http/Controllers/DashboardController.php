@@ -2,15 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Services\InviterCodec;
 use App\Services\RsvpRepository;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
 
 /**
  * Port of the legacy dashboard/index.php admin panel: password-protected
- * page showing RSVP + comment stats, plus the personalized invite-link
- * generator. Auth state is kept in the session (no Eloquent user needed,
+ * page showing RSVP + comment stats (the guest list / invite-link generator
+ * lives in DashboardInviteController). Auth state is kept in the session (no Eloquent user needed,
  * mirroring the original single shared password).
  */
 class DashboardController extends Controller
@@ -107,29 +105,5 @@ class DashboardController extends Controller
         }
 
         return response()->json(['deleted' => true]);
-    }
-
-    /**
-     * GET /dashboard/encode-inviter?name=... — encodes a guest name into
-     * the opaque /invite/{token} link (port of ?action=encode_inviter).
-     * Protected by the dashboard.auth middleware.
-     */
-    public function encodeInviter(Request $request)
-    {
-        $validator = Validator::make($request->all(), [
-            'name' => ['required', 'string'],
-        ], [
-            'name.required' => 'Thiếu tên người mời',
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json(['error' => $validator->errors()->first()], 400);
-        }
-
-        $name = trim($request->input('name'));
-
-        return response()->json([
-            'encoded' => InviterCodec::encode($name, config('wedding.inviter_secret_key')),
-        ]);
     }
 }

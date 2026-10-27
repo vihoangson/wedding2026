@@ -88,34 +88,45 @@
     </nav>
 
     <div class="container-fluid py-4">
-        <!-- Invite Link Generator -->
+        <!-- Guest list / invite link generator -->
         <div class="row mb-4">
             <div class="col-lg-12 mb-4">
                 <div class="card border-0 shadow-sm">
-                    <div class="card-header bg-white border-bottom py-3">
+                    <div class="card-header bg-white border-bottom py-3 d-flex flex-wrap gap-2 justify-content-between align-items-center">
                         <h5 class="mb-0 fw-bold">
-                            <i class="bi bi-link-45deg"></i> Tạo Link Mời Cá Nhân Hóa
+                            <i class="bi bi-link-45deg"></i> Danh Sách Khách Mời
+                            <span class="badge bg-wedding ms-2" id="invitesCount">0</span>
                         </h5>
+                        <a href="{{ route('dashboard.invites.export') }}" class="btn btn-outline-success btn-sm">
+                            <i class="bi bi-file-earmark-excel"></i> Xuất Excel
+                        </a>
                     </div>
                     <div class="card-body">
-                        <div class="row g-2 align-items-end">
-                            <div class="col-md-8">
-                                <label for="inviterName" class="form-label fw-500">Tên người được mời</label>
-                                <input type="text" class="form-control" id="inviterName" placeholder="VD: Anh Nguyễn Văn A">
-                            </div>
-                            <div class="col-md-4">
-                                <button type="button" class="btn btn-wedding w-100 fw-600" id="generateLinkBtn">
+                        <div class="row g-3">
+                            <div class="col-lg-4">
+                                <label for="inviteNames" class="form-label fw-500">Tên khách mời <small class="text-muted">(mỗi dòng một người)</small></label>
+                                <textarea class="form-control" id="inviteNames" rows="6" placeholder="Anh Nguyễn Văn A&#10;Chị Trần Thị B&#10;Gia đình chú Ba"></textarea>
+                                <button type="button" class="btn btn-wedding w-100 fw-600 mt-2" id="generateInvitesBtn">
                                     <i class="bi bi-magic"></i> Tạo Link
                                 </button>
+                                <div class="small mt-2" id="generateInvitesResult"></div>
                             </div>
-                        </div>
-                        <div class="mt-3 d-none" id="generatedLinkWrap">
-                            <label class="form-label fw-500">Link để gửi</label>
-                            <div class="input-group">
-                                <input type="text" class="form-control" id="generatedLink" readonly>
-                                <button class="btn btn-outline-secondary" type="button" id="copyLinkBtn">
-                                    <i class="bi bi-clipboard"></i> Copy
-                                </button>
+                            <div class="col-lg-8">
+                                <input type="search" class="form-control form-control-sm mb-2" id="invitesSearch" placeholder="Tìm theo tên...">
+                                <div class="table-responsive" style="max-height: 420px;">
+                                    <table class="table table-hover table-sm align-middle mb-0">
+                                        <thead class="bg-light sticky-top">
+                                            <tr>
+                                                <th class="text-muted fw-600">Tên khách</th>
+                                                <th class="text-muted fw-600">Link</th>
+                                                <th class="text-muted fw-600 text-end">Thao tác</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="invitesTableBody">
+                                            <tr><td colspan="3" class="text-center text-muted py-4">Đang tải...</td></tr>
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -239,9 +250,8 @@
 
     <script>
         window.DASHBOARD_DATA_URL = "{{ route('dashboard.data') }}";
-        window.DASHBOARD_ENCODE_INVITER_URL = "{{ route('dashboard.encode-inviter') }}";
         window.DASHBOARD_COMMENTS_URL = "{{ url('/dashboard/comments') }}/";
-        window.DASHBOARD_INVITE_BASE_URL = "{{ url('/invite') }}/";
+        window.DASHBOARD_INVITES_URL = "{{ route('dashboard.invites.index') }}";
     </script>
     <script src="/dashboard.js"></script>
 

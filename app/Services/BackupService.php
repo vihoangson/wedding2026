@@ -14,6 +14,7 @@ class BackupService
         'memories.json',
         'memory_comments.json',
         'media.json',
+        'invites.json',
     ];
 
     public function __construct()

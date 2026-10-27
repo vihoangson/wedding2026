@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AboutUsController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\DashboardInviteController;
 use App\Http\Controllers\InviteController;
 use App\Http\Controllers\MediaConfigController;
 use App\Http\Controllers\MemoryController;
@@ -46,7 +47,10 @@ Route::get('/dashboard/config', [MediaConfigController::class, 'index'])->name('
 Route::middleware('dashboard.auth')->group(function () {
     Route::post('/dashboard/config', [MediaConfigController::class, 'update'])->name('dashboard.config.update');
     Route::get('/dashboard/data', [DashboardController::class, 'data'])->name('dashboard.data');
-    Route::get('/dashboard/encode-inviter', [DashboardController::class, 'encodeInviter'])->name('dashboard.encode-inviter');
+    Route::get('/dashboard/invites', [DashboardInviteController::class, 'index'])->name('dashboard.invites.index');
+    Route::post('/dashboard/invites', [DashboardInviteController::class, 'store'])->name('dashboard.invites.store');
+    Route::get('/dashboard/invites/export', [DashboardInviteController::class, 'export'])->name('dashboard.invites.export');
+    Route::delete('/dashboard/invites/{token}', [DashboardInviteController::class, 'destroy'])->where('token', '[^/]+')->name('dashboard.invites.destroy');
     Route::patch('/dashboard/comments/{id}', [DashboardController::class, 'updateComment'])->name('dashboard.comments.update');
     Route::delete('/dashboard/comments/{id}', [DashboardController::class, 'destroyComment'])->name('dashboard.comments.destroy');
 });
