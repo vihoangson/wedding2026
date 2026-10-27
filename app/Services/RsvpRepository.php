@@ -2,30 +2,19 @@
 
 namespace App\Services;
 
+use App\Models\Rsvp;
+use App\Models\Wish;
+use Illuminate\Support\Facades\DB;
+
 /**
- * Reads/writes the file-based JSON stores used by the wedding site
- * (data/data.json for RSVPs, data/comments.json for guest wishes),
- * ported from the original api/save-rsvp.php.
+ * RSVPs (rsvps table) and the guest wishes sent with them (wishes table).
+ * Records are returned as plain arrays in the same shape the JSON store
+ * used, so controllers, views and dashboard JS stay unchanged.
  */
 class RsvpRepository
 {
-    protected string $dataFile;
-
-    protected string $commentsFile;
-
-    public function __construct()
-    {
-        $dataDir = base_path('data');
-        $this->dataFile = $dataDir.DIRECTORY_SEPARATOR.'data.json';
-        $this->commentsFile = $dataDir.DIRECTORY_SEPARATOR.'comments.json';
-
-        if (! is_dir($dataDir)) {
-            mkdir($dataDir, 0755, true);
-        }
-    }
-
     /**
-     * Persist an RSVP submission and its related comment/wish entry.
+     * Persist an RSVP submission and its related wish.
      *
      * When $attributes['token'] (the guest's invite token) matches an earlier
      * RSVP, that RSVP is updated instead of adding a duplicate; its wish goes
@@ -35,34 +24,36 @@ class RsvpRepository
      */
     public function store(array $attributes): array
     {
-        $rsvpList = $this->readList($this->dataFile, 'rsvp_list');
-        $token = $attributes['token'] ?? '';
-        $now = now()->format('Y-m-d H:i:s');
+        return DB::transaction(function () use ($attributes) {
+            $token = $attributes['token'] ?? '';
 
-        $fields = [
-            'fullname' => e($attributes['fullname']),
-            'phone' => $attributes['phone'] !== '' ? e($attributes['phone']) : '',
-            'guests' => $attributes['guests'],
-            'attend' => $attributes['attend'],
-            'message' => $attributes['message'] !== '' ? e($attributes['message']) : '',
-            'ip_address' => $attributes['ip_address'] ?? '',
-            'user_agent' => $attributes['user_agent'] ?? '',
-        ];
+            $fields = [
+                'fullname' => $attributes['fullname'],
+                'phone' => $attributes['phone'] ?? '',
+                'guests' => $attributes['guests'],
+                'attend' => $attributes['attend'],
+                'message' => $attributes['message'] ?? '',
+                'ip_address' => $attributes['ip_address'] ?? '',
+                'user_agent' => $attributes['user_agent'] ?? '',
+            ];
 
-        $index = $token !== '' ? $this->indexOfToken($rsvpList, $token) : null;
+            $rsvp = $token !== '' ? Rsvp::whereToken($token)->lockForUpdate()->first() : null;
+            $updated = $rsvp !== null;
 
-        if ($index !== null) {
-            $rsvp = array_merge($rsvpList[$index], $fields, ['updated_at' => $now]);
-            $rsvpList[$index] = $rsvp;
-        } else {
-            $rsvp = ['id' => uniqid('rsvp_', true), 'timestamp' => $now] + ($token !== '' ? ['token' => $token] : []) + $fields;
-            $rsvpList[] = $rsvp;
-        }
+            if ($updated) {
+                $rsvp->fill($fields + ['edited_at' => now()])->save();
+            } else {
+                $rsvp = new Rsvp($fields);
+                if ($token !== '') {
+                    $rsvp->token = $token;
+                }
+                $rsvp->save();
+            }
 
-        $this->writeList($this->dataFile, 'total_rsvp', 'rsvp_list', $rsvpList);
-        $this->saveCommentFor($rsvp, $now);
+            $this->saveWishFor($rsvp);
 
-        return ['rsvp' => $rsvp, 'updated' => $index !== null];
+            return ['rsvp' => $this->presentRsvp($rsvp), 'updated' => $updated];
+        });
     }
 
     /**
@@ -70,63 +61,18 @@ class RsvpRepository
      */
     public function findByToken(string $token): ?array
     {
-        $rsvpList = $this->readList($this->dataFile, 'rsvp_list');
-        $index = $this->indexOfToken($rsvpList, $token);
+        $rsvp = Rsvp::whereToken($token)->first();
 
-        return $index === null ? null : $rsvpList[$index];
-    }
-
-    private function indexOfToken(array $rsvpList, string $token): ?int
-    {
-        foreach ($rsvpList as $i => $rsvp) {
-            if (($rsvp['token'] ?? null) === $token) {
-                return $i;
-            }
-        }
-
-        return null;
+        return $rsvp ? $this->presentRsvp($rsvp) : null;
     }
 
     /**
-     * Create the wish entry for an RSVP, or update it when the RSVP is resent.
-     */
-    private function saveCommentFor(array $rsvp, string $now): void
-    {
-        $comments = $this->readList($this->commentsFile, 'comments');
-        $entry = [
-            'rsvp_id' => $rsvp['id'],
-            'name' => $rsvp['fullname'],
-            'sent_at' => $now,
-            'message' => $rsvp['message'],
-            'ip_address' => $rsvp['ip_address'],
-            'user_agent' => $rsvp['user_agent'],
-        ];
-
-        $existing = array_search($rsvp['id'], array_column($comments, 'rsvp_id'), true);
-
-        if ($existing === false) {
-            $comments[] = ['id' => uniqid('comment_', true)] + $entry + ['active' => false];
-        } else {
-            $messageChanged = ($comments[$existing]['message'] ?? '') !== $entry['message'];
-            $comments[$existing] = array_merge($comments[$existing], $entry);
-            if ($messageChanged) {
-                $comments[$existing]['active'] = false;
-            }
-        }
-
-        $this->writeList($this->commentsFile, 'total_comments', 'comments', $comments);
-    }
-
-    /**
-     * Get every comment/wish marked as active, for display on the invite page.
+     * Get every wish marked as active, for display on the invite page.
      */
     public function getActiveComments(): array
     {
-        $comments = $this->readList($this->commentsFile, 'comments');
-
-        return array_values(array_filter($comments, function ($comment) {
-            return isset($comment['active']) && $comment['active'] === true;
-        }));
+        return Wish::where('active', true)->orderBy('id')->get()
+            ->map(fn (Wish $wish) => $this->presentWish($wish))->all();
     }
 
     /**
@@ -134,77 +80,92 @@ class RsvpRepository
      */
     public function getAllRsvp(): array
     {
-        return $this->readList($this->dataFile, 'rsvp_list');
+        return Rsvp::orderBy('id')->get()
+            ->map(fn (Rsvp $rsvp) => $this->presentRsvp($rsvp))->all();
     }
 
     /**
-     * Get every comment/wish, active or not (used by the /dashboard admin panel).
+     * Get every wish, active or not (used by the /dashboard admin panel).
      */
     public function getAllComments(): array
     {
-        return $this->readList($this->commentsFile, 'comments');
+        return Wish::orderBy('id')->get()
+            ->map(fn (Wish $wish) => $this->presentWish($wish))->all();
     }
 
     /**
-     * Show/hide a comment on the invite page. Returns the updated comment,
-     * or null if no comment has that id.
+     * Show/hide a wish on the invite page. Returns the updated wish,
+     * or null if no wish has that id.
      */
     public function setCommentActive(string $id, bool $active): ?array
     {
-        $comments = $this->readList($this->commentsFile, 'comments');
+        $wish = Wish::find($id);
 
-        foreach ($comments as $i => $comment) {
-            if (($comment['id'] ?? null) === $id) {
-                $comments[$i]['active'] = $active;
-                $this->writeList($this->commentsFile, 'total_comments', 'comments', $comments);
-
-                return $comments[$i];
-            }
+        if (! $wish) {
+            return null;
         }
 
-        return null;
+        $wish->update(['active' => $active]);
+
+        return $this->presentWish($wish);
     }
 
     /**
-     * Permanently remove a comment. Returns false if no comment has that id.
+     * Permanently remove a wish. Returns false if no wish has that id.
      */
     public function deleteComment(string $id): bool
     {
-        $comments = $this->readList($this->commentsFile, 'comments');
-        $remaining = array_values(array_filter($comments, fn ($comment) => ($comment['id'] ?? null) !== $id));
-
-        if (count($remaining) === count($comments)) {
-            return false;
-        }
-
-        $this->writeList($this->commentsFile, 'total_comments', 'comments', $remaining);
-
-        return true;
+        return Wish::whereKey($id)->delete() > 0;
     }
 
-    protected function readList(string $file, string $key): array
+    /**
+     * Create the wish for an RSVP, or update it when the RSVP is resent.
+     */
+    private function saveWishFor(Rsvp $rsvp): void
     {
-        if (! file_exists($file)) {
-            return [];
+        $wish = $rsvp->wish()->first() ?? new Wish(['rsvp_id' => $rsvp->id, 'active' => false]);
+
+        if ($wish->exists && (string) $wish->message !== (string) $rsvp->message) {
+            $wish->active = false;
         }
 
-        $data = json_decode(file_get_contents($file), true);
-
-        return $data[$key] ?? [];
+        $wish->fill([
+            'name' => $rsvp->fullname,
+            'message' => $rsvp->message,
+            'sent_at' => now(),
+            'ip_address' => $rsvp->ip_address,
+            'user_agent' => $rsvp->user_agent,
+        ])->save();
     }
 
-    protected function writeList(string $file, string $countKey, string $listKey, array $list): void
+    public function presentRsvp(Rsvp $rsvp): array
     {
-        $payload = [
-            $countKey => count($list),
-            'last_updated' => now()->format('Y-m-d H:i:s'),
-            $listKey => $list,
+        return [
+            'id' => $rsvp->id,
+            'token' => $rsvp->token,
+            'timestamp' => $rsvp->created_at?->format('Y-m-d H:i:s'),
+            'updated_at' => $rsvp->edited_at?->format('Y-m-d H:i:s'),
+            'fullname' => $rsvp->fullname,
+            'phone' => $rsvp->phone,
+            'guests' => $rsvp->guests,
+            'attend' => $rsvp->attend,
+            'message' => (string) $rsvp->message,
+            'ip_address' => $rsvp->ip_address,
+            'user_agent' => $rsvp->user_agent,
         ];
+    }
 
-        file_put_contents(
-            $file,
-            json_encode($payload, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE),
-            LOCK_EX
-        );
+    public function presentWish(Wish $wish): array
+    {
+        return [
+            'id' => $wish->id,
+            'rsvp_id' => $wish->rsvp_id,
+            'name' => $wish->name,
+            'sent_at' => $wish->sent_at?->format('Y-m-d H:i:s'),
+            'active' => $wish->active,
+            'message' => (string) $wish->message,
+            'ip_address' => $wish->ip_address,
+            'user_agent' => $wish->user_agent,
+        ];
     }
 }

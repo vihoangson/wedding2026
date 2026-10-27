@@ -4,28 +4,25 @@ namespace App\Services;
 
 use Illuminate\Support\Facades\Storage;
 
+/**
+ * Daily S3 backup of the wedding data, written in the legacy data/*.json
+ * format (see LegacyJsonStore) so backups taken before the move to the
+ * database can still be restored.
+ */
 class BackupService
 {
-    private $dataDir;
     private $s3Disk;
-    private $requiredFiles = [
-        'data.json',
-        'comments.json',
-        'memories.json',
-        'memory_comments.json',
-        'media.json',
-        'invites.json',
-    ];
+
+    private LegacyJsonStore $store;
 
     public function __construct()
     {
-        $this->dataDir = storage_path('../data');
         $this->s3Disk = Storage::disk('s3');
+        $this->store = new LegacyJsonStore();
     }
 
     /**
-     * Backup missing JSON files to S3.
-     * Checks if today's backups exist, uploads any missing files.
+     * Upload today's backup files that aren't on S3 yet.
      *
      * @return array Status of each file backup attempt
      */
@@ -33,30 +30,37 @@ class BackupService
     {
         $today = now()->format('Y-m-d');
         $results = [];
+        $missing = [];
 
-        foreach ($this->requiredFiles as $file) {
-            $filePath = $this->dataDir . DIRECTORY_SEPARATOR . $file;
-            $s3Path = "backups/{$today}/{$file}";
-
-            // Skip if file doesn't exist locally
-            if (!file_exists($filePath)) {
-                $results[$file] = 'local_file_missing';
-                continue;
-            }
-
-            // Check if backup already exists in S3 for today
-            if ($this->s3Disk->exists($s3Path)) {
+        foreach (LegacyJsonStore::FILES as $file) {
+            if ($this->s3Disk->exists("backups/{$today}/{$file}")) {
                 $results[$file] = 'already_backed_up';
+            } else {
+                $missing[] = $file;
+            }
+        }
+
+        if (! $missing) {
+            return $results;
+        }
+
+        // Only export the database when something actually needs uploading.
+        $payloads = $this->store->export();
+
+        foreach ($missing as $file) {
+            if (! isset($payloads[$file])) {
+                $results[$file] = 'nothing_to_backup';
                 continue;
             }
 
-            // Upload file to S3
             try {
-                $contents = file_get_contents($filePath);
-                $this->s3Disk->put($s3Path, $contents);
+                $this->s3Disk->put(
+                    "backups/{$today}/{$file}",
+                    json_encode($payloads[$file], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES)
+                );
                 $results[$file] = 'backed_up';
             } catch (\Exception $e) {
-                $results[$file] = 'backup_failed: ' . $e->getMessage();
+                $results[$file] = 'backup_failed: '.$e->getMessage();
             }
         }
 
@@ -71,7 +75,7 @@ class BackupService
     public function listBackups(): array
     {
         try {
-            $files = $this->s3Disk->files('backups');
+            $files = $this->s3Disk->allFiles('backups');
             $dates = [];
 
             foreach ($files as $file) {
@@ -80,40 +84,29 @@ class BackupService
                 }
             }
 
-            return array_unique($dates);
+            return array_values(array_unique($dates));
         } catch (\Exception $e) {
             return [];
         }
     }
 
     /**
-     * Restore backup from S3 to local data directory.
+     * Replace the database contents with the backup taken on $date.
      *
-     * @param string $date Date in Y-m-d format
-     * @return array Status of each file restore attempt
+     * @param  string  $date  Date in Y-m-d format
+     * @return array Number of records restored per table
      */
     public function restoreFromBackup(string $date): array
     {
-        $results = [];
+        $payloads = [];
 
-        foreach ($this->requiredFiles as $file) {
+        foreach (LegacyJsonStore::FILES as $file) {
             $s3Path = "backups/{$date}/{$file}";
-            $localPath = $this->dataDir . DIRECTORY_SEPARATOR . $file;
-
-            try {
-                if (!$this->s3Disk->exists($s3Path)) {
-                    $results[$file] = 'backup_not_found';
-                    continue;
-                }
-
-                $contents = $this->s3Disk->get($s3Path);
-                file_put_contents($localPath, $contents, LOCK_EX);
-                $results[$file] = 'restored';
-            } catch (\Exception $e) {
-                $results[$file] = 'restore_failed: ' . $e->getMessage();
+            if ($this->s3Disk->exists($s3Path)) {
+                $payloads[$file] = json_decode($this->s3Disk->get($s3Path), true) ?? [];
             }
         }
 
-        return $results;
+        return $payloads ? $this->store->import($payloads, true) : [];
     }
 }

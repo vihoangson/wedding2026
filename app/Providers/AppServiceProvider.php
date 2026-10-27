@@ -25,44 +25,12 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->initializeDataFiles();
         $this->backupToS3();
-        (new MediaSettingsRepository())->applyToConfig();
+        $this->applyMediaSettings();
     }
 
     /**
-     * Initialize missing data files from .example templates.
-     * If a .json file doesn't exist but .json.example does, copy it.
-     *
-     * @return void
-     */
-    private function initializeDataFiles()
-    {
-        $dataDir = storage_path('../data');
-
-        if (!is_dir($dataDir)) {
-            return;
-        }
-
-        $requiredFiles = [
-            'data.json',
-            'comments.json',
-            'memories.json',
-            'memory_comments.json',
-        ];
-
-        foreach ($requiredFiles as $file) {
-            $filePath = $dataDir . DIRECTORY_SEPARATOR . $file;
-            $examplePath = $dataDir . DIRECTORY_SEPARATOR . $file . '.example';
-
-            if (!file_exists($filePath) && file_exists($examplePath)) {
-                copy($examplePath, $filePath);
-            }
-        }
-    }
-
-    /**
-     * Backup JSON files to S3 if today's backups don't exist.
+     * Backup the database to S3 if today's backups don't exist.
      *
      * @return void
      */
@@ -71,8 +39,23 @@ class AppServiceProvider extends ServiceProvider
         try {
             $backupService = new BackupService();
             $backupService->backupMissingFiles();
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             // Silently fail - don't break app startup if S3 is unreachable
+        }
+    }
+
+    /**
+     * Apply the image/video links saved from /dashboard/config.
+     *
+     * @return void
+     */
+    private function applyMediaSettings()
+    {
+        try {
+            (new MediaSettingsRepository())->applyToConfig();
+        } catch (\Throwable $e) {
+            // DB not reachable / not migrated yet (e.g. while running
+            // `artisan migrate`): fall back to config/wedding.php defaults.
         }
     }
 }

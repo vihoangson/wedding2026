@@ -2,39 +2,22 @@
 
 namespace App\Services;
 
+use App\Models\MemoryComment;
+use App\Models\MemoryPost;
+
 /**
- * Reads the file-based JSON store of "our memories" timeline posts
- * (data/memories.json), used by the Facebook-style /memorize page.
+ * "Our memories" timeline posts (memory_posts) and their comments
+ * (memory_comments), used by the Facebook-style /memorize page.
  */
 class MemoryRepository
 {
-    protected string $memoriesFile;
-
-    protected string $commentsFile;
-
-    public function __construct()
-    {
-        $dataDir = base_path('data');
-        $this->memoriesFile = $dataDir.DIRECTORY_SEPARATOR.'memories.json';
-        $this->commentsFile = $dataDir.DIRECTORY_SEPARATOR.'memory_comments.json';
-
-        if (! is_dir($dataDir)) {
-            mkdir($dataDir, 0755, true);
-        }
-    }
-
     /**
      * Get every timeline post, newest first (like a real Facebook feed).
      */
     public function getTimeline(): array
     {
-        $posts = $this->readList($this->memoriesFile, 'posts');
-
-        usort($posts, function ($a, $b) {
-            return strtotime($b['date'] ?? '') <=> strtotime($a['date'] ?? '');
-        });
-
-        return $posts;
+        return MemoryPost::orderByDesc('posted_at')->orderByDesc('id')->get()
+            ->map(fn (MemoryPost $post) => $this->presentPost($post))->all();
     }
 
     /**
@@ -42,65 +25,48 @@ class MemoryRepository
      */
     public function getComments(string $postId): array
     {
-        $comments = $this->readList($this->commentsFile, 'comments');
-
-        $comments = array_values(array_filter($comments, function ($comment) use ($postId) {
-            return ($comment['post_id'] ?? null) === $postId;
-        }));
-
-        usort($comments, function ($a, $b) {
-            return strtotime($a['created_at'] ?? '') <=> strtotime($b['created_at'] ?? '');
-        });
-
-        return $comments;
+        return MemoryComment::where('memory_post_id', $postId)->orderBy('created_at')->orderBy('id')->get()
+            ->map(fn (MemoryComment $comment) => $this->presentComment($comment))->all();
     }
 
     /**
-     * Append a new comment for a post and persist it to memory_comments.json.
+     * Add a new comment to a post (404 if the post doesn't exist).
      */
     public function addComment(string $postId, array $attributes): array
     {
-        $comments = $this->readList($this->commentsFile, 'comments');
+        $post = MemoryPost::findOrFail($postId);
 
-        $newComment = [
-            'id' => uniqid('mzc_', true),
-            'post_id' => $postId,
-            'name' => e($attributes['name']),
-            'message' => e($attributes['message']),
-            'created_at' => now()->format('Y-m-d H:i:s'),
+        $comment = $post->comments()->create([
+            'name' => $attributes['name'],
+            'message' => $attributes['message'],
             'ip_address' => $attributes['ip_address'] ?? '',
             'user_agent' => $attributes['user_agent'] ?? '',
-        ];
+        ]);
 
-        $comments[] = $newComment;
-        $this->writeList($this->commentsFile, 'total_comments', 'comments', $comments);
-
-        return $newComment;
+        return $this->presentComment($comment);
     }
 
-    protected function readList(string $file, string $key): array
+    public function presentPost(MemoryPost $post): array
     {
-        if (! file_exists($file)) {
-            return [];
-        }
-
-        $data = json_decode(file_get_contents($file), true);
-
-        return $data[$key] ?? [];
+        return [
+            'id' => (string) $post->id,
+            'date' => $post->posted_at?->format('Y-m-d H:i:s'),
+            'content' => $post->content,
+            'images' => $post->images ?? [],
+            'likes' => $post->likes,
+        ];
     }
 
-    protected function writeList(string $file, string $countKey, string $listKey, array $list): void
+    public function presentComment(MemoryComment $comment): array
     {
-        $payload = [
-            $countKey => count($list),
-            'last_updated' => now()->format('Y-m-d H:i:s'),
-            $listKey => $list,
+        return [
+            'id' => $comment->id,
+            'post_id' => (string) $comment->memory_post_id,
+            'name' => $comment->name,
+            'message' => $comment->message,
+            'created_at' => $comment->created_at?->format('Y-m-d H:i:s'),
+            'ip_address' => $comment->ip_address,
+            'user_agent' => $comment->user_agent,
         ];
-
-        file_put_contents(
-            $file,
-            json_encode($payload, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE),
-            LOCK_EX
-        );
     }
 }

@@ -2,39 +2,24 @@
 
 namespace App\Services;
 
+use App\Models\Invite;
+
 /**
- * File-based store (data/invites.json) of the guests the couple has
- * generated personalized /invite/<token> links for from the dashboard.
+ * The guests the couple has generated personalized /invite/<token> links
+ * for from the dashboard (invites table).
  *
  * Tokens are deterministic (InviterCodec), so the token doubles as the
  * guest's id: generating a link for the same name twice is a no-op.
  */
 class InviteRepository
 {
-    protected string $file;
-
-    public function __construct()
-    {
-        $dataDir = base_path('data');
-        $this->file = $dataDir.DIRECTORY_SEPARATOR.'invites.json';
-
-        if (! is_dir($dataDir)) {
-            mkdir($dataDir, 0755, true);
-        }
-    }
-
     /**
      * Every invite, in the order they were added.
      */
     public function all(): array
     {
-        if (! file_exists($this->file)) {
-            return [];
-        }
-
-        $data = json_decode(file_get_contents($this->file), true);
-
-        return $data['invites'] ?? [];
+        return Invite::orderBy('id')->get()
+            ->map(fn (Invite $invite) => $this->present($invite))->all();
     }
 
     /**
@@ -43,32 +28,19 @@ class InviteRepository
      */
     public function addNames(array $names, string $secretKey): array
     {
-        $invites = $this->all();
-        $byToken = array_column($invites, null, 'token');
         $created = [];
         $existing = [];
 
         foreach ($names as $name) {
             $token = InviterCodec::encode($name, $secretKey);
+            $invite = Invite::whereToken($token)->first();
 
-            if (isset($byToken[$token])) {
-                $existing[] = $byToken[$token];
+            if ($invite) {
+                $existing[] = $this->present($invite);
                 continue;
             }
 
-            $invite = [
-                'token' => $token,
-                'name' => $name,
-                'created_at' => now()->format('Y-m-d H:i:s'),
-            ];
-
-            $invites[] = $invite;
-            $byToken[$token] = $invite;
-            $created[] = $invite;
-        }
-
-        if ($created) {
-            $this->write($invites);
+            $created[] = $this->present(Invite::create(['token' => $token, 'name' => $name]));
         }
 
         return ['created' => $created, 'existing' => $existing];
@@ -80,20 +52,13 @@ class InviteRepository
      */
     public function recordOpen(string $token, string $name): void
     {
-        $invites = $this->all();
-        $now = now()->format('Y-m-d H:i:s');
-        $index = array_search($token, array_column($invites, 'token'), true);
+        $invite = Invite::whereToken($token)->first() ?? Invite::create(['token' => $token, 'name' => $name]);
 
-        if ($index === false) {
-            $invites[] = ['token' => $token, 'name' => $name, 'created_at' => $now];
-            $index = count($invites) - 1;
-        }
-
-        $invites[$index]['first_opened_at'] = $invites[$index]['first_opened_at'] ?? $now;
-        $invites[$index]['last_opened_at'] = $now;
-        $invites[$index]['open_count'] = ($invites[$index]['open_count'] ?? 0) + 1;
-
-        $this->write($invites);
+        // increment() is a single atomic UPDATE, so concurrent opens aren't lost.
+        $invite->increment('open_count', 1, [
+            'first_opened_at' => $invite->first_opened_at ?? now(),
+            'last_opened_at' => now(),
+        ]);
     }
 
     /**
@@ -102,30 +67,18 @@ class InviteRepository
      */
     public function delete(string $token): bool
     {
-        $invites = $this->all();
-        $remaining = array_values(array_filter($invites, fn ($invite) => $invite['token'] !== $token));
-
-        if (count($remaining) === count($invites)) {
-            return false;
-        }
-
-        $this->write($remaining);
-
-        return true;
+        return Invite::whereToken($token)->delete() > 0;
     }
 
-    protected function write(array $invites): void
+    public function present(Invite $invite): array
     {
-        $payload = [
-            'total_invites' => count($invites),
-            'last_updated' => now()->format('Y-m-d H:i:s'),
-            'invites' => $invites,
+        return [
+            'token' => $invite->token,
+            'name' => $invite->name,
+            'created_at' => $invite->created_at?->format('Y-m-d H:i:s'),
+            'first_opened_at' => $invite->first_opened_at?->format('Y-m-d H:i:s'),
+            'last_opened_at' => $invite->last_opened_at?->format('Y-m-d H:i:s'),
+            'open_count' => $invite->open_count,
         ];
-
-        file_put_contents(
-            $this->file,
-            json_encode($payload, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE),
-            LOCK_EX
-        );
     }
 }

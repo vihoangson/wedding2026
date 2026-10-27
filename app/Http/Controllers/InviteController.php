@@ -42,12 +42,9 @@ class InviteController extends Controller
 
         $weddingDate = Carbon::createFromFormat('Y-m-d', config('wedding.wedding_date'));
 
-        // Prefill the RSVP form when this guest already answered. Stored
-        // values are HTML-escaped, so decode them before Blade escapes again.
+        // Prefill the RSVP form when this guest already answered.
         $previousRsvp = $rsvp->findByToken($token);
         if ($previousRsvp) {
-            $previousRsvp['phone'] = htmlspecialchars_decode($previousRsvp['phone'] ?? '', ENT_QUOTES);
-            $previousRsvp['message'] = htmlspecialchars_decode($previousRsvp['message'] ?? '', ENT_QUOTES);
             $previousRsvp['confirmed_at'] = Carbon::parse($previousRsvp['updated_at'] ?? $previousRsvp['timestamp'])->format('H:i d/m/Y');
         }
 
