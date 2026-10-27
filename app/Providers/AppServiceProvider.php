@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use App\Services\BackupService;
+use App\Services\MediaSettingsRepository;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -26,6 +27,7 @@ class AppServiceProvider extends ServiceProvider
     {
         $this->initializeDataFiles();
         $this->backupToS3();
+        (new MediaSettingsRepository())->applyToConfig();
     }
 
     /**

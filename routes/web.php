@@ -3,6 +3,7 @@
 use App\Http\Controllers\AboutUsController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\InviteController;
+use App\Http\Controllers\MediaConfigController;
 use App\Http\Controllers\MemoryController;
 use Illuminate\Support\Facades\Route;
 
@@ -39,7 +40,11 @@ Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard
 Route::post('/dashboard/login', [DashboardController::class, 'login'])->name('dashboard.login');
 Route::post('/dashboard/logout', [DashboardController::class, 'logout'])->name('dashboard.logout');
 
+// Image/video link settings (overrides config/wedding.php via data/media.json).
+Route::get('/dashboard/config', [MediaConfigController::class, 'index'])->name('dashboard.config');
+
 Route::middleware('dashboard.auth')->group(function () {
+    Route::post('/dashboard/config', [MediaConfigController::class, 'update'])->name('dashboard.config.update');
     Route::get('/dashboard/data', [DashboardController::class, 'data'])->name('dashboard.data');
     Route::get('/dashboard/encode-inviter', [DashboardController::class, 'encodeInviter'])->name('dashboard.encode-inviter');
 });

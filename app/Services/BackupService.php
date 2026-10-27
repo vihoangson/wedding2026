@@ -13,6 +13,7 @@ class BackupService
         'comments.json',
         'memories.json',
         'memory_comments.json',
+        'media.json',
     ];
 
     public function __construct()

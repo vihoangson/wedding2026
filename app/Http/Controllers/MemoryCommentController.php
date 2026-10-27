@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Services\MemoryRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use App\Services\ServiceCheckMember;
 
 class MemoryCommentController extends Controller
 {
@@ -13,6 +14,14 @@ class MemoryCommentController extends Controller
      */
     public function store(Request $request, MemoryRepository $memories)
     {
+        
+        
+        
+        ServiceCheckMember::checkMember(); // Check if the user is a member before proceeding
+
+
+
+
         $validator = Validator::make($request->all(), [
             'post_id' => ['required', 'string'],
             'name' => ['required', 'string', 'max:100'],

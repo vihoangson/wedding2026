@@ -70,6 +70,9 @@
                 <i class="bi bi-suit-heart-fill"></i> Dashboard Tiệc Cưới
             </span>
             <div>
+                <a href="{{ route('dashboard.config') }}" class="btn btn-outline-secondary btn-sm me-2">
+                    <i class="bi bi-images"></i> Cấu hình ảnh & video
+                </a>
                 <span class="me-3 text-muted">
                     <i class="bi bi-person-circle"></i> Admin
                 </span>
