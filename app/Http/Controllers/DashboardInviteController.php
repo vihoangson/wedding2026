@@ -75,14 +75,23 @@ class DashboardInviteController extends Controller
      */
     public function export(InviteRepository $invites)
     {
-        $rows = [['STT', 'Tên khách mời', 'Link thiệp mời', 'Tin nhắn Zalo', 'Ngày tạo']];
+        $rows = [['STT', 'Tên khách mời', 'Link thiệp mời', 'Tin nhắn Zalo', 'Ngày tạo', 'Đã mở thiệp', 'Mở lần đầu', 'Số lần mở']];
 
         foreach ($invites->all() as $i => $invite) {
             $item = $this->present($invite);
-            $rows[] = [$i + 1, $item['name'], $item['link'], $item['message'], $item['created_at']];
+            $rows[] = [
+                $i + 1,
+                $item['name'],
+                $item['link'],
+                $item['message'],
+                $item['created_at'],
+                ! empty($item['open_count']) ? 'Đã mở' : 'Chưa mở',
+                $item['first_opened_at'] ?? '',
+                $item['open_count'] ?? 0,
+            ];
         }
 
-        $path = XlsxWriter::write($rows, [6, 28, 60, 70, 20], 'Khách mời');
+        $path = XlsxWriter::write($rows, [6, 28, 60, 70, 20, 14, 20, 12], 'Khách mời');
 
         return response()
             ->download($path, 'danh-sach-khach-moi-'.now()->format('Ymd-His').'.xlsx', [

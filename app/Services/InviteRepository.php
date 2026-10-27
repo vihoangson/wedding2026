@@ -75,6 +75,28 @@ class InviteRepository
     }
 
     /**
+     * Record that a guest opened their invitation. Links generated before
+     * the guest list existed are added to the list on their first open.
+     */
+    public function recordOpen(string $token, string $name): void
+    {
+        $invites = $this->all();
+        $now = now()->format('Y-m-d H:i:s');
+        $index = array_search($token, array_column($invites, 'token'), true);
+
+        if ($index === false) {
+            $invites[] = ['token' => $token, 'name' => $name, 'created_at' => $now];
+            $index = count($invites) - 1;
+        }
+
+        $invites[$index]['first_opened_at'] = $invites[$index]['first_opened_at'] ?? $now;
+        $invites[$index]['last_opened_at'] = $now;
+        $invites[$index]['open_count'] = ($invites[$index]['open_count'] ?? 0) + 1;
+
+        $this->write($invites);
+    }
+
+    /**
      * Remove an invite from the list. The link itself keeps working
      * (it is derived from the secret key), it just stops being tracked.
      */

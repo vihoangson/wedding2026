@@ -47,6 +47,10 @@ function setupEventListeners() {
     if (invitesSearch) {
         invitesSearch.addEventListener('input', renderInvites);
     }
+    const invitesFilter = document.getElementById('invitesFilter');
+    if (invitesFilter) {
+        invitesFilter.addEventListener('change', renderInvites);
+    }
 
     // Approve / hide / delete guest wishes
     const commentsTableBody = document.getElementById('commentsTableBody');
@@ -167,17 +171,24 @@ function renderInvites() {
     if (!tbody) return;
 
     const keyword = (document.getElementById('invitesSearch').value || '').trim().toLowerCase();
-    const list = keyword
-        ? invitesState.filter(invite => invite.name.toLowerCase().includes(keyword))
-        : invitesState;
+    const filter = document.getElementById('invitesFilter').value;
+    const list = invitesState.filter(invite => {
+        if (keyword && !invite.name.toLowerCase().includes(keyword)) return false;
+        if (filter === 'opened') return !!invite.open_count;
+        if (filter === 'unopened') return !invite.open_count;
+        return true;
+    });
 
+    const openedCount = invitesState.filter(invite => invite.open_count).length;
     document.getElementById('invitesCount').textContent = invitesState.length;
+    document.getElementById('invitesOpenedSummary').textContent =
+        invitesState.length ? `${openedCount}/${invitesState.length} đã mở thiệp` : '';
 
     if (list.length === 0) {
         tbody.innerHTML = `
             <tr>
-                <td colspan="3" class="text-center text-muted py-4">
-                    <i class="bi bi-inbox"></i> ${keyword ? 'Không tìm thấy khách mời' : 'Chưa có khách mời nào'}
+                <td colspan="4" class="text-center text-muted py-4">
+                    <i class="bi bi-inbox"></i> ${keyword || filter !== 'all' ? 'Không tìm thấy khách mời' : 'Chưa có khách mời nào'}
                 </td>
             </tr>
         `;
@@ -189,6 +200,13 @@ function renderInvites() {
             <td><strong>${escapeHtml(invite.name)}</strong></td>
             <td>
                 <a href="${escapeHtml(invite.link)}" target="_blank" rel="noopener" class="small text-break">${escapeHtml(invite.link)}</a>
+            </td>
+            <td class="text-nowrap">
+                ${invite.open_count
+                    ? `<span class="badge bg-success" title="Lần cuối: ${escapeHtml(formatDate(invite.last_opened_at))}">Đã mở · ${invite.open_count} lần</span>
+                       <div class="small text-muted">${escapeHtml(formatDate(invite.first_opened_at))}</div>`
+                    : '<span class="badge bg-secondary">Chưa mở</span>'
+                }
             </td>
             <td class="text-end text-nowrap">
                 <button type="button" class="btn btn-outline-secondary btn-sm" data-invite-action="copy-link" data-token="${escapeHtml(invite.token)}" title="Copy link"><i class="bi bi-link-45deg"></i></button>

@@ -389,6 +389,18 @@
 </script>
 <script src="/script.js"></script>
 
+@if($trackOpen)
+<script>
+    // Record the open from JS (not on page render) so link-preview bots aren't counted.
+    window.addEventListener('load', function () {
+        var body = JSON.stringify({ token: @json($inviteToken) });
+        var url = @json(route('api.invite-opens.store'));
+        if (navigator.sendBeacon && navigator.sendBeacon(url, new Blob([body], { type: 'application/json' }))) return;
+        fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: body, keepalive: true }).catch(function () {});
+    });
+</script>
+@endif
+
 <script>
 (function () {
     // ----- Calendar -----

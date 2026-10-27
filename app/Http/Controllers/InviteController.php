@@ -29,7 +29,7 @@ class InviteController extends Controller
      * GET /invite/{token} — decode the personalized token and render the
      * invitation, or bounce to the waiting page if the token is invalid.
      */
-    public function show(string $token, RsvpRepository $rsvp)
+    public function show(Request $request, string $token, RsvpRepository $rsvp)
     {
         $secretKey = config('wedding.inviter_secret_key');
         $decoded = InviterCodec::decode($token, $secretKey);
@@ -48,6 +48,9 @@ class InviteController extends Controller
             'formattedDate' => $weddingDate->format('d . m . Y'),
             'rsvpDeadline' => Carbon::createFromFormat('Y-m-d', config('wedding.rsvp_deadline'))->format('d.m.Y'),
             'activeComments' => $rsvp->getActiveComments(),
+            'inviteToken' => $token,
+            // Don't count the couple previewing links from the dashboard as a guest open.
+            'trackOpen' => ! $request->session()->get('dashboard_logged_in'),
         ]);
     }
 

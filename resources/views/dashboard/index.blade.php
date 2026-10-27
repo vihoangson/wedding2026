@@ -112,18 +112,27 @@
                                 <div class="small mt-2" id="generateInvitesResult"></div>
                             </div>
                             <div class="col-lg-8">
-                                <input type="search" class="form-control form-control-sm mb-2" id="invitesSearch" placeholder="Tìm theo tên...">
+                                <div class="d-flex flex-wrap gap-2 align-items-center mb-2">
+                                    <input type="search" class="form-control form-control-sm flex-grow-1 w-auto" id="invitesSearch" placeholder="Tìm theo tên...">
+                                    <select class="form-select form-select-sm w-auto" id="invitesFilter">
+                                        <option value="all">Tất cả</option>
+                                        <option value="unopened">Chưa mở thiệp</option>
+                                        <option value="opened">Đã mở thiệp</option>
+                                    </select>
+                                    <small class="text-muted text-nowrap" id="invitesOpenedSummary"></small>
+                                </div>
                                 <div class="table-responsive" style="max-height: 420px;">
                                     <table class="table table-hover table-sm align-middle mb-0">
                                         <thead class="bg-light sticky-top">
                                             <tr>
                                                 <th class="text-muted fw-600">Tên khách</th>
                                                 <th class="text-muted fw-600">Link</th>
+                                                <th class="text-muted fw-600">Mở thiệp</th>
                                                 <th class="text-muted fw-600 text-end">Thao tác</th>
                                             </tr>
                                         </thead>
                                         <tbody id="invitesTableBody">
-                                            <tr><td colspan="3" class="text-center text-muted py-4">Đang tải...</td></tr>
+                                            <tr><td colspan="4" class="text-center text-muted py-4">Đang tải...</td></tr>
                                         </tbody>
                                     </table>
                                 </div>
