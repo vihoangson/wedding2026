@@ -80,6 +80,36 @@ class DashboardController extends Controller
     }
 
     /**
+     * PATCH /dashboard/comments/{id} — approve (show on the invite page) or
+     * hide a guest wish. Protected by the dashboard.auth middleware.
+     */
+    public function updateComment(Request $request, string $id, RsvpRepository $rsvp)
+    {
+        $request->validate(['active' => ['required', 'boolean']]);
+
+        $comment = $rsvp->setCommentActive($id, $request->boolean('active'));
+
+        if ($comment === null) {
+            return response()->json(['error' => 'Không tìm thấy lời chúc'], 404);
+        }
+
+        return response()->json(['comment' => $comment]);
+    }
+
+    /**
+     * DELETE /dashboard/comments/{id} — permanently remove a guest wish.
+     * Protected by the dashboard.auth middleware.
+     */
+    public function destroyComment(string $id, RsvpRepository $rsvp)
+    {
+        if (! $rsvp->deleteComment($id)) {
+            return response()->json(['error' => 'Không tìm thấy lời chúc'], 404);
+        }
+
+        return response()->json(['deleted' => true]);
+    }
+
+    /**
      * GET /dashboard/encode-inviter?name=... — encodes a guest name into
      * the opaque /invite/{token} link (port of ?action=encode_inviter).
      * Protected by the dashboard.auth middleware.

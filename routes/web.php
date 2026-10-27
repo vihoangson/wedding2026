@@ -47,5 +47,7 @@ Route::middleware('dashboard.auth')->group(function () {
     Route::post('/dashboard/config', [MediaConfigController::class, 'update'])->name('dashboard.config.update');
     Route::get('/dashboard/data', [DashboardController::class, 'data'])->name('dashboard.data');
     Route::get('/dashboard/encode-inviter', [DashboardController::class, 'encodeInviter'])->name('dashboard.encode-inviter');
+    Route::patch('/dashboard/comments/{id}', [DashboardController::class, 'updateComment'])->name('dashboard.comments.update');
+    Route::delete('/dashboard/comments/{id}', [DashboardController::class, 'destroyComment'])->name('dashboard.comments.destroy');
 });
 

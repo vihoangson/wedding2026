@@ -91,6 +91,43 @@ class RsvpRepository
         return $this->readList($this->commentsFile, 'comments');
     }
 
+    /**
+     * Show/hide a comment on the invite page. Returns the updated comment,
+     * or null if no comment has that id.
+     */
+    public function setCommentActive(string $id, bool $active): ?array
+    {
+        $comments = $this->readList($this->commentsFile, 'comments');
+
+        foreach ($comments as $i => $comment) {
+            if (($comment['id'] ?? null) === $id) {
+                $comments[$i]['active'] = $active;
+                $this->writeList($this->commentsFile, 'total_comments', 'comments', $comments);
+
+                return $comments[$i];
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * Permanently remove a comment. Returns false if no comment has that id.
+     */
+    public function deleteComment(string $id): bool
+    {
+        $comments = $this->readList($this->commentsFile, 'comments');
+        $remaining = array_values(array_filter($comments, fn ($comment) => ($comment['id'] ?? null) !== $id));
+
+        if (count($remaining) === count($comments)) {
+            return false;
+        }
+
+        $this->writeList($this->commentsFile, 'total_comments', 'comments', $remaining);
+
+        return true;
+    }
+
     protected function readList(string $file, string $key): array
     {
         if (! file_exists($file)) {

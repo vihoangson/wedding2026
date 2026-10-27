@@ -51,6 +51,61 @@ function setupEventListeners() {
     if (copyLinkBtn) {
         copyLinkBtn.addEventListener('click', copyInviteLink);
     }
+
+    // Approve / hide / delete guest wishes
+    const commentsTableBody = document.getElementById('commentsTableBody');
+    if (commentsTableBody) {
+        commentsTableBody.addEventListener('click', handleCommentAction);
+    }
+}
+
+// Gọi API có kèm CSRF token (các route PATCH/DELETE của dashboard)
+function dashboardRequest(url, method, body) {
+    return fetch(url, {
+        method: method,
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+        },
+        body: body ? JSON.stringify(body) : undefined
+    });
+}
+
+// Duyệt / Ẩn / Xoá lời chúc
+async function handleCommentAction(e) {
+    const btn = e.target.closest('[data-comment-action]');
+    if (!btn) return;
+
+    const id = btn.dataset.id;
+    const action = btn.dataset.commentAction;
+    const url = window.DASHBOARD_COMMENTS_URL + encodeURIComponent(id);
+
+    if (action === 'delete' && !confirm('Xoá vĩnh viễn lời chúc này?')) {
+        return;
+    }
+
+    btn.disabled = true;
+
+    try {
+        const response = action === 'delete'
+            ? await dashboardRequest(url, 'DELETE')
+            : await dashboardRequest(url, 'PATCH', { active: action === 'approve' });
+
+        if (response.status === 401) {
+            window.location.reload();
+            return;
+        }
+        if (!response.ok) {
+            throw new Error('Request failed: ' + response.status);
+        }
+
+        await loadDashboardData();
+    } catch (err) {
+        console.error(err);
+        alert('Không thể cập nhật lời chúc, vui lòng thử lại.');
+        btn.disabled = false;
+    }
 }
 
 // Tạo link mời cá nhân hóa dạng abc.com/invite/<ten-da-ma-hoa>
@@ -219,7 +274,7 @@ function populateCommentsTable(commentsList) {
     if (!commentsList || commentsList.length === 0) {
         tbody.innerHTML = `
             <tr>
-                <td colspan="4" class="text-center text-muted py-4">
+                <td colspan="5" class="text-center text-muted py-4">
                     <i class="bi bi-inbox"></i> Chưa có bình luận
                 </td>
             </tr>
@@ -240,9 +295,16 @@ function populateCommentsTable(commentsList) {
             </td>
             <td>
                 ${comment.active === true
-                    ? '<span class="badge bg-success">Active</span>'
-                    : '<span class="badge bg-secondary">Inactive</span>'
+                    ? '<span class="badge bg-success">Đang hiển thị</span>'
+                    : '<span class="badge bg-secondary">Chờ duyệt</span>'
                 }
+            </td>
+            <td class="text-end text-nowrap">
+                ${comment.active === true
+                    ? `<button type="button" class="btn btn-outline-secondary btn-sm" data-comment-action="hide" data-id="${escapeHtml(comment.id)}"><i class="bi bi-eye-slash"></i> Ẩn</button>`
+                    : `<button type="button" class="btn btn-success btn-sm" data-comment-action="approve" data-id="${escapeHtml(comment.id)}"><i class="bi bi-check-lg"></i> Duyệt</button>`
+                }
+                <button type="button" class="btn btn-outline-danger btn-sm" data-comment-action="delete" data-id="${escapeHtml(comment.id)}"><i class="bi bi-trash"></i> Xoá</button>
             </td>
         </tr>
     `).join('');
