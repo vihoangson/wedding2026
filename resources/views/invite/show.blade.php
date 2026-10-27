@@ -12,12 +12,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Thiệp mời cưới — {{ config('wedding.groom_name') }} & {{ config('wedding.bride_name') }}. Xác nhận tham dự buổi lễ cưới ngày {{ $formattedDate }}">
-    <meta name="theme-color" content="#14110e">
+    <meta name="theme-color" content="#fcf0f2">
     <title>@if($guestName !== '')Kính mời {{ $guestName }} — @endif{{ config('wedding.groom_name') }} & {{ config('wedding.bride_name') }} | Thiệp cưới</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Be+Vietnam+Pro:wght@300;400;500&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="/invite.css?v=1">
+    <link rel="stylesheet" href="/invite.css?v=2">
     <script>document.documentElement.classList.add('js');</script>
 </head>
 <body>
@@ -63,7 +63,7 @@
             </div>
             <p class="hero-meta">{{ $weddingDayName }} &nbsp;·&nbsp; {{ config('wedding.wedding_time') }} &nbsp;·&nbsp; {{ config('wedding.venue_name') }}</p>
 
-            <a href="#rsvpForm" class="btn btn-gold hero-cta">Xác nhận tham dự</a>
+            <a href="#rsvpForm" class="btn btn-rose hero-cta">Xác nhận tham dự</a>
         </div>
         <a href="#story" class="hero-scroll" aria-label="Cuộn xuống">
             <span></span>
@@ -223,7 +223,7 @@
     </section>
 
     {{-- ============ RSVP ============ --}}
-    <section class="section section-noir" id="rsvpSection">
+    <section class="section section-blush" id="rsvpSection">
         <div class="section-head reveal">
             <p class="kicker">R.S.V.P</p>
             <h2 class="title">Xác nhận tham dự</h2>
@@ -262,7 +262,7 @@
                 <textarea id="message" name="message" rows="3" placeholder="Gửi lời chúc đến cô dâu & chú rể..."></textarea>
             </div>
 
-            <button type="submit" class="btn btn-gold submit">Gửi xác nhận</button>
+            <button type="submit" class="btn btn-rose submit">Gửi xác nhận</button>
         </form>
 
         <div class="success" id="successBox" role="alert">
@@ -313,7 +313,7 @@
 
     {{-- ============ FOOTER ============ --}}
     <footer class="footer">
-        <div class="monogram monogram-light" aria-hidden="true">
+        <div class="monogram" aria-hidden="true">
             <span>{{ config('wedding.groom_initial') }}</span>
             <em>&</em>
             <span>{{ config('wedding.bride_initial') }}</span>
