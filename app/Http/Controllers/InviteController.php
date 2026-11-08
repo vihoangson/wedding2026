@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Services\InviterCodec;
+use App\Services\RecaptchaVerifier;
 use App\Services\RsvpRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
@@ -14,15 +15,12 @@ class InviteController extends Controller
     ];
 
     /**
-     * Root "/" route: the original site only ever serves the invitation
-     * through a personalized ?inviter=/ /invite/<token> link. Visiting the
-     * bare homepage means the link is missing, so send the guest to the
-     * waiting page — mirrors index.php's behaviour when $_GET['inviter']
-     * is absent.
+     * Root "/" route: the public invitation, without a guest name. Guests
+     * type their own name in the RSVP form (protected by reCAPTCHA v3).
      */
-    public function index()
+    public function index(RsvpRepository $rsvp)
     {
-        return redirect()->route('waiting', ['reason' => 'missing']);
+        return $this->renderInvite($rsvp, '', '', null, false);
     }
 
     /**
@@ -38,15 +36,21 @@ class InviteController extends Controller
             return redirect()->route('waiting', ['reason' => 'invalid']);
         }
 
-        $guestName = $decoded;
-
-        $weddingDate = Carbon::createFromFormat('Y-m-d', config('wedding.wedding_date'));
-
         // Prefill the RSVP form when this guest already answered.
         $previousRsvp = $rsvp->findByToken($token);
         if ($previousRsvp) {
             $previousRsvp['confirmed_at'] = Carbon::parse($previousRsvp['updated_at'] ?? $previousRsvp['timestamp'])->format('H:i d/m/Y');
         }
+
+        // Don't count the couple previewing links from the dashboard as a guest open.
+        $trackOpen = ! $request->session()->get('dashboard_logged_in');
+
+        return $this->renderInvite($rsvp, $decoded, $token, $previousRsvp, $trackOpen);
+    }
+
+    private function renderInvite(RsvpRepository $rsvp, string $guestName, string $token, ?array $previousRsvp, bool $trackOpen)
+    {
+        $weddingDate = Carbon::createFromFormat('Y-m-d', config('wedding.wedding_date'));
 
         return view('invite.show', [
             'guestName' => $guestName,
@@ -56,8 +60,8 @@ class InviteController extends Controller
             'activeComments' => $rsvp->getActiveComments(),
             'inviteToken' => $token,
             'previousRsvp' => $previousRsvp,
-            // Don't count the couple previewing links from the dashboard as a guest open.
-            'trackOpen' => ! $request->session()->get('dashboard_logged_in'),
+            'trackOpen' => $trackOpen,
+            'recaptchaSiteKey' => app(RecaptchaVerifier::class)->enabled() ? config('services.recaptcha.site_key') : null,
         ]);
     }
 

@@ -31,4 +31,12 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
 
+    // Google reCAPTCHA v3 for the public RSVP form. Leave the keys empty to
+    // turn the check off (the form then submits without a captcha token).
+    'recaptcha' => [
+        'site_key' => env('RECAPTCHA_SITE_KEY'),
+        'secret_key' => env('RECAPTCHA_SECRET_KEY'),
+        'min_score' => (float) env('RECAPTCHA_MIN_SCORE', 0.5),
+    ],
+
 ];

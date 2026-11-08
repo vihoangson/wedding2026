@@ -406,7 +406,11 @@
     const WEDDING_DATE = '{{ config('wedding.wedding_date') }}T{{ config('wedding.wedding_time') }}:00';
     const WEDDING_DATE_ONLY = '{{ config('wedding.wedding_date') }}';
 </script>
-<script src="/script.js?v=2"></script>
+@if($recaptchaSiteKey)
+<script>const RECAPTCHA_SITE_KEY = @json($recaptchaSiteKey);</script>
+<script src="https://www.google.com/recaptcha/api.js?render={{ urlencode($recaptchaSiteKey) }}" async defer></script>
+@endif
+<script src="/script.js?v=3"></script>
 
 @if($trackOpen)
 <script>

@@ -246,6 +246,21 @@ function copyToClipboard(text) {
     });
 }
 
+// Resolves to a reCAPTCHA v3 token, or '' when reCAPTCHA isn't configured.
+function getRecaptchaToken(action) {
+    if (typeof RECAPTCHA_SITE_KEY === 'undefined' || !RECAPTCHA_SITE_KEY) {
+        return Promise.resolve('');
+    }
+    if (typeof grecaptcha === 'undefined') {
+        return Promise.reject(new Error('reCAPTCHA chưa tải xong'));
+    }
+    return new Promise((resolve, reject) => {
+        grecaptcha.ready(() => {
+            grecaptcha.execute(RECAPTCHA_SITE_KEY, { action: action }).then(resolve, reject);
+        });
+    });
+}
+
 const form = document.getElementById('rsvpForm');
 const successBox = document.getElementById('successBox');
 
@@ -291,13 +306,17 @@ form.addEventListener('submit', function(e){
     submitBtn.disabled = true;
     submitBtn.textContent = 'Đang gửi...';
 
-    // Send data to API
-    fetch('/api/rsvp', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(dataToSend)
+    // Send data to API (with a reCAPTCHA v3 token when the site key is configured)
+    getRecaptchaToken('rsvp')
+    .then(token => {
+        if (token) dataToSend.recaptcha_token = token;
+        return fetch('/api/rsvp', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(dataToSend)
+        });
     })
     .then(response => response.json())
     .then(result => {

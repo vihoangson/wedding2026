@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Services\InviterCodec;
+use App\Services\RecaptchaVerifier;
 use App\Services\RsvpRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
@@ -15,8 +16,16 @@ class RsvpController extends Controller
      * Validates the RSVP submission and appends it to data/data.json
      * (plus an inactive wish entry in data/comments.json).
      */
-    public function store(Request $request, RsvpRepository $rsvp)
+    public function store(Request $request, RsvpRepository $rsvp, RecaptchaVerifier $recaptcha)
     {
+        if (! $recaptcha->verify($request->input('recaptcha_token'), 'rsvp', $request->ip())) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Không xác thực được reCAPTCHA. Vui lòng tải lại trang và thử lại.',
+                'data' => null,
+            ], 422);
+        }
+
         $validator = Validator::make($request->all(), [
             'fullname' => ['required', 'string'],
             'phone' => ['nullable', 'string'],
