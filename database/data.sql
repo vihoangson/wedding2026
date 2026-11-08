@@ -16,8 +16,8 @@
 
 
 -- Dumping database structure for wedding2026
-CREATE DATABASE IF NOT EXISTS `wedding2026` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci */;
-USE `wedding2026`;
+-- CREATE DATABASE IF NOT EXISTS `wedding2026` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci */;
+-- USE `wedding2026`;
 
 -- Dumping structure for table wedding2026.failed_jobs
 CREATE TABLE IF NOT EXISTS `failed_jobs` (

@@ -449,7 +449,8 @@ function formatDate(dateString) {
 }
 
 function escapeHtml(text) {
-    if (!text) return '';
+    if (text === null || text === undefined || text === '') return '';
+    text = String(text); // id từ MySQL là số
     const map = {
         '&': '&amp;',
         '<': '&lt;',
