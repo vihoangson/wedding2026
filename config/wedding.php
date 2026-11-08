@@ -34,7 +34,7 @@ return [
     'bank_account_owner' => 'Vi Hoàng Sơn',
 
     // ===== THÔNG TIN KHÁC =====
-    'rsvp_deadline' => '2027-01-01',
+    'rsvp_deadline' => '2026-12-10',
     'footer_initials' => 'M & T',
     'footer_date' => '14.02.2027',
 
