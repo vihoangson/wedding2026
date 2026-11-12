@@ -494,6 +494,27 @@
         setActive(target.id);
     }));
 
+    // ----- Share-link anchor: /invite/<token>#loi-nhan opens straight at the message section -----
+    // Done in JS (not only the native jump) because images/reveals above shift the layout while loading.
+    const anchorAliases = { 'loi-nhan': 'rsvpSection', 'loi-chuc': 'rsvpSection', 'rsvpForm': 'rsvpSection' };
+    const hashTarget = () => {
+        const key = decodeURIComponent(location.hash.slice(1));
+        return key ? document.getElementById(anchorAliases[key] || key) : null;
+    };
+    if (hashTarget()) {
+        let userScrolled = false;
+        ['wheel', 'touchmove', 'keydown', 'mousedown'].forEach((evt) =>
+            window.addEventListener(evt, () => { userScrolled = true; }, { once: true, passive: true }));
+        const jump = () => {
+            const target = hashTarget();
+            if (!target || userScrolled) return;
+            target.scrollIntoView({ behavior: 'instant', block: 'start' });
+            setActive(target.id);
+        };
+        jump();
+        window.addEventListener('load', () => { jump(); setTimeout(jump, 400); });
+    }
+
     if ('IntersectionObserver' in window) {
         const sectionObserver = new IntersectionObserver((entries) => {
             entries.forEach((entry) => { if (entry.isIntersecting) setActive(entry.target.id); });
