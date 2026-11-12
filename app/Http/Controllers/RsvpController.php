@@ -29,8 +29,8 @@ class RsvpController extends Controller
         $validator = Validator::make($request->all(), [
             'fullname' => ['required', 'string'],
             'phone' => ['nullable', 'string'],
-            'guests' => ['required', 'integer', 'min:1', 'max:10'],
-            'attend' => ['required', 'in:yes,no'],
+            'guests' => ['nullable', 'integer', 'min:1', 'max:10'],
+            'attend' => ['nullable', 'in:yes,no'],
             'message' => ['nullable', 'string'],
             'token' => ['nullable', 'string', 'max:500'],
         ], [
@@ -64,8 +64,8 @@ class RsvpController extends Controller
             'token' => $token,
             'fullname' => $token !== '' ? $tokenName : trim($data['fullname']),
             'phone' => trim($data['phone'] ?? ''),
-            'guests' => (int) $data['guests'],
-            'attend' => $data['attend'],
+            'guests' => (int) ($data['guests'] ?? 1),
+            'attend' => $data['attend'] ?? 'yes',
             'message' => trim($data['message'] ?? ''),
             'ip_address' => $request->ip() ?? '',
             'user_agent' => substr($request->userAgent() ?? '', 0, 255),
@@ -77,7 +77,7 @@ class RsvpController extends Controller
             'success' => true,
             'message' => $result['updated']
                 ? 'Đã cập nhật xác nhận tham dự của bạn.'
-                : 'Cảm ơn bạn! Xác nhận tham dự đã được ghi nhận.',
+                : 'Cảm ơn bạn! Lời chúc đã được gửi đến chúng tôi.',
             'data' => [
                 'id' => $saved['id'],
                 'fullname' => $saved['fullname'],

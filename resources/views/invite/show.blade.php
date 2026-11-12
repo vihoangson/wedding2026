@@ -240,14 +240,14 @@
     <section class="section section-blush" id="rsvpSection">
         <div class="section-head reveal">
             <p class="kicker">R.S.V.P</p>
-            <h2 class="title">Xác nhận tham dự</h2>
-            <p class="lead">Vui lòng phản hồi trước ngày {{ $rsvpDeadline }}</p>
+            <h2 class="title">Gửi lời yêu thương</h2>
+            <p class="lead">Mỗi lời chúc của bạn là món quà quý giá với chúng tôi</p>
         </div>
 
         <form id="rsvpForm" class="rsvp reveal" data-token="{{ $inviteToken }}" novalidate>
             <p class="rsvp-notice" id="rsvpNotice" @unless($previousRsvp) hidden @endunless>
-                Bạn đã xác nhận lúc <strong id="rsvpConfirmedAt">{{ $previousRsvp['confirmed_at'] ?? '' }}</strong>.
-                Bạn có thể sửa thông tin bên dưới và gửi lại để cập nhật.
+                Bạn đã gửi lời chúc lúc <strong id="rsvpConfirmedAt">{{ $previousRsvp['confirmed_at'] ?? '' }}</strong>.
+                Bạn có thể sửa lại bên dưới và gửi lại để cập nhật.
             </p>
 
             <div class="field">
@@ -255,33 +255,14 @@
                 <input type="text" id="fullname" name="fullname" placeholder="Nguyễn Văn A" value="{{ $guestName }}" {{ $guestName !== '' ? 'readonly' : '' }} required aria-required="true">
             </div>
 
-            <div class="field-row">
-                <div class="field">
-                    <label for="phone">Số điện thoại</label>
-                    <input type="tel" id="phone" name="phone" placeholder="0987 654 321" value="{{ $previousRsvp['phone'] ?? '' }}">
-                </div>
-                <div class="field">
-                    <label for="guests">Số người tham dự <span aria-label="bắt buộc">*</span></label>
-                    <input type="number" id="guests" name="guests" min="1" max="10" value="{{ $previousRsvp['guests'] ?? 1 }}" required aria-required="true">
-                </div>
-            </div>
-
-            <fieldset class="field">
-                <legend>Bạn có thể tham dự? <span aria-label="bắt buộc">*</span></legend>
-                <div class="attend-toggle">
-                    <input type="radio" id="attendYes" name="attend" value="yes" @checked(($previousRsvp['attend'] ?? 'yes') === 'yes') required aria-required="true">
-                    <label for="attendYes">Vui mừng tham dự</label>
-                    <input type="radio" id="attendNo" name="attend" value="no" @checked(($previousRsvp['attend'] ?? 'yes') === 'no')>
-                    <label for="attendNo">Xin phép vắng mặt</label>
-                </div>
-            </fieldset>
-
             <div class="field">
                 <label for="message">Lời nhắn</label>
-                <textarea id="message" name="message" rows="3" placeholder="Gửi lời chúc đến cô dâu & chú rể...">{{ $previousRsvp['message'] ?? '' }}</textarea>
+                <textarea id="message" name="message" rows="4" placeholder="Gửi lời chúc đến cô dâu & chú rể...">{{ $previousRsvp['message'] ?? '' }}</textarea>
             </div>
 
-            <button type="submit" class="btn btn-rose submit">{{ $previousRsvp ? 'Cập nhật xác nhận' : 'Gửi xác nhận' }}</button>
+            <p class="rsvp-error" id="rsvpError" role="alert" hidden></p>
+
+            <button type="submit" class="btn btn-rose submit">{{ $previousRsvp ? 'Cập nhật lời chúc' : 'Gửi lời yêu thương' }}</button>
         </form>
 
         <div class="success" id="successBox" role="alert">
@@ -290,7 +271,7 @@
                 <path d="M7 12.5l3.2 3.2L17 9" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
             <h3>Cảm ơn bạn!</h3>
-            <p id="successMessage">Phản hồi của bạn đã được ghi nhận. Chúng tôi rất mong được đón tiếp bạn trong ngày trọng đại này.</p>
+            <p id="successMessage">Lời chúc của bạn đã được gửi đến chúng tôi.</p>
         </div>
     </section>
 

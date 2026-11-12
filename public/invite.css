@@ -704,7 +704,13 @@ a { color: inherit; }
 }
 .attend-toggle input:focus-visible + label { outline: 1px solid var(--rose); outline-offset: 3px; }
 
-.rsvp .submit { width: 100%; margin-top: 6px; }
+.rsvp .submit { width: 100%; margin-top: 6px; transition: opacity .3s, transform .3s var(--ease); }
+.rsvp .submit:disabled { opacity: .6; cursor: progress; }
+.rsvp { transition: opacity .4s var(--ease), transform .4s var(--ease); }
+.rsvp.is-leaving { opacity: 0; transform: translateY(8px); pointer-events: none; }
+.rsvp-error { margin: -8px 0 16px; font-size: 13px; color: #b8636f; }
+.rsvp-error[hidden] { display: none; }
+.rsvp textarea.is-invalid { border-bottom-color: #b8636f !important; }
 
 .success {
     display: none;

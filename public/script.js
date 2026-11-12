@@ -267,35 +267,33 @@ const successBox = document.getElementById('successBox');
 form.addEventListener('submit', function(e){
     e.preventDefault();
 
+    const errorBox = document.getElementById('rsvpError');
+    const messageEl = document.getElementById('message');
+    const showError = (text) => {
+        errorBox.textContent = text;
+        errorBox.hidden = false;
+    };
+    errorBox.hidden = true;
+    messageEl.classList.remove('is-invalid');
+
     // Validate required fields
     const fullname = document.getElementById('fullname').value.trim();
-    const guests = document.getElementById('guests').value;
-    const attend = document.querySelector('input[name="attend"]:checked');
+    const message = messageEl.value.trim();
 
     if (!fullname) {
-        alert('Vui lòng nhập họ và tên');
+        showError('Vui lòng nhập họ và tên');
         return;
     }
 
-    if (!guests || guests < 1) {
-        alert('Vui lòng nhập số người tham dự');
+    if (!message) {
+        messageEl.classList.add('is-invalid');
+        showError('Hãy viết vài lời chúc nhé');
+        messageEl.focus();
         return;
     }
-
-    if (!attend) {
-        alert('Vui lòng chọn phương án tham dự');
-        return;
-    }
-
-    // Prepare data to send
-    const phone = document.getElementById('phone').value.trim();
-    const message = document.getElementById('message').value.trim();
 
     const dataToSend = {
         fullname: fullname,
-        phone: phone,
-        guests: parseInt(guests),
-        attend: attend.value,
         message: message,
         // Ties the RSVP to this guest's invite link so resending updates it
         token: form.dataset.token || ''
@@ -326,13 +324,15 @@ form.addEventListener('submit', function(e){
             if (successMessage && result.data && result.data.updated) {
                 successMessage.textContent = result.message;
             }
-            form.style.display = 'none';
-            successBox.classList.add('show');
+            // Fade the form out, then fade the thank-you box in
+            form.classList.add('is-leaving');
+            setTimeout(() => {
+                form.style.display = 'none';
+                successBox.classList.add('show');
+                createConfetti();
+            }, 400);
 
-            // Trigger confetti effect
-            createConfetti();
-
-            // Show the form again (keeping the answers) so the guest can update it later
+            // Bring the form back (keeping the text) so the guest can update it later
             setTimeout(() => {
                 const notice = document.getElementById('rsvpNotice');
                 const confirmedAt = document.getElementById('rsvpConfirmedAt');
@@ -340,23 +340,24 @@ form.addEventListener('submit', function(e){
                     confirmedAt.textContent = result.data.confirmed_at;
                     notice.hidden = false;
                 }
-                form.style.display = 'block';
                 successBox.classList.remove('show');
+                form.style.display = 'block';
+                void form.offsetWidth; // restart the transition
+                form.classList.remove('is-leaving');
                 submitBtn.disabled = false;
-                submitBtn.textContent = 'Cập nhật xác nhận';
-            }, 4000);
+                submitBtn.textContent = 'Cập nhật lời chúc';
+            }, 4400);
         } else {
-            // Show error message
-            alert('Lỗi: ' + result.message);
+            showError(result.message || 'Có lỗi xảy ra, vui lòng thử lại.');
             submitBtn.disabled = false;
-            submitBtn.textContent = 'Gửi xác nhận';
+            submitBtn.textContent = 'Gửi lời yêu thương';
         }
     })
     .catch(error => {
         console.error('Lỗi:', error);
-        alert('Lỗi kết nối. Vui lòng thử lại.');
+        showError('Lỗi kết nối. Vui lòng thử lại.');
         submitBtn.disabled = false;
-        submitBtn.textContent = 'Gửi xác nhận';
+        submitBtn.textContent = 'Gửi lời yêu thương';
     });
 });
 
